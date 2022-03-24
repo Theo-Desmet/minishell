@@ -6,19 +6,19 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 10:35:26 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/24 15:54:05 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/03/24 16:08:39 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTURE_H
 # define STRUCTURE_H
 
-typedef struct s_list{
+typedef struct s_lists{
 	char			*str;
 	int				type;
 	struct s_list	*before;
 	struct s_list	*next;
-}	t_list;
+}	t_lists;
 
 typedef struct s_ast_node{
 	struct s_ast_info	*info;

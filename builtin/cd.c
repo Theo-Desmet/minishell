@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 13:51:41 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/24 15:46:03 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/03/24 16:09:49 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	ft_cd(t_data *data, char *str)
 	}
 	else
 		return (ft_cd2(data, str));
+	return (0);
 }
 
 int	ft_cd2(t_data *data, char *str)

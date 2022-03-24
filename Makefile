@@ -1,9 +1,9 @@
 NAME = minishell
 
-SRC =	./src/main.c\
-	./src/pwd.c\
-	./src/init.c\
-	./src/cd.c\
+SRC =	./builtin/main.c\
+	./builtin/pwd.c\
+	./builtin/init.c\
+	./builtin/cd.c\
 
 LIB_PATH = libft/
 
