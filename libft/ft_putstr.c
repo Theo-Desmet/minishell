@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 08:42:59 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/01/10 08:45:32 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/03/24 08:15:36 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,10 @@
 
 void	ft_putstr(char *str)
 {
-	int	i;
-
-	i = 0;
-	if (str)
+	if (!str)
 	{
-		while (str[i])
-		{
-			ft_putchar(str[i]);
-			i++;
-		}
+		ft_putstr("(null)");
+		return ;
 	}
+	write(1, str, ft_strlen(str));
 }

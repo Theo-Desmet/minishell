@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/24 12:26:23 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/24 12:16:41 by tdesmet          ###   ########.fr       */
+/*   Created: 2022/03/23 15:57:13 by tdesmet           #+#    #+#             */
+/*   Updated: 2022/03/24 15:49:16 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../include/minishell.h"
 
-char	*ft_strdup(char *source)
+t_data	*ft_init_path(void)
 {
-	char	*dest;
-	int		i;
+	t_data	*data;
+	char	*buf1;
+	char	*buf2;
 
-	dest = malloc((ft_strlen(source) + 1) * sizeof(char));
-	if (!dest)
-		return (NULL);
-	i = 0;
-	while (source[i])
-	{
-		dest[i] = source[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
+	buf1 = NULL;
+	buf2 = NULL;
+	data = malloc(sizeof(t_data));
+	data->prev_path = getcwd(buf1, 0);
+	data->actu_path = getcwd(buf2, 0);
+	return (data);
 }

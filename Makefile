@@ -1,12 +1,15 @@
 NAME = minishell
 
 SRC =	./src/main.c\
+	./src/pwd.c\
+	./src/init.c\
+	./src/cd.c\
 
 LIB_PATH = libft/
 
 CC = @clang
 
-CFLAGS = -g #-Wall -Werror -Wextra
+CFLAGS = -g3 #-Wall -Werror -Wextra
 
 OBJ = $(SRC:.c=.o)
 

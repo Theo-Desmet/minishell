@@ -6,18 +6,16 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 10:35:26 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/23 12:08:17 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/03/24 15:54:05 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTURE_H
 # define STRUCTURE_H
 
-int SIGRET;
-
 typedef struct s_list{
-	char	*str;
-	int	type;
+	char			*str;
+	int				type;
 	struct s_list	*before;
 	struct s_list	*next;
 }	t_list;
@@ -44,14 +42,15 @@ typedef struct s_arg{
 }	t_arg;
 
 typedef struct s_cmd{
-	char *cmd;
-	char *path;
+	char	*cmd;
+	char	*path;
 }	t_cmd;
 
 typedef struct s_data{
 	t_parsing	parsing;
 	t_arg		arg;
 	t_cmd		cmd;
-	char *actual_path;
+	char		*actu_path;
+	char		*prev_path;
 }	t_data;
 #endif

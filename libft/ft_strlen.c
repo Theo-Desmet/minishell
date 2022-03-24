@@ -6,20 +6,18 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 08:43:40 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/15 12:06:21 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/03/24 09:02:03 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strlen(char *s)
+int	ft_strlen(char *str)
 {
 	int	i;
 
-	if (!s || !(*s))
-		return (0);
 	i = 0;
-	while (s[i])
+	while (str && str[i])
 		i++;
 	return (i);
 }

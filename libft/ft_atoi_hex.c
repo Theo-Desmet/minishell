@@ -6,23 +6,11 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 13:27:58 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/22 08:17:56 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/03/24 08:18:47 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-int	ft_strlen(char *s)
-{
-	int	i;
-
-	if (!s || !(*s))
-		return (0);
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
 
 int	check_base(char *base)
 {
