@@ -6,12 +6,13 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 10:35:26 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/24 16:08:39 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/03/25 10:11:45 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTURE_H
 # define STRUCTURE_H
+# include "../libft/libft.h"
 
 typedef struct s_lists{
 	char			*str;
@@ -50,6 +51,7 @@ typedef struct s_data{
 	t_parsing	parsing;
 	t_arg		arg;
 	t_cmd		cmd;
+	t_list		**env;
 	char		*actu_path;
 	char		*prev_path;
 }	t_data;

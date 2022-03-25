@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 10:24:23 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/24 16:06:57 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/03/25 15:22:51 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@ int		ft_cd(t_data *data, char *str);
 int		ft_cd2(t_data *data, char *str);
 int		ft_get_actual_path(t_data *data);
 int		ft_pwd(t_data *data);
-t_data	*ft_init_path(void);
+int		ft_env(t_list **env);
+void		ft_init_path(t_data *data);
+t_data	*ft_init_data(char **envp);
+t_list	**ft_export(t_list **env, char **arg);
 
 #endif

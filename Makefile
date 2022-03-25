@@ -4,6 +4,8 @@ SRC =	./builtin/main.c\
 	./builtin/pwd.c\
 	./builtin/init.c\
 	./builtin/cd.c\
+	./builtin/env.c\
+	./builtin/export.c\
 
 LIB_PATH = libft/
 
