@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_lstdel_all.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/24 16:51:45 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/30 14:29:28 by tdesmet          ###   ########.fr       */
+/*   Created: 2022/03/28 09:33:26 by tdesmet           #+#    #+#             */
+/*   Updated: 2022/03/31 08:43:03 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "libft.h"
 
-int	ft_env(t_list **env)
+void	ft_lstdel_all(t_list **lst)
 {
 	t_list	*temp;
 
-	if (!env)
-		return (0);
-	temp = *env;
-	while (temp)
+	if (!lst)
+		return ;
+	temp = *lst;
+	while (lst && *lst)
 	{
-		ft_putstr(temp->content);
-		ft_putchar('\n');
-		temp = temp->next;
+		(*lst) = (*lst)->next;
+		free(temp->content);
+		free(temp);
+		temp = *lst;
 	}
-	return (1);
+	free(lst);
 }

@@ -1,29 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/24 16:51:45 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/30 14:29:28 by tdesmet          ###   ########.fr       */
+/*   Created: 2022/03/31 09:35:47 by tdesmet           #+#    #+#             */
+/*   Updated: 2022/03/31 09:48:01 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	ft_env(t_list **env)
+int	ft_check_option(char **args)
 {
-	t_list	*temp;
+	return (!ft_strncmp(*args, "-n", ft_strlen(*args)));
+}
 
-	if (!env)
-		return (0);
-	temp = *env;
-	while (temp)
+int	ft_echo(char **args)
+{
+	int	n;
+	int	limit;
+	int	i;
+
+	if (!args)
 	{
-		ft_putstr(temp->content);
-		ft_putchar('\n');
-		temp = temp->next;
+		printf("\n");
+		return (1);
 	}
+	n = ft_check_option(args);
+	limit = 0;
+	while (args[limit])
+		limit++;
+	i = 0;
+	if (n)
+		i = 1;
+	while (i < limit)
+	{
+		ft_putstr(args[i]);
+		if (args[++i])
+			ft_putchar(' ');
+	}
+	if (!n)
+		ft_putstr("\n");
 	return (1);
 }

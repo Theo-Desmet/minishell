@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 11:28:05 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/25 15:46:36 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/03/31 09:51:29 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,26 @@ int	ft_check_export_arg(char *str)
 {
 	size_t	i;
 
-	if (!ft_isalpha(str[0]))
-		return (0); //bash: str: event not found
+	if (!(ft_isalpha(str[0]) || str[0] == '_'))
+	{
+		ft_putstr_fd("minishell: `export': `", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+		return (0);
+	}
 	i = 1;
 	while (str[i] && str[i] != '=')
 	{
-		if (!ft_isalnum(str[i]))
-			return (0);//bash: &str[i]: event not found
+		if (!(ft_isalnum(str[i]) || str[0] != '_'))
+		{
+			ft_putstr_fd("minishell: `export': `", 2);
+			ft_putstr_fd(str, 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			return (0);
+		}
 		i++;
 	}
-	if (str[i] == '=' && !str[i + 1])
+	if ((str[i] == '=' && !str[i + 1]) || str[i] != '=')
 		return (0);
 	return (1);
 }
@@ -33,17 +43,17 @@ int	ft_check_export_arg(char *str)
 char	*ft_name_env(char *str)
 {
 	size_t	i;
-	char 	*name;
+	char	*name;
 
 	i = 0;
-	while (str[i] != '=')
+	while (str[i] && str[i] != '=')
 		i++;
 	name = ft_strdup(str);
 	name[i + 1] = 0;
 	return (name);
 }
 
-t_list	**ft_add_env(t_list **env, char *str, char *name)
+void	ft_add_env(t_list **env, char *str, char *name)
 {
 	t_list	*temp;
 	int		name_lenght;
@@ -53,10 +63,9 @@ t_list	**ft_add_env(t_list **env, char *str, char *name)
 	while (temp && ft_strncmp(name, temp->content, name_lenght))
 		temp = temp->next;
 	if (!temp)
-		ft_lstadd_front(env, ft_lstnew(str));//add front a la place de back car back marche pas
+		ft_lstadd_back(env, ft_lstnew(str));
 	else
 		temp->content = str;
-	return (env);	
 }
 
 t_list	**ft_export(t_list **env, char **arg)
@@ -65,12 +74,15 @@ t_list	**ft_export(t_list **env, char **arg)
 	char	*name;
 
 	i = 0;
+	if (env && !arg[0])
+		ft_sort_export(env);
 	while (arg && arg[i])
 	{
 		if (ft_check_export_arg(arg[i]))
 		{
 			name = ft_name_env(arg[i]);
 			ft_add_env(env, arg[i], name);
+			free(name);
 		}
 		i++;
 	}

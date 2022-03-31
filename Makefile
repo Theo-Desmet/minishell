@@ -1,34 +1,31 @@
 NAME = minishell
 
-SRC =	./builtin/main.c\
-	./builtin/pwd.c\
-	./builtin/init.c\
-	./builtin/cd.c\
-	./builtin/env.c\
-	./builtin/export.c\
+BUILTINS = cd env export pwd unset main init print_export echo
+
+SRC =	$(addsuffix .c, $(addprefix builtin/, $(BUILTINS))) \
 
 LIB_PATH = libft/
 
-CC = @clang
+LIBFT = -L libft -lft
+
+CC = clang
 
 CFLAGS = -g3 #-Wall -Werror -Wextra
 
-OBJ = $(SRC:.c=.o)
+OBJ = $(SRC:c=o)
 
-%.o:%.c fdf.h
-	@$(CC) $(CFLAGS) -O3 -c $< -o $@
+all: $(NAME)
 
-all: subsystem $(NAME)
-
-subsystem:
-	@cd $(LIB_PATH) && make all
-
-$(NAME): begin $(OBJ)
+$(NAME): $(OBJ)
+	@echo "\n"
 	@make -C $(LIB_PATH) all
-	$(CC) $(OBJ)  libft/libft.a -o $(NAME)
+	@echo "\033[;32mdebut de la compilation de minishell\033[0m"
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT)
 	@echo "\033[;32mcompilation de minishell terminée\033[0m"
 
-#@$(CC) $(OBJ) $(LIB_PATH)libft.a -o $(NAME)
+%.o: %.c
+	@printf "\033[0;33mGeneration des objets de minishell minishell : %-33.33s\r" $@
+	@${CC} ${CFLAGS} -c $< -o $@
 
 clean:
 	@make -C $(LIB_PATH) fclean
@@ -40,9 +37,6 @@ fclean: clean
 	@echo "\033[;31msuppression de l'executable minishell\033[0m"
 
 re: fclean all
-
-begin:
-	@echo "\033[;32mdebut de la compilation de minishell\033[0m"
 
 .PHONY: all clean fclean re
 

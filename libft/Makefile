@@ -6,7 +6,7 @@
 #    By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/28 07:33:29 by tdesmet           #+#    #+#              #
-#    Updated: 2022/03/21 14:44:19 by tdesmet          ###   ########.fr        #
+#    Updated: 2022/03/28 17:01:39 by tdesmet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,7 +60,9 @@ SRC = ft_isalpha.c\
 	ft_putstr.c\
 	ft_strjoin_free.c\
 	ft_get_next_line.c\
-	ft_atoi_hex.c
+	ft_atoi_hex.c\
+	ft_lstdel_all.c\
+	ft_strcmp.c\
 
 CFLAGS = -Wall -Werror -Wextra -g
 
@@ -72,12 +74,15 @@ LIB = ar rc ${NAME}
 
 OBJ = ${SRC:.c=.o}
 
-%.o: %.c libft.h
-	@${CC} -o $@ -c $<  $(CFLAGS)
+%.o: %.c
+	@printf "\033[0;33mGeneration des objets de libft : %-33.33s\r" $@
+	@${CC} ${CFLAGS} -c $< -o $@
+
 
 all: ${NAME}
 
-${NAME}: begin ${OBJ}
+${NAME}: ${OBJ}
+	@echo "\n"
 	@$(LIB) $(OBJ)
 	@echo "\033[;32mcompilation de libft terminées\033[0m"
 
@@ -90,8 +95,5 @@ fclean: clean
 	@echo "\033[;31msuppression de la librairie libft\033[0m"
 
 re: fclean all
-
-begin:
-	@echo "\033[;32mdebut de la compilation de libft\033[0m"
 
 .PHONY: all clean fclean re

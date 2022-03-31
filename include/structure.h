@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 10:35:26 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/25 10:11:45 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/03/31 09:53:46 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,6 @@ typedef struct s_lists{
 	struct s_list	*before;
 	struct s_list	*next;
 }	t_lists;
-
-typedef struct s_ast_node{
-	struct s_ast_info	*info;
-	struct s_ast_node	*left;
-	struct s_ast_node	*right;
-}	t_ast_node;
-
-typedef struct s_ast_info{
-
-}	t_ast_info;
 
 typedef struct s_parsing{
 	int	nb_args;
@@ -52,7 +42,5 @@ typedef struct s_data{
 	t_arg		arg;
 	t_cmd		cmd;
 	t_list		**env;
-	char		*actu_path;
-	char		*prev_path;
 }	t_data;
 #endif

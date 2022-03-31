@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 13:59:53 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/25 15:37:38 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/03/28 17:01:16 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef LIBFT_H
@@ -25,6 +25,7 @@ void		ft_putnbr(int n);
 void		ft_putchar(char c);
 void		ft_putstr(char *str);
 void		ft_putnbr_fd(int n, int fd);
+void		ft_lstdel_all(t_list **lst);
 void		ft_bzero(void *s, size_t n);
 void		ft_putchar_fd(char c, int fd);
 void		ft_putstr_fd(char *s, int fd);
@@ -51,6 +52,7 @@ int			ft_strlen(char *str);
 int			ft_lstsize(t_list *lst);
 int			ft_atoi(const char *nptr);
 int			ft_atoi_hex(char *str);
+int			ft_strcmp(const char *s1, const char *s2);
 int			ft_memcmp(const void *s1, const void *s2, size_t n);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t		ft_strlcpy(char *dst, char *src, size_t size);

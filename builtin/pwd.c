@@ -6,30 +6,38 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 14:00:47 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/24 15:47:44 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/03/31 09:52:00 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	ft_get_actual_path(t_data *data)
+int	ft_pwd(t_data *data)
 {
-	char	*cwd;
 	char	buf[PATH_MAX];
-	char	*temp;
+	char	*cwd;
 
 	cwd = getcwd(buf, PATH_MAX);
 	if (!cwd)
 		return (0);
-	temp = ft_strdup(cwd);
-	free(data->prev_path);
-	data->prev_path = data->actu_path;
-	data->actu_path = temp;
+	ft_putstr(cwd);
+	ft_putchar('\n');
 	return (1);
 }
 
-int	ft_pwd(t_data *data)
+void	ft_update_env(t_list **env, char *name, char *value)
 {
-	printf("%s\n", data->actu_path);
-	return (1);
+	t_list	*temp;
+	char	*str;
+	int		str_lenght;
+
+	temp = *env;
+	str = ft_strjoin(name, value);
+	str_lenght = ft_strlen(name);
+	while (temp && ft_strncmp(name, temp->content, str_lenght))
+		temp = temp->next;
+	if (!temp)
+		return ;
+	free(temp->content);
+	temp->content = str;
 }
