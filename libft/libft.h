@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 13:59:53 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/28 17:01:16 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/04/01 14:31:55 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef LIBFT_H
@@ -67,6 +67,7 @@ char		*ft_strnstr(const char *s1, const char *s2, size_t len);
 char		*ft_strmapi(char *s, char (*f)(unsigned int, char));
 char		*ft_substr(char *s, int start, int len);
 char		**ft_split(const char *str, char c);
+char		**ft_split_conserve(const char *str, char c);
 char		*ft_strjoin_free(char *s1, char *s2);
 char		*ft_get_next_line(int fd);
 t_list		*ft_lstnew(char *content);

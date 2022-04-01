@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 10:24:23 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/31 10:03:58 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/03/31 16:12:43 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@
 		*********************************/
 
 int		ft_cd(t_data *data, char **str);
-int		ft_cd_error(char *str);
-int		ft_cd_home(t_data *data, char *str);
+int		ft_cd_error(char **str);
+int		ft_cd_home(t_data *data, char **str);
 char	*ft_getenv(t_list **env, char *str);
 
 int	ft_echo(char **args);
@@ -64,4 +64,7 @@ void	ft_update_env(t_list **env, char *name, char *value);
 t_list	**ft_unset(t_list **env, char **arg);
 void	ft_del_env(t_list **env, char *str);
 int		ft_check_unset_arg(char *str);
+
+
+void	ft_opendir(char *str);
 #endif

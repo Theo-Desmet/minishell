@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 14:00:47 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/31 09:52:00 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/03/31 15:11:41 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	ft_update_env(t_list **env, char *name, char *value)
 	char	*str;
 	int		str_lenght;
 
+	if (!env || !(*env))
+		return ;
 	temp = *env;
 	str = ft_strjoin(name, value);
 	str_lenght = ft_strlen(name);

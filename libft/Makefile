@@ -6,7 +6,7 @@
 #    By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/28 07:33:29 by tdesmet           #+#    #+#              #
-#    Updated: 2022/03/28 17:01:39 by tdesmet          ###   ########.fr        #
+#    Updated: 2022/04/01 14:29:42 by tdesmet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,6 +63,7 @@ SRC = ft_isalpha.c\
 	ft_atoi_hex.c\
 	ft_lstdel_all.c\
 	ft_strcmp.c\
+	ft_split_conserve.c\
 
 CFLAGS = -Wall -Werror -Wextra -g
 

@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/24 16:51:45 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/31 15:46:21 by tdesmet          ###   ########.fr       */
+/*   Created: 2022/03/31 16:03:01 by tdesmet           #+#    #+#             */
+/*   Updated: 2022/04/01 14:46:23 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	ft_env(t_list **env)
+t_list	**ft_wildcard(t_list **wd, char *str)
 {
-	t_list	*temp;
+	struct dirent *fichier;
+	DIR			*dir;
+	size_t			i;
+	char			**tab;
 
-	if (!env || !(*env))
-		return (0);
-	temp = *env;
-	while (temp)
-	{
-		ft_putstr(temp->content);
-		ft_putchar('\n');
-		temp = temp->next;
-	}
-	return (1);
+	dir = opendir(".");
+	if (!dir)
+		return (wd);//a changer
+	fichier = readdir(dir);
+	if (!fichier)
+		return (wd);//a changer
+	tab = ft_split_conserve(str, '*');
 }

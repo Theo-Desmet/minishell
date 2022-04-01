@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 10:35:26 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/31 09:53:46 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/04/01 11:02:03 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,6 @@ typedef struct s_data{
 	t_arg		arg;
 	t_cmd		cmd;
 	t_list		**env;
+	t_list		**wd;
 }	t_data;
 #endif
