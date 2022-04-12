@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 13:59:53 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/04/01 14:31:55 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/04/05 14:51:37 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef LIBFT_H
@@ -55,6 +55,7 @@ int			ft_atoi_hex(char *str);
 int			ft_strcmp(const char *s1, const char *s2);
 int			ft_memcmp(const void *s1, const void *s2, size_t n);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
+int			ft_strstr_len(const char *s1, const char *s2);
 size_t		ft_strlcpy(char *dst, char *src, size_t size);
 size_t		ft_strlcat(char *dst, char *src, size_t size);
 char		*ft_itoa(int n);
@@ -63,6 +64,7 @@ char		*ft_strchr(char *s, int c);
 char		*ft_strrchr(char *s, int c);
 char		*ft_strjoin(char *s1, char *s2);
 char		*ft_strtrim(char *s1, char *set);
+char		*ft_strstr(const char	*s1, const char *s2);
 char		*ft_strnstr(const char *s1, const char *s2, size_t len);
 char		*ft_strmapi(char *s, char (*f)(unsigned int, char));
 char		*ft_substr(char *s, int start, int len);

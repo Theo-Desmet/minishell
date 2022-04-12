@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 13:48:03 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/04/01 14:48:53 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/04/06 09:10:45 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,65 +19,70 @@ static int	ft_countword(const char *str, char c)
 
 	i = 0;
 	cnt = 0;
-	if (!str || !*str)
+	if (!str || !(*str))
 		return (0);
 	if (c == 0)
 		return (1);
-	while (str[i] && str)
+	while (str[i])
 	{
-		if (str[i] != c && (str[i + 1] == c || str[i + 1] == '\0'))
+		if (str[i] == c || (str[i] != c
+				&& (str[i + 1] == '\0' || str[i + 1] == c)))
 			cnt += 1;
 		i++;
 	}
 	return (cnt);
 }
 
-static char	**ft_malerror(char **tab, int *i)
+static char	**ft_malerror(char **tab, int i)
 {
-	while (*i)
+	while (i)
 	{
-		free(tab[*i]);
-		(*i)--;
+		free(tab[i]);
+		(i)--;
 	}
 	free(tab);
 	return (NULL);
 }
 
-static int	ft_wrsplit(const char *str, char c, char **tab, int *j)
+static int	ft_wrsplit(const char *str, char c, char **tab, int index[4])
 {
-	int	k;
-	int	temp;
-	int	i;
-
-	i = -1;
-	while (++i < ft_countword(str, c))
+	while (++(index[0]) < ft_countword(str, c))
 	{
-		k = 0;
-		while (str[*j] == c)
+		index[2] = 0;
+		if (str[index[1]] == c)
 		{
-			*j += 1;
+			tab[index[0]] = malloc(sizeof(char) + 1);
+			if (!tab[index[0]])
+				ft_malerror(tab, index[0]);
+			tab[index[0]][(index[2])++] = str[(index[1])++];
 		}
-		temp = *j;
-		while (str[temp] != c && str[temp] != 0)
-			temp++;
-		tab[i] = malloc(sizeof(char) * (temp - *j + 1));
-		if (!tab[i])
-			ft_malerror(tab, &i);
-		while (str[*j] != c && str[*j] != 0)
-			tab[i][k++] = str[(*j)++];
-		tab[i][k] = 0;
+		else if (str[index[1]])
+		{
+			index[3] = index[1];
+			while (str[index[3]] != c && str[index[3]] != 0)
+				(index[3])++;
+			tab[index[0]] = malloc(sizeof(char) * (index[3] - index[1] + 1));
+			if (!tab[index[0]])
+				ft_malerror(tab, index[0]);
+			while (str[index[1]] != c && str[index[1]] != 0)
+				tab[index[0]][(index[2])++] = str[(index[1])++];
+		}
+		tab[index[0]][(index[2])++] = 0;
 	}
-	return (i);
+	return (index[0]);
 }
 
 char	**ft_split_conserve(const char *str, char c)
 {
 	int		i;
-	int		j;
+	int		index[4];
 	char	**tab;
 
 	i = 0;
-	j = 0;
+	index[0] = -1;
+	index[1] = 0;
+	index[2] = 0;
+	index[3] = 0;
 	tab = NULL;
 	if (!str || *str == '\0')
 	{
@@ -86,8 +91,7 @@ char	**ft_split_conserve(const char *str, char c)
 		return (tab);
 	}
 	tab = malloc(sizeof(char *) * (ft_countword(str, c) + 1));
-	i = ft_wrsplit(str, c, tab, &j);
+	i = ft_wrsplit(str, c, tab, index);
 	tab[i] = 0;
 	return (tab);
 }
-

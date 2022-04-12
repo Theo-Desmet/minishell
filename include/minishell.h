@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 10:24:23 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/31 16:12:43 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/04/11 16:00:44 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,17 @@
 		*				*
 		*	     builtin		*
 		*				*
-		*********************************/
+		********************************/
 
 int		ft_cd(t_data *data, char **str);
 int		ft_cd_error(char **str);
 int		ft_cd_home(t_data *data, char **str);
 char	*ft_getenv(t_list **env, char *str);
 
-int	ft_echo(char **args);
-int	ft_check_option(char **args);
+int		ft_echo(char **args);
+int		ft_check_option(char **args);
 
-int     ft_env(t_list **env);
+int		ft_env(t_list **env);
 
 t_list	**ft_export(t_list **env, char **arg);
 void	ft_add_env(t_list **env, char *str, char *name);
@@ -58,13 +58,24 @@ int		ft_env_size(t_list **env);
 t_data	*ft_init_data(char **envp);
 t_list	**ft_init_env(t_list **env, char **envp);
 
-int		ft_pwd(t_data *data);
+int		ft_pwd(void);
 void	ft_update_env(t_list **env, char *name, char *value);
 
 t_list	**ft_unset(t_list **env, char **arg);
 void	ft_del_env(t_list **env, char *str);
-int		ft_check_unset_arg(char *str);
+char	*ft_check_unset_arg(char *str);
 
+void	ft_init_sig(void);
 
-void	ft_opendir(char *str);
+		/********************************
+                *                               *
+                *            builtin            *
+                *                               *
+                *********************************/
+
+int		ft_wildcard(t_list **wd, char *str);
+void	ft_sort_lst(t_list **wd);
+void	ft_free_tab(char **tab);
+void	ft_check_wildcard(t_list **wd, char **tab, char *name);
+
 #endif

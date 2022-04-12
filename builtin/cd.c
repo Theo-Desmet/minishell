@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 13:51:41 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/31 15:26:11 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/04/11 08:56:10 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,15 @@ int	ft_cd(t_data *data, char **str)
 	DIR		*dir;
 	char	*cwd;
 
-	if (!(*str))
+	if (!str[1])
 		return (ft_cd_home(data, str));
-	if (str[1])
+	if (str[2])
 		return (ft_cd_error(str));
-	dir = opendir(str[0]);
+	dir = opendir(str[1]);
 	if (!dir)
 		return (ft_cd_error(str));
 	closedir(dir);
-	if (chdir(str[0]))
+	if (chdir(str[1]))
 		return (ft_cd_error(str));
 	cwd = NULL;
 	cwd = getcwd(cwd, 0);

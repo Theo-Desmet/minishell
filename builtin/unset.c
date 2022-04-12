@@ -6,13 +6,13 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 08:10:05 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/31 10:04:34 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/04/11 09:44:13 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	ft_check_unset_arg(char *str)
+char	*ft_check_unset_arg(char *str)
 {
 	size_t	i;
 
@@ -24,11 +24,12 @@ int	ft_check_unset_arg(char *str)
 			ft_putstr_fd("minishell: `unset': `", 2);
 			ft_putstr_fd(str, 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
-			return (0);
+			return (NULL);
 		}
 		i++;
 	}
-	return (1);
+	str = ft_strjoin(str, "=");
+	return (str);
 }
 
 void	ft_del_env(t_list **env, char *str)
@@ -39,7 +40,7 @@ void	ft_del_env(t_list **env, char *str)
 
 	temp = *env;
 	name_lenght = ft_strlen(str);
-	if (temp && !ft_strncmp(temp->next->content, str, name_lenght))
+	if (temp->next && !ft_strncmp(temp->next->content, str, name_lenght))
 	{
 		*env = (*env)->next;
 		free(temp->content);
@@ -48,7 +49,9 @@ void	ft_del_env(t_list **env, char *str)
 	}
 	while (temp->next && ft_strncmp(temp->next->content, str, name_lenght))
 		temp = temp->next;
-	if (temp && !ft_strncmp(temp->next->content, str, name_lenght))
+	if (!temp->next)
+		return ;
+	else
 	{
 		save = temp->next;
 		temp->next = temp->next->next;
@@ -59,12 +62,18 @@ void	ft_del_env(t_list **env, char *str)
 t_list	**ft_unset(t_list **env, char **arg)
 {
 	size_t	i;
+	char	*name;
 
-	i = 0;
+	i = 1;
 	while (arg && env && arg[i])
 	{
-		if (ft_check_unset_arg(arg[i]))
-			ft_del_env(env, arg[i]);
+		name = NULL;
+		name = ft_check_unset_arg(arg[i]);
+		if (name)
+		{
+			ft_del_env(env, name);
+			free(name);
+		}
 		i++;
 	}
 	return (env);

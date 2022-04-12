@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 11:28:05 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/31 09:51:29 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/04/11 09:25:18 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ t_list	**ft_export(t_list **env, char **arg)
 	size_t	i;
 	char	*name;
 
-	i = 0;
-	if (env && !arg[0])
+	i = 1;
+	if (env && !arg[1])
 		ft_sort_export(env);
 	while (arg && arg[i])
 	{

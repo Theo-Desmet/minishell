@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 09:35:47 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/31 15:56:30 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/04/11 09:22:09 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ft_echo(char **args)
 	int	limit;
 	int	i;
 
-	if (!args || !(*args))
+	if (!(*args) || !args[1])
 	{
 		printf("\n");
 		return (1);
@@ -34,9 +34,9 @@ int	ft_echo(char **args)
 	limit = 0;
 	while (args[limit])
 		limit++;
-	i = 0;
+	i = 1;
 	if (n)
-		i = 1;
+		i = 2;
 	while (i < limit)
 	{
 		ft_putstr(args[i]);

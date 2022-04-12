@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 15:57:13 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/04/01 11:04:29 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/04/11 09:48:41 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,23 +42,25 @@ t_list	**ft_init_env(t_list **env, char **envp)
 
 t_list	**ft_init_wd(t_list **wd)
 {
-	size_t	i;
-	int		lenght;
-
 	wd = malloc(sizeof(t_list));
 	if (!wd)
 		return (NULL);
 	*wd = NULL;
 	return (wd);
 }
+
 t_data	*ft_init_data(char **envp)
 {
 	t_data	*data;
 
 	data = malloc(sizeof(t_data));
 	if (!data)
-		return (NULL);//modifier secu err
-	data->env = ft_init_env(data->env, envp);//secu malloc
-	data->wd = ft_init_wd(data->wd);//secu malloc
+		return (NULL);//modifier secu err dans main
+	data->env = ft_init_env(data->env, envp);
+	if (!data->env)
+		return (NULL);
+	data->wd = ft_init_wd(data->wd);
+	if (!data->wd)
+		return (NULL);
 	return (data);
 }

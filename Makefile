@@ -1,8 +1,11 @@
 NAME = minishell
 
-BUILTINS = cd env export pwd unset main init print_export echo
+BUILTINS = cd env export pwd unset main init print_export echo          signal redirection
+
+PARSING = wildcard
 
 SRC =	$(addsuffix .c, $(addprefix builtin/, $(BUILTINS))) \
+	$(addsuffix .c, $(addprefix parsing/, $(PARSING))) 
 
 LIB_PATH = libft/
 
@@ -10,7 +13,7 @@ LIBFT = -L libft -lft
 
 CC = clang
 
-CFLAGS = -g3 #-Wall -Werror -Wextra
+CFLAGS = -g3 -lreadline #-Wall -Werror -Wextra
 
 OBJ = $(SRC:c=o)
 

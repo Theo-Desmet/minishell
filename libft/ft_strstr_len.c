@@ -1,33 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_strstr_len.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/28 16:59:17 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/04/05 14:26:41 by tdesmet          ###   ########.fr       */
+/*   Created: 2022/04/05 14:49:00 by tdesmet           #+#    #+#             */
+/*   Updated: 2022/04/05 14:54:08 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
+int	ft_strstr_len(const char *s1, const char *s2)
 {
-	int	i;
+	size_t		i;
+	size_t		temp;
+	int			j;
 
-	if (!s1 || !s2)
-		return (0);
 	i = 0;
-	while (s1[i] && s2[i] && s1[i] == s2[i])
+	if (!s2 || !(*s2))
+		return (i);
+	while (s1[i])
 	{
+		temp = i;
+		j = 0;
+		while (s2[j] && s1[temp] == s2[j])
+		{
+			temp++;
+			j++;
+			if (s2[j] == 0)
+				return (i);
+		}
 		i++;
-		if (s1[i] == '\0' && s2[i] == '\0')
-			return (0);
-		if (s1[i] == '\0')
-			return (-1);
-		if (s2[i] == '\0')
-			return (1);
 	}
-	return (s1[i] - s2[i]);
+	return (0);
 }
+
