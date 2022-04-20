@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 10:35:26 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/04/14 14:44:14 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/04/19 11:24:23 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,8 @@ typedef struct s_data{
 	t_list		**wd;
 	int		fd_in;
 	int		fd_out;
+	int		rtn_val;
+	int		nb_heredoc;
+	int		act_heredoc;
 }	t_data;
 #endif

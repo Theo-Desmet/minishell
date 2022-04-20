@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 10:24:23 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/04/14 11:42:07 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/04/19 09:24:52 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ void	ft_del_env(t_list **env, char *str);
 char	*ft_check_unset_arg(char *str);
 
 void	ft_init_sig(void);
-void	ft_glhf(t_token **args, t_list **env, t_data *data);
+void	ft_glhf(t_data *data, t_token **args, t_list **env);
+void	ft_check_separator(t_data *data, t_token **args, t_list **env);
 
 		/********************************
                 *                               *
