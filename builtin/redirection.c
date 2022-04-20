@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 08:09:34 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/04/14 15:59:58 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/04/20 17:01:00 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_rd_in(t_data *data, char *arg)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(arg, 2);
-		ft_putstr_fd(": Not such file or directory", 2);// a changer
+		ft_putstr_fd(": Not such file or directory\n", 2);// a changer
 		exit(EXIT_FAILURE);
 	}
 	if (dup2(newfd, data->fd_in) == -1)
@@ -40,7 +40,7 @@ void	ft_rd_out(t_data *data, char *arg)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(arg, 2);
-		ft_putstr_fd(": Not such file or directory", 2);// a changer
+		ft_putstr_fd(": Not such file or directory\n", 2);// a changer
 		exit(EXIT_FAILURE);
 	}
 	if (dup2(newfd, data->fd_out) == -1)
@@ -59,7 +59,7 @@ void	ft_rd_append(t_data *data, char *arg)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(arg, 2);
-		ft_putstr_fd(": Not such file or directory", 2);// a changer
+		ft_putstr_fd(": Not such file or directory\n", 2);// a changer
 		exit(EXIT_FAILURE);
 	}
 	if (dup2(newfd, data->fd_out) == -1)
@@ -264,30 +264,42 @@ void	ft_here_doc(char *limiter, char *line, int fd, int len)
 	}
 }
 
-void    ft_get_doc(char *limiter)
+void    ft_get_doc(char *limiter, int nb_heredoc)
 {
 	char    *line;
 	size_t    len;
 	int		fd;
+	char	*name;
 
-	fd = open("/tmp/minishell", O_RDWR | O_CREAT | O_TRUNC, 0600);
-	if (!fd)
-		return ;
+	name = ft_strjoin("/tmp/minishell", ft_itoa(nb_heredoc)); 
+	fd = open(name, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
+	{
+		perror("fuck");
+		exit(EXIT_FAILURE);
+	}
 	len = ft_strlen(limiter);
 	ft_here_doc(limiter, line, fd, len);
+	free(name);
 }
 
-void	ft_find_heredoc(t_token **args)
+void	ft_find_heredoc(t_data *data, t_token **args)
 {
 	size_t	i;
+	size_t	nb_heredoc;
 
 	i = 0;
-	while (args[i])
+	nb_heredoc = 0;
+	while (args[i] && args[i]->type != PIPE)
 	{
 		if (args[i]->type == R_HERE_DOC)
-			ft_get_doc(args[++i]->val);
+		{
+			ft_get_doc(args[++i]->val, nb_heredoc);
+			nb_heredoc++;
+		}
 		i++;
 	}
+	data->nb_heredoc = nb_heredoc;
 }
 
 void	ft_redirection(t_data *data, t_token **args)
@@ -295,7 +307,8 @@ void	ft_redirection(t_data *data, t_token **args)
 	int	i;
 
 	i = 0;
-	while (args[i])
+	while (args[i] && args[i]->type != PIPE
+		&& args[i]->type != D_PIPE && args[i]->type != D_AND)
 	{
 		if (args[i]->type == R_IN)
 			ft_rd_in(data, args[++i]->val);
@@ -307,7 +320,7 @@ void	ft_redirection(t_data *data, t_token **args)
 	}
 }
 
-void	ft_join_word(t_token **args, t_list **env)
+char	*ft_join_word(t_token **args, t_list **env)
 {
 	int	i;
 	char	*cmd;
@@ -315,7 +328,8 @@ void	ft_join_word(t_token **args, t_list **env)
 	i = 0;
 	cmd = malloc(sizeof(char));
 	*cmd = 0;
-	while (args[i])
+	while (args[i] && args[i]->type != PIPE
+		&& args[i]->type != D_PIPE && args[i]->type != D_AND)
 	{
 		if (args[i]->type == WORD)
 		{
@@ -324,29 +338,112 @@ void	ft_join_word(t_token **args, t_list **env)
 		}
 		i++;
 	}
-	ft_exec(env, cmd);
+	if (!cmd || !(*cmd))
+		return (NULL);
+	return	(cmd);
 }
 
-void	ft_glhf(t_token **args, t_list **env, t_data *data)
+void	ft_check_last_heredoc(t_data *data, t_token **args)
 {
 	int	i;
 	int	cnth;
 	int	cnti;
+	char	*name;
 
-	if (!args || !(*args) || !args[1])
-		return ;
-	ft_find_heredoc(args);
-	ft_redirection(data, args);
 	i = 0;
-	while (args[i])
+	cnth = 0;
+	name = NULL;
+	while (args[i] && args[i]->type != PIPE
+		&& args[i]->type != D_PIPE && args[i]->type != D_AND)
 	{
 		if (args[i]->type == R_HERE_DOC)
+		{
+			data->act_heredoc++;
 			cnth = i;
+		}
 		if (args[i]->type == R_IN)
 			cnti = i;
 		i++;
 	}
-	if (cnth > cnti)
-		ft_rd_in(data, "/tmp/minishell");
-	ft_join_word(args, env);
+	name = ft_strjoin("/tmp/minishell", ft_itoa(data->act_heredoc));
+	if (cnth > cnti && cnth != 0)
+		ft_rd_in(data, name);
+	free(name);
+}
+
+void	ft_fork(t_data *data, t_token **args, t_list **env)
+{
+	int	pid;
+
+	pid = fork();
+	if (pid == -1)
+		exit(EXIT_FAILURE);
+	if (!args || !(*args) || !args[1])
+		exit(EXIT_FAILURE);
+	if (!pid)
+	{
+		ft_glhf(data, args, env);
+	}
+	else
+		waitpid(pid, NULL, 0);
+}
+
+void	ft_glhf(t_data *data, t_token **args, t_list **env)
+{
+	char	*cmd;
+
+	ft_redirection(data, args);
+	ft_check_last_heredoc(data, args);
+	cmd = ft_join_word(args, env); 
+	ft_exec(env, cmd);
+	free(cmd);
+}
+
+void	ft_pipe(t_data *data, t_token **args, t_list **env)
+{
+	char	*cmd;
+	int	pid;
+	int	fd[2];
+
+	fd[0] = data->fd_in;
+	fd[1] = data->fd_out;
+	if (pipe(fd) < 0)
+		return ;
+	pid = fork();
+	if (pid == -1)
+		exit(EXIT_FAILURE);
+	if (!args || !(*args) || !args[1])
+		exit(EXIT_FAILURE);
+	if (!pid)
+
+	else
+		waitpid(pid, NULL, 0);
+}
+
+void	ft_check_separator(t_data *data, t_token **args, t_list **env)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	ft_find_heredoc(data, args);
+	while (args[i])
+	{
+		while (args[i] && args[i]->type != PIPE
+				&& args[i]->type != D_PIPE && args[i]->type != D_AND)
+			i++;
+		if (!args[i] || (args[i] && (args[i]->type == D_PIPE && data->rtn_val != 0))
+				|| (args[i] && (args[i]->type == D_AND && data->rtn_val == 0)))
+			ft_fork(data, &args[j], env);
+		if (args[i] && args[i]->type == PIPE)
+		{
+			ft_pipe(data, &args[j], env);
+			while (args[i] && args[i]->type != PIPE
+					&& args[i]->type != D_PIPE && args[i]->type != D_AND)
+			i++;
+		}
+		i++;
+		j = i;
+	}
 }

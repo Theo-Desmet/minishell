@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 15:57:13 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/04/13 14:38:42 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/04/20 08:54:27 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,8 @@ t_data	*ft_init_data(char **envp)
 		return (NULL);
 	data->fd_in = STDIN_FILENO;
 	data->fd_out = STDOUT_FILENO;
+	data->rtn_val = 0;
+	data->nb_heredoc = 0;
+	data->act_heredoc = -1;
 	return (data);
 }

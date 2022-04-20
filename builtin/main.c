@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 10:07:13 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/04/14 16:05:02 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/04/20 09:10:10 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,16 @@ int	main(int argc, char **argv, char **envp)
 	tab4[1]->type = IN_FILE;
 	tab4[2]->val = "cat";
 	tab4[2]->type = WORD;
-	tab4[3]->val = ">";
-	tab4[3]->type = R_OUT;
-	tab4[4]->val = "ou";
-	tab4[4]->type = OUT_A_FILE;
+	tab4[3]->val = "&&";
+	tab4[3]->type = D_AND;
+	tab4[4]->val = "cat";
+	tab4[4]->type = WORD;
 	tab4[5]->val = "<<";
 	tab4[5]->type = R_HERE_DOC;
 	tab4[6]->val = "in2";
 	tab4[6]->type = OUT_FILE;
 	tab4[7] = NULL;
-	ft_glhf(tab4, data->env, data);
+	ft_check_separator(data, tab4, data->env);
 /*
 	char *input;
 	ft_init_sig();
