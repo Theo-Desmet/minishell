@@ -1,46 +1,51 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/04/18 21:36:22 by bbordere          #+#    #+#              #
+#    Updated: 2022/04/18 21:36:22 by bbordere         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+CC = gcc
+
+# CFLAGS = -g3 -lrealine -Ofast libft/libft.a
+
+CFLAGS = -g3
+
+FILES =  $(wildcard lexer/*.c) $(wildcard parser/*.c) $(wildcard expansions/*.c) main.c
+
+OBJS = $(FILES:.c=.o)
+
+%.o: %.c
+	@printf "\033[0;33mCompiling : %-33.33s\r" $@
+	@$(CC) $(CFLAGS) -c $< -o $@
+
 NAME = minishell
 
-SRC =	./builtin/main.c\
-	./builtin/pwd.c\
-	./builtin/init.c\
-	./builtin/cd.c\
+$(NAME): $(OBJS)
+	@ $(MAKE) -C libft all --no-print-directory
+	@ printf '\n\033[0;33mCompiling minishell\033[0m\n'
+	@ $(CC) $(CFLAGS) $(OBJS) -lreadline libft/libft.a  -o  $(NAME) 
+	@ printf '\033[0;32mminishell compiled sucessfully !\033[0m\n'
 
-LIB_PATH = libft/
-
-CC = @clang
-
-CFLAGS = -g3 #-Wall -Werror -Wextra
-
-OBJ = $(SRC:.c=.o)
-
-%.o:%.c fdf.h
-	@$(CC) $(CFLAGS) -O3 -c $< -o $@
-
-all: subsystem $(NAME)
-
-subsystem:
-	@cd $(LIB_PATH) && make all
-
-$(NAME): begin $(OBJ)
-	@make -C $(LIB_PATH) all
-	$(CC) $(OBJ)  libft/libft.a -o $(NAME)
-	@echo "\033[;32mcompilation de minishell terminée\033[0m"
-
-#@$(CC) $(OBJ) $(LIB_PATH)libft.a -o $(NAME)
+all: $(NAME)
 
 clean:
-	@make -C $(LIB_PATH) fclean
-	@rm -f $(OBJ)
-	@echo "\033[;31msuppression des fichiers *.o de minishell\033[0m"
+	@ rm -f $(OBJS)
+	@ $(MAKE) -C libft clean --no-print-directory
+	@ printf '\033[0;32mclean done\033[0m\n'
 
 fclean: clean
-	@rm -f $(NAME)
-	@echo "\033[;31msuppression de l'executable minishell\033[0m"
+	@ rm -f $(NAME)
+	@ $(MAKE) -C libft fclean --no-print-directory
+	@ printf '\033[0;32mfclean done\033[0m\n'
 
 re: fclean all
 
-begin:
-	@echo "\033[;32mdebut de la compilation de minishell\033[0m"
-
 .PHONY: all clean fclean re
 
+.SILENT: $(OBJS)
