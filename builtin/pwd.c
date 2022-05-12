@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 14:00:47 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/04/07 11:13:47 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/10 11:51:56 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,14 @@ int	ft_pwd(void)
 {
 	char	buf[PATH_MAX];
 	char	*cwd;
+	char	*temp;
 
 	cwd = getcwd(buf, PATH_MAX);
 	if (!cwd)
 		return (0);
-	ft_putstr(cwd);
-	ft_putchar('\n');
+	temp = ft_strjoin(cwd, "\n");
+	ft_putstr(temp);
+	free(temp);
 	return (1);
 }
 

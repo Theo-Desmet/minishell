@@ -6,14 +6,12 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 10:35:26 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/04/19 11:24:23 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/12 08:49:11 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTURE_H
 # define STRUCTURE_H
-# include "../libft/libft.h"
-
 enum    e_type
 {
     WORD = 1,
@@ -46,6 +44,15 @@ typedef struct s_token
 	char	*val;
 	int		type;
 }	t_token;
+
+typedef struct s_temp
+{
+	char	**vars;
+	char	*str;
+	t_list	**env;
+	size_t	i;
+	size_t	j;
+}	t_temp;
 
 typedef struct s_lists{
 	char			*str;

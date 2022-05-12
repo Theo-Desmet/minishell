@@ -1,0 +1,122 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/23 12:07:21 by bbordere          #+#    #+#             */
+/*   Updated: 2022/05/12 08:50:02 by tdesmet          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/minishell.h"
+
+size_t	ft_size_str(char *str, int i)
+{
+	size_t	size;
+	char	sep;
+
+	sep = str[i];
+	size = 0;
+	while (str[i + size] && !ft_isspace(str[i + size]) && !ft_isspecchar(str[i + size]) 
+			&& !ft_ispar(str[i + size]) && !(str[i + size] == '&' && str[i + 1 + size] == '&'))
+	{
+		if (ft_issep(str[i + size]))
+		{
+			sep = str[i + size++];
+			while (str[i + size] && str[i + size] != sep && !ft_isspecchar(str[i + size]))
+				size++;
+			size++;
+			if (str[i + size] && ft_isspace(str[i + size]))
+				break ;
+		}
+		else
+			size++;
+	}
+	return (size);
+}
+
+size_t	ft_size_var(char *str, size_t i)
+{
+	size_t	size;
+
+	i++;
+	size = 0;
+	while (str[i] && !ft_isspace(str[i]) && !ft_isspecchar(str[i])
+		&& !ft_issep(str[i]) && !ft_ispar(str[i]) && !(str[i] == '&'
+			&& str[(i) + 1] == '&'))
+	{
+		i++;
+		size++;
+	}
+	return (size + ft_size_str(str, i) + 1);
+}
+
+size_t	ft_word_size(char *str, size_t i)
+{
+	size_t	size;
+	char	sep;
+
+	size = 0;
+	if (str[i])
+	{
+		sep = str[i];
+		if (str[i + 1] && str[i] == '$' || (str[i] == '&' && str[i + 1] != '&'
+				&& !ft_issep(str[i + 1]) && !ft_isspace(str[i + 1])
+				&& !ft_isspecchar(str[i + 1]) && !ft_ispar(str[i + 1])))
+			return (ft_size_var(str, i));
+		else if (str[i + 1] && str[i] == '&' && str[i + 1] == '&')
+			return (2);
+		else if (str[i + 1] && ft_ispar(str[i]) || (ft_isspecchar(str[i])
+				&& !ft_isspecchar(str[i + 1])) || ft_isspecchar(str[i + 1])
+			&& str[i + 1] != sep)
+			return (1);
+		else if (str[i + 1] && ft_isspecchar(str[i])
+			&& ft_isspecchar(str[i + 1]))
+			return (2);
+		else
+			return (ft_size_str(str, i));
+	}
+	return (size);
+}
+
+void	ft_fill_tab(char *str, size_t *i, size_t *j, char **res)
+{
+	char	*temp;
+
+	if (ft_issep(str[*j]))
+		ft_skip_sep(str, j);
+	else
+		while (str[*j] && ft_isspace(str[*j]) && !ft_issep(str[*j])
+			&& !ft_ispar(str[*j]))
+			(*j)++;
+	if (ft_issep(str[*j]))
+		ft_skip_sep(str, j);
+	temp = ft_substr(str, *j, ft_word_size(str, *j));
+	if (!temp)
+		return ; //free all tab + return NULL
+	res[*i] = temp;
+	*j += ft_word_size(str, *j);
+	(*i)++;
+}
+
+char	**ft_lexer(char *str)
+{
+	char	**res;
+	size_t	i;
+	size_t	j;
+	size_t	nb;
+	char	*temp;
+
+	i = 0;
+	j = 0;
+	nb = ft_block_count(str);
+	res = malloc((nb + 1) * sizeof(char *));
+	if (!res)
+		return (NULL);
+	while (i < nb)
+		ft_fill_tab(str, &i, &j, res);
+	res[nb] = NULL;
+	return (res);
+}

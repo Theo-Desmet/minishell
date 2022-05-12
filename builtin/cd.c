@@ -6,11 +6,29 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 13:51:41 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/04/11 08:56:10 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/12 10:30:52 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+char	*ft_getenv(t_list **env, char *str)
+{
+	t_list	*temp;
+	size_t	i;
+	int		lenght;
+
+	i = 0;
+	if (!env || !(*env))
+		return (NULL);
+	temp = *env;
+	lenght = ft_strlen(str);
+	while (temp && ft_strncmp(str, temp->content, lenght))
+		temp = temp->next;
+	if (!temp)
+		return (NULL);
+	return (&((char *)temp->content)[lenght + 1]);
+}
 
 int	ft_cd_home(t_data *data, char **str)
 {
@@ -46,24 +64,6 @@ int	ft_cd_error(char **str)
 	}
 	perror("minishell: cd");
 	return (0);
-}
-
-char	*ft_getenv(t_list **env, char *str)
-{
-	t_list	*temp;
-	size_t	i;
-	int		lenght;
-
-	i = 0;
-	if (!env || !(*env))
-		return (NULL);
-	temp = *env;
-	lenght = ft_strlen(str);
-	while (temp && ft_strncmp(str, temp->content, lenght))
-		temp = temp->next;
-	if (!temp)
-		return (NULL);
-	return (&(temp->content)[lenght + 1]);
 }
 
 int	ft_cd(t_data *data, char **str)
