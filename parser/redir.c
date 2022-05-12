@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:39:16 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/12 09:00:41 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/12 12:33:52 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,18 +91,18 @@ char	*ft_check_path(char **paths, char *cmd)
 
 int	ft_exec_builtin(t_data *data ,char **cmd)
 {
-	if (!ft_strcmp("cd", cmd[0])/* || !ft_strcmp("pwd", cmd[0])*/
+	if (!ft_strcmp("cd", cmd[0]) || !ft_strcmp("pwd", cmd[0])
 			|| !ft_strcmp("env", cmd[0]) || !ft_strcmp("echo", cmd[0])
 			|| !ft_strcmp("export", cmd[0]) || !ft_strcmp("unset", cmd[0])
 			|| !ft_strcmp("exit", cmd[0]))
 	{
 		if (!ft_strcmp("cd", cmd[0]))
 			ft_cd(data, cmd);
-//		else if (!ft_strcmp("pwd", cmd[0]))
-//			ft_pwd();
+		else if (!ft_strcmp("pwd", cmd[0]))
+			ft_pwd();
 		else if (!ft_strcmp("env", cmd[0]))
 			ft_env(data->env);
-		else if (ft_strcmp("echo", cmd[0]))
+		else if (!ft_strcmp("echo", cmd[0]))
 			ft_echo(cmd);
 		else if (!ft_strcmp("export", cmd[0]))
 			ft_export(data->env, cmd);

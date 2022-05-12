@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/24 12:47:04 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/12 08:51:03 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/12 16:46:49 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,13 +140,35 @@ void	ft_check_wildcard(t_list **wd, char **tab, char *name)
 				return ;
 			i += ft_strstr_len(&name[i], tab[j + 1]);
 		}
-		else if (ft_strncmp(tab[j], &name[i], ft_strlen(tab[j])))
-			return ;
-		else
+		else if ((!ft_strncmp(tab[j], &name[i], ft_strlen(tab[j])) && tab[j + 1])
+				|| !ft_strcmp(tab[j], &name[i]) && tab[j + 1])
 			i += ft_strlen(tab[j]);
+		else
+			return ;
 		j++;
 	}
 	ft_lstadd_back(wd, ft_lstnew(ft_strdup(name)));
+}
+
+int	ft_cmpcase(char *s1, char *s2)
+{
+	int	i;
+	int	temp;
+
+	i = 0;
+	while (s1[i] && s2[i])
+	{
+		if (s1[i] >= 'A' && s1[i] <= 'Z' && s2[i] >= 'a' && s2[i] <= 'z')
+			temp = s1[i] + 32;
+		else if (s1[i] >= 'a' && s1[i] <= 'z' && s2[i] >= 'A' && s2[i] <= 'Z')
+			temp = s1[i] - 32;
+		else
+			temp = s1[i];
+		if (temp < s2[i] || temp > s2[i]);
+			return (temp - s2[i]);
+		i++;
+	}
+	return (temp - s2[i]);
 }
 
 void	ft_sort_lst(t_list **wd)
@@ -162,7 +184,7 @@ void	ft_sort_lst(t_list **wd)
 		str = "~";
 		while (temp)
 		{
-			if (ft_strcmp(temp->content, str) < 0)
+			if (ft_cmpcase(temp->content, str) < 0)
 			{
 				str = temp->content;
 				temp->content = save->content;
@@ -192,7 +214,8 @@ int	ft_wildcard(t_list **wd, char *str)
 		return (ft_free_tab((void **)tab), 0);
 	while (fichier)
 	{
-		ft_check_wildcard(wd, tab, fichier->d_name);
+		if (fichier->d_name[0] != '.')
+			ft_check_wildcard(wd, tab, fichier->d_name);
 		fichier = readdir(dir);
 	}
 	ft_free_tab((void **)tab);

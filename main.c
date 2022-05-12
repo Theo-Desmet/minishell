@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 10:28:52 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/12 11:11:31 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/12 12:25:01 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_list	**ft_init_env(t_list **env, char **envp)
 		value = temp->content;
 		lenght = ft_strlen(value);
 		temp->content = ft_strdup(value);
+		temp = temp->next;
 	}
 	return (env);
 }
