@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 13:51:41 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/12 10:30:52 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/13 15:30:37 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ int	ft_cd_home(t_data *data, char **str)
 		cwd = getcwd(cwd, 0);
 		if (!cwd)
 			return (0);
-		ft_update_env(data->env, "OLDPWD=", ft_getenv(data->env, "PWD"));
-		ft_update_env(data->env, "PWD=", cwd);
+		ft_update_env(data, data->env, "OLDPWD=", ft_getenv(data->env, "PWD"));
+		ft_update_env(data, data->env, "PWD=", cwd);
 		free(cwd);
 		return (1);
 	}
@@ -57,7 +57,7 @@ int	ft_cd_home(t_data *data, char **str)
 
 int	ft_cd_error(char **str)
 {
-	if (str[1])
+	if (str[2])
 	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
 		return (0);
@@ -71,7 +71,7 @@ int	ft_cd(t_data *data, char **str)
 	DIR		*dir;
 	char	*cwd;
 
-	if (!str[1])
+	if (!str[1] || !ft_strcmp(str[1], "~"))
 		return (ft_cd_home(data, str));
 	if (str[2])
 		return (ft_cd_error(str));
@@ -88,8 +88,8 @@ int	ft_cd(t_data *data, char **str)
 		free(cwd);
 		return (0);
 	}
-	ft_update_env(data->env, "OLDPWD=", ft_getenv(data->env, "PWD"));
-	ft_update_env(data->env, "PWD=", cwd);
+	ft_update_env(data, data->env, "OLDPWD=", ft_getenv(data->env, "PWD"));
+	ft_update_env(data, data->env, "PWD=", cwd);
 	free(cwd);
 	return (0);
 }

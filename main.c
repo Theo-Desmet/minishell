@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 10:28:52 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/12 12:25:01 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/13 15:19:46 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ t_data	*ft_init_data(char **envp)
 	data->rtn_val = 0;
 	data->nb_heredoc = 0;
 	data->act_heredoc = -1;
+	data->pwd = ft_pwd_str();
 	return (data);
 }
 

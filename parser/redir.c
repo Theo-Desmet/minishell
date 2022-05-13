@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:39:16 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/12 12:33:52 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/13 16:42:20 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	ft_exec_builtin(t_data *data ,char **cmd)
 		if (!ft_strcmp("cd", cmd[0]))
 			ft_cd(data, cmd);
 		else if (!ft_strcmp("pwd", cmd[0]))
-			ft_pwd();
+			ft_pwd(data);
 		else if (!ft_strcmp("env", cmd[0]))
 			ft_env(data->env);
 		else if (!ft_strcmp("echo", cmd[0]))
@@ -166,7 +166,7 @@ void	ft_exec(t_data *data, t_list **env, char *arg)
                 exit(EXIT_FAILURE);
         }
 	if (ft_exec_builtin(data, command))
-		return ;
+		exit(1);
         path = ft_search_path(env, command[0]);
         if (!path)
         {

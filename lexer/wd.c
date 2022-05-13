@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/24 12:47:04 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/12 16:46:49 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/13 10:43:20 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,23 +152,32 @@ void	ft_check_wildcard(t_list **wd, char **tab, char *name)
 
 int	ft_cmpcase(char *s1, char *s2)
 {
-	int	i;
-	int	temp;
+	size_t  i;
+	int 	temp;
 
+	if (!s1 || !s2)
+		return (0);
 	i = 0;
-	while (s1[i] && s2[i])
+	if (s1[i] >= 'a' && s1[i] <= 'z' && s2[i] >= 'A' && s2[i] <= 'Z')
+		temp = s1[i] - 32;
+	if (s1[i] >= 'A' && s1[i] <= 'Z' && s2[i] >= 'a' && s2[i] <= 'z')
+		temp = s1[i] + 32;
+	else
+		temp = s1[i];
+	while (s1[i] == s2[i] || temp == s2[i])
 	{
+		if (s1[i] >= 'a' && s1[i] <= 'z' && s2[i] >= 'A' && s2[i] <= 'Z')
+			temp = s1[i] - 32;
 		if (s1[i] >= 'A' && s1[i] <= 'Z' && s2[i] >= 'a' && s2[i] <= 'z')
 			temp = s1[i] + 32;
-		else if (s1[i] >= 'a' && s1[i] <= 'z' && s2[i] >= 'A' && s2[i] <= 'Z')
-			temp = s1[i] - 32;
 		else
 			temp = s1[i];
-		if (temp < s2[i] || temp > s2[i]);
-			return (temp - s2[i]);
+		if (!s1[i] && !s2[i])
+			return (0);
 		i++;
-	}
-	return (temp - s2[i]);
+        }
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+
 }
 
 void	ft_sort_lst(t_list **wd)
