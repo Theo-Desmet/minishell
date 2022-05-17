@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:34:37 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/29 09:39:34 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/16 22:19:07 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ int	ft_env_size(t_list **env)
 void	ft_print_export(char *name)
 {
 	size_t	i;
+	int		egal;
 
 	i = 0;
+	egal = 0;
 	ft_putstr("declare -x ");
 	while (name[i] && (ft_isalnum(name[i]) || name[i] == '_'))
 	{
@@ -39,14 +41,19 @@ void	ft_print_export(char *name)
 		i++;
 	}
 	ft_putchar(name[i]);
+	if (name[i] == '=')
+		ft_putchar('\"');
+	else
+		egal = 1;
 	i++;
-	ft_putchar('\"');
 	while (name[i])
 	{
 		ft_putchar(name[i]);
 		i++;
 	}
-	ft_putstr("\"\n");
+	if (!egal)
+		ft_putstr("\"");
+	ft_putstr("\n");
 }
 
 void	ft_sort_export(t_list **env)

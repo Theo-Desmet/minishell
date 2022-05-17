@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 15:20:53 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/12 08:33:41 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/16 14:52:14 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,5 @@ int		ft_isop(int type);
 int		ft_check_grammar(t_token **tokens);
 int		ft_check_quotes(t_token	*token);
 int		ft_check_here_doc(t_token **tokens, size_t i);
-void	ft_check_builtin(t_token **tokens);
 
 #endif

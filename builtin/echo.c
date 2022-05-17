@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 09:35:47 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/04/11 09:22:09 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/16 09:53:03 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_echo(char **args)
 	if (!(*args) || !args[1])
 	{
 		printf("\n");
-		return (1);
+		return (0);
 	}
 	n = ft_check_option(args);
 	limit = 0;
@@ -45,5 +45,5 @@ int	ft_echo(char **args)
 	}
 	if (!n)
 		ft_putstr("\n");
-	return (1);
+	return (0);
 }

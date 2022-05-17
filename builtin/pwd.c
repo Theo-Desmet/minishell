@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 14:00:47 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/13 16:37:11 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/17 07:07:48 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_pwd(t_data *data)
 	temp = ft_strjoin(cwd, "\n");
 	ft_putstr(temp);
 	free(temp);
-	return (1);
+	return (0);
 }
 
 char	*ft_pwd_str(void)

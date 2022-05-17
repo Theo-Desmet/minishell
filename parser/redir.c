@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:39:16 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/13 16:42:20 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/17 07:19:48 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,31 +89,6 @@ char	*ft_check_path(char **paths, char *cmd)
 	return (NULL);
 }
 
-int	ft_exec_builtin(t_data *data ,char **cmd)
-{
-	if (!ft_strcmp("cd", cmd[0]) || !ft_strcmp("pwd", cmd[0])
-			|| !ft_strcmp("env", cmd[0]) || !ft_strcmp("echo", cmd[0])
-			|| !ft_strcmp("export", cmd[0]) || !ft_strcmp("unset", cmd[0])
-			|| !ft_strcmp("exit", cmd[0]))
-	{
-		if (!ft_strcmp("cd", cmd[0]))
-			ft_cd(data, cmd);
-		else if (!ft_strcmp("pwd", cmd[0]))
-			ft_pwd(data);
-		else if (!ft_strcmp("env", cmd[0]))
-			ft_env(data->env);
-		else if (!ft_strcmp("echo", cmd[0]))
-			ft_echo(cmd);
-		else if (!ft_strcmp("export", cmd[0]))
-			ft_export(data->env, cmd);
-		else if (!ft_strcmp("unset", cmd[0]))
-			ft_unset(data->env, cmd);
-		else if (!ft_strcmp("exit", cmd[0]))
-			;
-		return (1);
-	}
-	return (0);
-}
 
 char	*ft_search_path(t_list **env, char *cmd)
 {
@@ -165,8 +140,6 @@ void	ft_exec(t_data *data, t_list **env, char *arg)
                 free(arg);
                 exit(EXIT_FAILURE);
         }
-	if (ft_exec_builtin(data, command))
-		exit(1);
         path = ft_search_path(env, command[0]);
         if (!path)
         {
@@ -331,10 +304,78 @@ void	ft_glhf(t_data *data, t_token **args, t_list **env)
 	ft_exec(data, env, cmd);
 }
 
+int	ft_args(char *args, char *args2)
+{
+	int	bastien;
+
+	bastien = 0;
+	while (args[bastien] && args2[bastien])
+	{
+		if (args[bastien] != args2[bastien])
+			return (0);
+		bastien++;
+	}
+	if (!args2[bastien] || args2[bastien] == ' ')
+		return (1);
+	return (0);
+}
+
+int	ft_check_builtin(t_data *data, t_token **args)
+{
+	int i;
+	char *cmd;
+
+	i = 0;
+	while (args && args[i]->type != WORD)
+		i++;
+	cmd = args[i]->val;
+        if (ft_args("cd", cmd)
+			|| ft_args("pwd", cmd)
+                        || ft_args("env", cmd)
+			|| ft_args("echo", cmd)
+			|| ft_args("export", cmd)
+			|| ft_args("unset", cmd)
+			|| ft_args("exit", cmd))
+        {
+                return (1);
+        }
+        return (0);
+}
+
+int	ft_exec_builtin(t_data *data, t_token **args)
+{
+	char	*command;
+	char	**cmd;
+
+	ft_redirection(data, args);
+        ft_check_last_heredoc(data, args);
+        command = ft_join_word(args, data->env);
+        cmd = ft_lexer(command);
+	if (!ft_strcmp("cd", cmd[0]))
+		data->rtn_val = ft_cd(data, cmd);
+	else if (!ft_strcmp("pwd", cmd[0]))
+		data->rtn_val = ft_pwd(data);
+	else if (!ft_strcmp("env", cmd[0]))
+		data->rtn_val = ft_env(data->env);
+	else if (!ft_strcmp("echo", cmd[0]))
+		data->rtn_val = ft_echo(cmd);
+	else if (!ft_strcmp("export", cmd[0]))
+		data->rtn_val = ft_export(data->env, cmd);
+	else if (!ft_strcmp("unset", cmd[0]))
+		data->rtn_val = ft_unset(data->env, cmd);
+	else if (!ft_strcmp("exit", cmd[0]))
+		;
+}
+
 void	ft_fork(t_data *data, t_token **args, t_list **env)
 {
 	int	pid;
 
+	if (ft_check_builtin(data, args))
+	{
+		ft_exec_builtin(data, args);
+		return ;	
+	}
 	pid = fork();
 	if (pid == -1)
 		exit(EXIT_FAILURE);
