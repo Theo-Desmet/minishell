@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 12:07:21 by bbordere          #+#    #+#             */
-/*   Updated: 2022/04/28 11:47:18 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/14 19:07:49 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ size_t	ft_size_str(char *str, int i)
 	size_t	size;
 	char	sep;
 
-	sep = str[i];
+	if (str[i] == '$' && ft_strlen(&str[i]) != 1)
+		str[i] = 127;
+	if (ft_strlen(str) == 1)
+		return (1);
 	size = 0;
 	while (str[i + size] && !ft_isspace(str[i + size]) && !ft_isspecchar(str[i + size]) 
 			&& !ft_ispar(str[i + size]) && !(str[i + size] == '&' && str[i + 1 + size] == '&'))
@@ -25,9 +28,10 @@ size_t	ft_size_str(char *str, int i)
 		if (ft_issep(str[i + size]))
 		{
 			sep = str[i + size++];
-			while (str[i + size] && str[i + size] != sep && !ft_isspecchar(str[i + size]))
+			while (str[i + size] && str[i + size] != sep)// && !ft_isspecchar(str[i + size]))
 				size++;
-			size++;
+			if (str[i + size])
+				size++;
 			if (str[i + size] && ft_isspace(str[i + size]))
 				break ;
 		}
@@ -56,21 +60,18 @@ size_t	ft_size_var(char *str, size_t i)
 size_t	ft_word_size(char *str, size_t i)
 {
 	size_t	size;
-	char	sep;
 
 	size = 0;
 	if (str[i])
 	{
-		sep = str[i];
-		if (str[i + 1] && str[i] == '$' || (str[i] == '&' && str[i + 1] != '&'
+		if ((str[i + 1] && str[i] == '$' && !ft_issep(str[i + 1])) || (str[i] == '&' && str[i + 1] != '&'
 				&& !ft_issep(str[i + 1]) && !ft_isspace(str[i + 1])
 				&& !ft_isspecchar(str[i + 1]) && !ft_ispar(str[i + 1])))
 			return (ft_size_var(str, i));
 		else if (str[i + 1] && str[i] == '&' && str[i + 1] == '&')
 			return (2);
-		else if (str[i + 1] && ft_ispar(str[i]) || (ft_isspecchar(str[i])
-				&& !ft_isspecchar(str[i + 1])) || ft_isspecchar(str[i + 1])
-			&& str[i + 1] != sep)
+		else if ((str[i + 1] && ft_ispar(str[i])) || (ft_isspecchar(str[i])
+				&& !ft_isspecchar(str[i + 1])) || (ft_isspecchar(str[i]) && str[i + 1] != str[i]))
 			return (1);
 		else if (str[i + 1] && ft_isspecchar(str[i])
 			&& ft_isspecchar(str[i + 1]))
@@ -107,7 +108,6 @@ char	**ft_lexer(char *str)
 	size_t	i;
 	size_t	j;
 	size_t	nb;
-	char	*temp;
 
 	i = 0;
 	j = 0;

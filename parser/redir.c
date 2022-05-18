@@ -14,7 +14,7 @@
 
 char	**ft_lst_to_tab(t_list **lst);
 
-void	ft_rd_in(t_data *data, char *arg)
+void	ft_rd_in(t_data *data, char *arg, int i)
 {
 	int	newfd;
 
@@ -26,14 +26,13 @@ void	ft_rd_in(t_data *data, char *arg)
 		ft_putstr_fd(": Not such file or directory\n", 2);// a changer
 		exit(EXIT_FAILURE);
 	}
-	if (dup2(newfd, data->fd_in) == -1)
-	{
-		perror("dup2");
-		exit(EXIT_FAILURE);
-	}
+	if (i == 0)
+		data->fd_in = newfd;
+	else
+		data->pipes[i - 1][0] = newfd;
 }
 
-void	ft_rd_out(t_data *data, char *arg)
+void	ft_rd_out(t_data *data, char *arg, int i)
 {
 	int	newfd;
 
@@ -45,14 +44,13 @@ void	ft_rd_out(t_data *data, char *arg)
 		ft_putstr_fd(": Not such file or directory\n", 2);// a changer
 		exit(EXIT_FAILURE);
 	}
-	if (dup2(newfd, data->fd_out) == -1)
-	{
-		perror("dup2");
-		exit(EXIT_FAILURE);
-	}
+	if (i == data->nb_pipes)
+		data->fd_out = newfd;
+	else
+		data->pipes[i][1] = newfd;
 }
 
-void	ft_rd_append(t_data *data, char *arg)
+void	ft_rd_append(t_data *data, char *arg, int i)
 {
 	int	newfd;
 
@@ -64,11 +62,10 @@ void	ft_rd_append(t_data *data, char *arg)
 		ft_putstr_fd(": Not such file or directory\n", 2);// a changer
 		exit(EXIT_FAILURE);
 	}
-	if (dup2(newfd, data->fd_out) == -1)
-	{
-		perror("dup2");
-		exit(EXIT_FAILURE);
-	}
+	if (i == data->nb_pipes)
+		data->fd_out = newfd;
+	else
+		data->pipes[i][1] = newfd;
 }
 
 char	*ft_check_path(char **paths, char *cmd)
@@ -97,8 +94,7 @@ char	*ft_search_path(t_list **env, char *cmd)
 	char	*command;
 	t_list	*temp;
 
-	//check builtin
-	if (!access(cmd, 0))
+	if (!access(cmd, X_OK|F_OK))
 		return (cmd);
 	if (!env || !(*env))
 		return (NULL);
@@ -128,13 +124,30 @@ void	ft_free_command_norme(char *arg)
 	exit(EXIT_FAILURE);
 }
 
+void	ft_get_cmd(char **command)
+{
+	ssize_t	i;
+
+	i = -1;
+	while (command[++i])
+	{
+		if (command[i][0] == '\'' || command[i][0] == '\"')
+		{
+			if (command[i][ft_strlen(command[i]) - 2] == command[i][ft_strlen(command[i]) - 3] && ft_issep(command[i][ft_strlen(command[i]) - 2]))
+				command[i][ft_strlen(command[i]) - 1] = '\0';
+			ft_memmove(command[i], &command[i][1], ft_strlen(command[i]));
+			command[i][ft_strlen(command[i]) - 1] = '\0';
+		}
+	}
+}
+
 void	ft_exec(t_list **env, char *arg)
 {
 	char	**command;
-	char	**envp;
 	char	*path;
 
 	command = ft_lexer(arg);
+	ft_get_cmd(command);
 	if (!command)
 		ft_free_command_norme(arg);
 	free(arg);
@@ -149,7 +162,7 @@ void	ft_exec(t_list **env, char *arg)
 	{
 		ft_command_not_found(command[0]);
 		ft_free_tab((void **)command);
-		free(path);
+		// free(path);
 		exit(EXIT_FAILURE);
 	}
 	ft_free_tab((void **)command);
@@ -164,14 +177,14 @@ void	ft_here_doc(char *limiter, char *line, int fd, int len)
 		if (!line)
 		{
 			if (close(fd))
-				; //error close
+				continue; //error close
 			return ;
 			//warning error
 		}
 		if (!ft_strncmp(line, limiter, len) && line[len] == '\n')
 		{
 			if (close(fd))
-				; //error close
+				continue; //error close
 			free(line);
 			return ;
 		}
@@ -187,6 +200,7 @@ void	ft_get_doc(char *limiter, int nb_heredoc)
 	int		fd;
 	char	*name;
 
+	line = NULL;
 	name = ft_strjoin("/tmp/minishell", ft_itoa(nb_heredoc));
 	fd = open(name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
@@ -218,7 +232,7 @@ void	ft_find_heredoc(t_data *data, t_token **args)
 	data->nb_heredoc = nb_heredoc;
 }
 
-void	ft_redirection(t_data *data, t_token **args)
+void	ft_redirection(t_data *data, t_token **args, int index)
 {
 	int	i;
 
@@ -227,16 +241,22 @@ void	ft_redirection(t_data *data, t_token **args)
 		&& args[i]->type != D_PIPE && args[i]->type != D_AND)
 	{
 		if (args[i]->type == R_IN)
-			ft_rd_in(data, args[++i]->val);
+			ft_rd_in(data, args[++i]->val, index);
 		if (args[i]->type == R_OUT)
-			ft_rd_out(data, args[++i]->val);
+			ft_rd_out(data, args[++i]->val, index);
 		if (args[i]->type == R_APPEND)
-			ft_rd_append(data, args[++i]->val);
+			ft_rd_append(data, args[++i]->val, index);
 		i++;
 	}
 }
 
-char	*ft_join_word(t_token **args, t_list **env)
+int		ft_isredir(t_token *token)
+{
+	return (token->type == R_APPEND || token->type == R_HERE_DOC || token->type == R_IN|| token->type == R_OUT
+		|| token->type == OUT_A_FILE || token->type == OUT_FILE || token->type == IN_FILE || token->type == DELIMITER);
+}
+
+char	*ft_join_word(t_token **args)
 {
 	int		i;
 	char	*cmd;
@@ -284,105 +304,6 @@ void	ft_check_last_heredoc(t_data *data, t_token **args)
 	}
 	name = ft_strjoin("/tmp/minishell", ft_itoa(data->act_heredoc));
 	if (cnth > cnti && cnth != 0)
-		ft_rd_in(data, name);
+		ft_rd_in(data, name, 0);
 	free(name);
-}
-
-void	ft_glhf(t_data *data, t_token **args, t_list **env)
-{
-	char	*cmd;
-
-	ft_redirection(data, args);
-	ft_check_last_heredoc(data, args);
-	cmd = ft_join_word(args, env);
-	ft_exec(env, cmd);
-}
-
-void	ft_fork(t_data *data, t_token **args, t_list **env)
-{
-	int	pid;
-
-	pid = fork();
-	if (pid == -1)
-		exit(EXIT_FAILURE);
-	if (!args || !(*args)) // !args[1]
-		exit(EXIT_FAILURE);
-	if (!pid)
-		ft_glhf(data, args, env);
-	else
-		waitpid(pid, NULL, 0);
-}
-
-
-void	ft_pipe(t_data *data, t_token **args, t_list **env, int in)
-{
-	char	*cmd;
-	int		pid;
-	int		fd[2];
-
-	if (pipe(fd) < 0)
-		return ;
-	pid = fork();
-	if (pid == -1)
-		exit(EXIT_FAILURE);
-	if (!args || !(*args)) // !args[1]
-		exit(EXIT_FAILURE);
-	if (!pid)
-	{
-		close(fd[0]);
-		dup2(fd[1], data->fd_out);
-		if (in == data->fd_in)
-			exit(EXIT_FAILURE);
-		ft_glhf(data, args, env);
-		close(fd[1]);
-	}
-	else
-	{
-		close(fd[1]);
-		dup2(fd[0], data->fd_in);
-		close(fd[0]);
-	}
-	if (in != data->fd_out)
-		close(in);
-}
-
-int	ft_check_isapipe(t_token **args, int *i)
-{
-	while (args[*i] && (args[*i]->type != D_PIPE || args[*i]->type != D_AND))
-	{
-		(*i)++;
-		if (args[*i] && args[*i]->type == PIPE)
-			return (1);
-	}
-	return (0);
-}
-
-void	ft_check_separator(t_data *data, t_token **args, t_list **env)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	ft_find_heredoc(data, args);
-	while (args[i])
-	{
-		while (args[i] && args[i]->type != PIPE
-			&& args[i]->type != D_PIPE && args[i]->type != D_AND)
-			i++;
-		if (!args[i] || (args[i]
-				&& (args[i]->type == D_PIPE && data->rtn_val != 0))
-			|| (args[i] && (args[i]->type == D_AND && data->rtn_val == 0)))
-			ft_fork(data, &args[j], env);
-		if (args[i] && args[i]->type == PIPE)
-		{
-			ft_pipe(data, &args[j], env, data->fd_in);
-			while (ft_check_isapipe(args, &i))
-				ft_pipe(data, &args[i++], env, data->fd_out);
-			ft_fork(data, &args[j], env);
-		}
-		if (args[i])
-			i++;
-		j = i;
-	}
 }

@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 10:24:23 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/24 16:06:57 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/12 11:06:30 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,11 @@
 # include <linux/limits.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include "../libft/includes/libft.h"
 # include "structure.h"
-# include "../libft/libft.h"
-
-		/********************************
-		*				*
-		*	     builtin		*
-		*				*
-		*********************************/
-
-int		ft_cd(t_data *data, char *str);
-int		ft_cd2(t_data *data, char *str);
-int		ft_get_actual_path(t_data *data);
-int		ft_pwd(t_data *data);
-t_data	*ft_init_path(void);
+# include "lexer.h"
+# include "expansions.h"
+# include "parser.h"
+# include "builtin.h"
 
 #endif

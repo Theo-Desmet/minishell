@@ -6,20 +6,12 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 11:05:53 by bbordere          #+#    #+#             */
-/*   Updated: 2022/03/25 11:05:53 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/12 08:33:14 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 # define LEXER_H
-
-# include "../libft/includes/libft.h"
-# include <stdio.h>
-# include "../struct.h"
-# include <dirent.h>
-
-#include <string.h>
-# include <ctype.h>
 
 int		ft_isspecchar(int c);
 int		ft_issep(int c);

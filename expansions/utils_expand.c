@@ -12,13 +12,6 @@
 
 #include "expansions.h"
 
-void	*ft_return_dup(char *str, char *dup)
-{
-	if (!dup)
-		return (NULL);
-	return (ft_strdup(dup));
-}
-
 size_t	ft_count_vars(char *str)
 {
 	size_t	nb;
@@ -28,11 +21,14 @@ size_t	ft_count_vars(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i + 1] && str[i] == '$' && str[i + 1] != '$')
+		if (str[i + 1] && str[i] == '$' && (ft_is_valid_var_char(str[i + 1]) || str[i + 1] == '?'))
 		{
-			while (str[i] && !ft_isspace(str[i]) && !ft_isspecchar(str[i])
-				&& !ft_issep(str[i]) && str[i] != '$' && !ft_ispar(str[i]))
+			while (str[i] && (ft_is_valid_var_char(str[i]) || str[i] == '?'))
+			{
+				if (i == 1 && ft_isdigit(str[i + 1]))
+					break;
 				i++;
+			}
 			nb++;
 		}
 		i++;
@@ -46,9 +42,10 @@ size_t	ft_len_vars(char *str, size_t i)
 
 	i++;
 	size = 0;
-	while (str[i] && !ft_isspace(str[i]) && !ft_isspecchar(str[i])
-		&& !ft_issep(str[i]) && str[i] != '$' && !ft_ispar(str[i]))
+	while (str[i - 1] && str[i] && (ft_is_valid_var_char(str[i]) || (str[i] == '?' && str[i - 1] == '$')))
 	{
+		if (str[i] == '?')
+			return (2);
 		i++;
 		size++;
 	}

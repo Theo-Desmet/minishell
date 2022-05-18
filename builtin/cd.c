@@ -6,55 +6,90 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 13:51:41 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/24 16:09:49 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/13 15:30:37 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	ft_cd(t_data *data, char *str)
+char	*ft_getenv(t_list **env, char *str)
+{
+	t_list	*temp;
+	size_t	i;
+	int		lenght;
+
+	i = 0;
+	if (!env || !(*env))
+		return (NULL);
+	temp = *env;
+	lenght = ft_strlen(str);
+	while (temp && ft_strncmp(str, temp->content, lenght))
+		temp = temp->next;
+	if (!temp)
+		return (NULL);
+	return (&((char *)temp->content)[lenght + 1]);
+}
+
+int	ft_cd_home(t_data *data, char **str)
 {
 	char	*home;
+	char	*cwd;
 
-	home = getenv("HOME");
-	if (!str || !(*str))
+	home = ft_getenv(data->env, "HOME");
+	if (!home)
 	{
-		if (!chdir(home))
-		{
-			ft_get_actual_path(data);
-			return (1);
-		}
+		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+		return (0);
 	}
-	else if (str[0] == '~')
+	if (!chdir(home))
 	{
-		home = ft_strjoin(home, &(str[1]));
-		if (!chdir(home))
-		{
-			ft_get_actual_path(data);
-			free(home);
-			return (1);
-		}
+		cwd = NULL;
+		cwd = getcwd(cwd, 0);
+		if (!cwd)
+			return (0);
+		ft_update_env(data, data->env, "OLDPWD=", ft_getenv(data->env, "PWD"));
+		ft_update_env(data, data->env, "PWD=", cwd);
+		free(cwd);
+		return (1);
 	}
-	else
-		return (ft_cd2(data, str));
+	return (ft_cd_error(str));
+}
+
+int	ft_cd_error(char **str)
+{
+	if (str[2])
+	{
+		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+		return (0);
+	}
+	perror("minishell: cd");
 	return (0);
 }
 
-int	ft_cd2(t_data *data, char *str)
+int	ft_cd(t_data *data, char **str)
 {
-	if (str[0] == '-')
+	DIR		*dir;
+	char	*cwd;
+
+	if (!str[1] || !ft_strcmp(str[1], "~"))
+		return (ft_cd_home(data, str));
+	if (str[2])
+		return (ft_cd_error(str));
+	dir = opendir(str[1]);
+	if (!dir)
+		return (ft_cd_error(str));
+	closedir(dir);
+	if (chdir(str[1]))
+		return (ft_cd_error(str));
+	cwd = NULL;
+	cwd = getcwd(cwd, 0);
+	if (!cwd)
 	{
-		if (!chdir(data->prev_path))
-		{
-			ft_get_actual_path(data);
-			return (1);
-		}
+		free(cwd);
+		return (0);
 	}
-	else if (!chdir(str))
-	{
-		ft_get_actual_path(data);
-		return (1);
-	}
-	perror("getcwd() error");//a modifier
+	ft_update_env(data, data->env, "OLDPWD=", ft_getenv(data->env, "PWD"));
+	ft_update_env(data, data->env, "PWD=", cwd);
+	free(cwd);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:08:45 by bbordere          #+#    #+#             */
-/*   Updated: 2022/04/28 11:47:10 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/13 11:09:29 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ char	**ft_join(t_token **tokens)
 	size_t	i;
 	size_t	j;
 	char	**res;
-	char	*temp;
 
 	nb = ft_count_join(tokens);
 	res = malloc(sizeof(char *) * (nb + 1));

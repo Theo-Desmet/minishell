@@ -3,33 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 14:00:47 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/03/24 15:47:44 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/15 10:28:29 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	ft_get_actual_path(t_data *data)
+int	ft_pwd(t_data *data)
 {
-	char	*cwd;
 	char	buf[PATH_MAX];
+	char	*cwd;
 	char	*temp;
 
 	cwd = getcwd(buf, PATH_MAX);
 	if (!cwd)
-		return (0);
-	temp = ft_strdup(cwd);
-	free(data->prev_path);
-	data->prev_path = data->actu_path;
-	data->actu_path = temp;
+		cwd = data->pwd;
+	temp = ft_strjoin(cwd, "\n");
+	ft_putstr(temp, NULL);
+	free(temp);
 	return (1);
 }
 
-int	ft_pwd(t_data *data)
+char	*ft_pwd_str(void)
 {
-	printf("%s\n", data->actu_path);
-	return (1);
+	char	buf[PATH_MAX];
+	char	*cwd;
+
+	cwd = getcwd(buf, PATH_MAX);
+	if (!cwd)
+		return (NULL);
+	return ((char *)cwd);
+}
+
+void	ft_update_env(t_data *data, t_list **env, char *name, char *value)
+{
+	t_list	*temp;
+	char	*str;
+	int		str_lenght;
+
+	if (!env || !(*env) || !value)
+		return ;
+	temp = *env;
+	value = strdup(value);
+	data->pwd = value;
+	str = ft_strjoin(name, value);
+	str_lenght = ft_strlen(name);
+	while (temp && ft_strncmp(name, temp->content, str_lenght))
+		temp = temp->next;
+	if (!temp)
+		return ;
+	free(temp->content);
+	temp->content = str;
 }

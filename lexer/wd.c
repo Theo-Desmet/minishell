@@ -149,7 +149,18 @@ void	ft_check_wildcard(t_list **wd, char **tab, char *name)
 	ft_lstadd_back(wd, ft_lstnew(ft_strdup(name)));
 }
 
-void	ft_sort_lst(t_list **wd)
+int		ft_strcasecmp(char *s1, char *s2)
+{
+	int		i;
+
+	i = 0;
+	while (s1[i] && s2[i] && 
+		ft_tolower(s1[i]) == ft_tolower(s2[i]))
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
+
+void	ft_sort_lst(t_list **wd, int (*comp)(char *, char *))
 {
 	t_list	*temp;
 	t_list	*save;
@@ -162,7 +173,7 @@ void	ft_sort_lst(t_list **wd)
 		str = "~";
 		while (temp)
 		{
-			if (ft_strcmp(temp->content, str) < 0)
+			if (comp(temp->content, str) < 0)
 			{
 				str = temp->content;
 				temp->content = save->content;
@@ -192,11 +203,12 @@ int	ft_wildcard(t_list **wd, char *str)
 		return (ft_free_tab((void **)tab), 0);
 	while (fichier)
 	{
-		ft_check_wildcard(wd, tab, fichier->d_name);
+		if (fichier->d_name[0] != '.')
+			ft_check_wildcard(wd, tab, fichier->d_name);
 		fichier = readdir(dir);
 	}
 	ft_free_tab((void **)tab);
-	ft_sort_lst(wd);
+	ft_sort_lst(wd, ft_strcasecmp); //BB swap bb (case opp) Bb > bB 
 	if (!closedir(dir))
 		return (0);
 	return (1);
