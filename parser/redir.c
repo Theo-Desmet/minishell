@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:39:16 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/17 07:19:48 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/18 08:31:41 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -448,13 +448,6 @@ void	ft_check_separator(t_data *data, t_token **args, t_list **env)
 				&& (args[i]->type == D_PIPE && data->rtn_val != 0))
 			|| (args[i] && (args[i]->type == D_AND && data->rtn_val == 0)))
 			ft_fork(data, &args[j], env);
-		if (args[i] && args[i]->type == PIPE)
-		{
-			ft_pipe(data, &args[j], env, data->fd_in);
-			while (ft_check_isapipe(args, &i))
-				ft_pipe(data, &args[i++], env, data->fd_out);
-			ft_fork(data, &args[j], env);
-		}
 		if (args[i])
 			i++;
 		j = i;

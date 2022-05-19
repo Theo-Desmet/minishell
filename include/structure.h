@@ -6,12 +6,14 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 10:35:26 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/13 12:07:22 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/19 12:39:05 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTURE_H
 # define STRUCTURE_H
+
+
 enum    e_type
 {
     WORD = 1,
@@ -38,6 +40,16 @@ enum    e_type
     DELIMITER = 22,
     OUT_A_FILE = 23
 };
+
+/*   global   */
+typedef struct s_global
+{
+	int	in_exec;
+	int	pid;
+	int	rtn_val;
+}       t_global;
+
+t_global *global;
 
 typedef struct s_token
 {
@@ -80,7 +92,7 @@ typedef struct s_cmd{
 typedef struct s_data{
 	t_parsing	parsing;
 	t_arg		arg;
-	t_cmd		cmd;
+	t_cmd		md;
 	t_list		**env;
 	t_list		**wd;
 	int		fd_in;

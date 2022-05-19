@@ -6,13 +6,46 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 10:28:52 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/13 15:19:46 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/19 14:24:31 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/minishell.h"
 
 void	ft_check_separator(t_data *data, t_token **args, t_list **env);
+
+void	handler_int(int sig)
+{
+	if (global->in_exec == 0)
+	{
+		if (sig == SIGINT)
+		{
+			rl_on_new_line();
+			ft_putstr("\b\b  \b\b");
+			global->rtn_val = 130;
+		}
+		else if (sig == SIGQUIT)
+			ft_putstr("\b\b  \b\b");
+	}
+	else if (sig == SIGINT)
+	{
+		kill(global->pid, SIGINT);
+		global->rtn_val = 130;
+	}
+}
+
+int ft_sig_init(void)
+{
+	struct sigaction sig_int;
+
+	global = malloc(sizeof(t_global));
+	sig_int.sa_handler=&handler_int;
+	sigaction(SIGINT,&sig_int,0);
+	sigaction(SIGQUIT,&sig_int,0);
+	global->in_exec = 0;
+	global->pid = 0;
+	global->rtn_val = 0;
+}
 
 t_list	**ft_init_env(t_list **env, char **envp)
 {
@@ -172,6 +205,7 @@ int main(int ac, char **av, char **env)
 	char	**regrouped; // Tableau des strings "regroupees"
 	
 	data = ft_init_data(env);
+	ft_sig_init();
 	while (1)
 	{
 		input = NULL;
@@ -180,6 +214,7 @@ int main(int ac, char **av, char **env)
 		final = NULL;
 		regrouped = NULL;
 
+		global->in_exec = 0;
 		input = readline("minishell > ");
 		if (!input)
 			break ;
