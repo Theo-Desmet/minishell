@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 08:10:05 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/15 10:28:38 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/20 14:46:16 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 char	*ft_check_unset_arg(char *str)
 {
@@ -59,12 +59,14 @@ void	ft_del_env(t_list **env, char *str)
 	}
 }
 
-t_list	**ft_unset(t_list **env, char **arg)
+int	ft_unset(t_list **env, char **arg)
 {
 	size_t	i;
 	char	*name;
+	int		ret;
 
 	i = 1;
+	ret = 0;
 	while (arg && env && arg[i])
 	{
 		name = NULL;
@@ -74,7 +76,9 @@ t_list	**ft_unset(t_list **env, char **arg)
 			ft_del_env(env, name);
 			free(name);
 		}
+		else
+			ret = 1;
 		i++;
 	}
-	return (env);
+	return (ret);
 }

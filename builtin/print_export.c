@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:34:37 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/15 10:28:48 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/20 14:51:51 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 int	ft_env_size(t_list **env)
 {
@@ -30,23 +30,30 @@ int	ft_env_size(t_list **env)
 void	ft_print_export(char *name)
 {
 	size_t	i;
+	int		egal;
 
 	i = 0;
-	ft_putstr("declare -x ", NULL);
+	egal = 0;
+	ft_printf("declare -x ");
 	while (name[i] && (ft_isalnum(name[i]) || name[i] == '_'))
 	{
-		ft_putchar(name[i], NULL);
+		ft_printf("%c", name[i]);
 		i++;
 	}
-	ft_putchar(name[i], NULL);
+	ft_printf("%c", name[i]);
+	if (name[i] == '=')
+		ft_printf("\"");
+	else
+		egal = 1;
 	i++;
-	ft_putchar('\"', NULL);
 	while (name[i])
 	{
-		ft_putchar(name[i], NULL);
+		ft_printf("%c", name[i]);
 		i++;
 	}
-	ft_putstr("\"\n", NULL);
+	if (!egal)
+		ft_printf("\"");
+	ft_printf("\n");
 }
 
 void	ft_sort_export(t_list **env)

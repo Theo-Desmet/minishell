@@ -6,17 +6,14 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 21:31:05 by bbordere          #+#    #+#             */
-/*   Updated: 2022/04/19 21:31:05 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/12 09:08:28 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXPANSIONS_H
 # define EXPANSIONS_H
 
-# include "../libft/includes/libft.h"
-# include <stdio.h>
-# include "../struct.h"
-# include "../lexer/lexer.h"
+# include "struct.h"
 
 t_list			**ft_init_env(t_list **env, char **envp);
 t_data			*ft_init_data(char **envp);
@@ -28,6 +25,7 @@ size_t			ft_len_vars(char *str, size_t i);
 char			**ft_extract_var(char *str);
 char			*ft_charjoin(char *str, char c);
 char			*ft_get_str(char *str, int mode);
+char			**ft_lst_to_tab(t_list **lst);
 
 void			ft_init_temp(t_temp *temp, char **vars,
 					char *str, t_list **env);
@@ -44,5 +42,6 @@ int				ft_isspecchar(int c);
 int				ft_ispar(int c);
 int				ft_issep(int c);
 int				ft_wildcard(t_list **wd, char *str);
-int				ft_is_valid_var_char(int c);
+int		ft_is_valid_var_char(int c);
+
 #endif

@@ -6,19 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 13:41:13 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/18 17:54:54 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/21 13:55:43 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-int	ft_check_isapipe(t_token **args, int *i, int *j);
-void	ft_glhf(t_data *data, t_token **args, t_list **env);
-void	ft_find_heredoc(t_data *data, t_token **args);
-void	ft_exec(t_list **env, char *arg);
-char	*ft_join_word(t_token **args);
-void	ft_check_last_heredoc(t_data *data, t_token **args);
-void	ft_redirection(t_data *data, t_token **args, size_t i);
 
 pid_t	*ft_update_childs(t_data *data, size_t n)
 {
@@ -59,11 +51,39 @@ void	ft_close(int fd1, int fd2)
 	close(fd2);
 }
 
+void	ft_exec_builtin_pipe(t_data *data, t_token **args)
+{
+	char	**cmd;
+	char    *command;
+
+	command = ft_join_word(args);
+	cmd = ft_lexer(command);
+	ft_get_cmd(cmd);
+	if (!ft_strcmp("cd", cmd[0]))
+			g_global->rtn_val = ft_cd(data, cmd);
+	else if (!ft_strcmp("pwd", cmd[0]))
+			g_global->rtn_val = ft_pwd(data);
+	else if (!ft_strcmp("env", cmd[0]))
+			g_global->rtn_val = ft_env(data->env);
+	else if (!ft_strcmp("echo", cmd[0]))
+			g_global->rtn_val = ft_echo(cmd);
+	else if (!ft_strcmp("export", cmd[0]))
+			g_global->rtn_val = ft_export(data->env, cmd);
+	else if (!ft_strcmp("unset", cmd[0]))
+			g_global->rtn_val = ft_unset(data->env, cmd);
+	else if (!ft_strcmp("exit", cmd[0]))
+			;
+	exit(g_global->rtn_val);
+}
+
 void	ft_exec_first(t_data *data, t_token **args)
 {
 	char	*cmd;
+	char	*here_doc;
 	
+	here_doc = ft_check_last_heredoc(data, args);
 	data->childs[0] = fork();
+	g_global->pid = data->childs[0];
 	if (data->childs[0] < 0)
 	{
 		//ft_free_data(data);
@@ -73,13 +93,19 @@ void	ft_exec_first(t_data *data, t_token **args)
 	{
 		close(data->pipes[0][0]);
 		ft_redirection(data, args, 0);
-		ft_check_last_heredoc(data, args);
+		if (here_doc)
+		{
+			ft_rd_in(data, here_doc, 0);
+			free(here_doc);
+		}
 		cmd = ft_join_word(args);
 		dup2(data->fd_in, STDIN_FILENO);
 		dup2(data->pipes[0][1], STDOUT_FILENO);
 		ft_close(data->fd_in, data->pipes[0][1]);
-		ft_exec(data->env, cmd);
-		return ;
+		if (ft_check_builtin(data, args))
+			ft_exec_builtin_pipe(data, args);
+		else
+			ft_exec(data->env, cmd);
 		//ft_free_data(data);
 	}
 	else
@@ -89,8 +115,11 @@ void	ft_exec_first(t_data *data, t_token **args)
 void	ft_exec_mid(t_data *data, t_token **args, int i)
 {
 	char	*cmd;
+	char	*here_doc;
 	
+	here_doc = ft_check_last_heredoc(data, args);
 	data->childs[i] = fork();
+	g_global->pid = data->childs[i];
 	if (data->childs[i] < 0)
 	{
 		//ft_free_data(data);
@@ -100,12 +129,19 @@ void	ft_exec_mid(t_data *data, t_token **args, int i)
 	{
 		close(data->pipes[i][0]);
 		ft_redirection(data, args, i); 
-		ft_check_last_heredoc(data, args);
+		if (here_doc)
+		{
+			ft_rd_in(data, here_doc, i);
+			free(here_doc);
+		}
 		cmd = ft_join_word(args);
 		dup2(data->pipes[i - 1][0], STDIN_FILENO);
 		dup2(data->pipes[i][1], STDOUT_FILENO);
 		ft_close(data->pipes[i - 1][0], data->pipes[i][1]);
-		ft_exec(data->env, cmd);
+		if (ft_check_builtin(data, args))
+			ft_exec_builtin_pipe(data, args);
+		else
+			ft_exec(data->env, cmd);
 		//ft_free_data(data);
 	}
 	else
@@ -115,23 +151,30 @@ void	ft_exec_mid(t_data *data, t_token **args, int i)
 void	ft_exec_last(t_data *data, t_token **args, int last)
 {
 	char	*cmd;
+	char	*here_doc;
 
+	here_doc = ft_check_last_heredoc(data, args);
 	data->childs[last] = fork();
+	g_global->pid = data->childs[last];
 	if (data->childs[last] < 0)
-	{
-		//ft_free_data(data);
 		return ;
-	}
 	if (!data->childs[last])
 	{
 		close(data->pipes[last - 1][1]);
 		ft_redirection(data, args, last);
-		ft_check_last_heredoc(data, args);
+		if (here_doc)
+		{
+			ft_rd_in(data, here_doc, last);
+			free(here_doc);
+		}
 		cmd = ft_join_word(args);
 		dup2(data->fd_out, STDOUT_FILENO);
 		dup2(data->pipes[last - 1][0], STDIN_FILENO);
 		ft_close(data->pipes[last - 1][0], data->fd_out);
-		ft_exec(data->env, cmd);
+		if (ft_check_builtin(data, args))
+			ft_exec_builtin_pipe(data, args);
+		else
+			ft_exec(data->env, cmd);
 	}
 	else
 		ft_close(data->fd_out, data->pipes[last - 1][0]);
@@ -168,15 +211,12 @@ void	ft_exec_pipeline(t_data *data, t_token **args, size_t pipes)
 	size_t	p;
 	i = 0;
 	p = 1;
-	ft_find_heredoc(data, args);
 	ft_exec_first(data, args);
 	while (--pipes)
 	{
-		usleep(800);
 		i += ft_go_to_next_pipe(&args[i]) + 1;
 		ft_exec_mid(data, &args[i], p++);
 	}
-	usleep(800);
 	i += ft_go_to_next_pipe(&args[i]) + 1;
 	ft_exec_last(data, &args[i], p);
 }
@@ -207,16 +247,89 @@ int	ft_wait_all(t_data *data)
 	return (res);
 }
 
+int     ft_glhf(char *args, char *args2)
+{
+		int     bastien;
+
+		bastien = 0;
+		while (args[bastien] && args2[bastien])
+		{
+				if (args[bastien] != args2[bastien])
+						return (0);
+				bastien++;
+		}
+		if (!args2[bastien] || args2[bastien] == ' ')
+				return (1);
+		return (0);
+}
+
+int     ft_check_builtin(t_data *data, t_token **args)
+{
+		int i;
+		char *cmd;
+
+		i = 0;
+		while (args && args[i]->type != WORD)
+				i++;
+		cmd = args[i]->val;
+		if (ft_glhf("cd", cmd)
+			|| ft_glhf("pwd", cmd)
+			|| ft_glhf("env", cmd)
+			|| ft_glhf("echo", cmd)
+			|| ft_glhf("export", cmd)
+			|| ft_glhf("unset", cmd)
+			|| ft_glhf("exit", cmd))
+		{
+				return (1);
+		}
+		return (0);
+}
+
+int     ft_exec_builtin(t_data *data, t_token **args)
+{
+		char    *command;
+		char    **cmd;
+
+		ft_redirection(data, args, 0);
+		ft_check_last_heredoc(data, args);
+		command = ft_join_word(args);
+		cmd = ft_lexer(command);
+		ft_get_cmd(cmd);
+		if (!ft_strcmp("cd", cmd[0]))
+				g_global->rtn_val = ft_cd(data, cmd);
+		else if (!ft_strcmp("pwd", cmd[0]))
+				g_global->rtn_val = ft_pwd(data);
+		else if (!ft_strcmp("env", cmd[0]))
+				g_global->rtn_val = ft_env(data->env);
+		else if (!ft_strcmp("echo", cmd[0]))
+				g_global->rtn_val = ft_echo(cmd);
+		else if (!ft_strcmp("export", cmd[0]))
+				g_global->rtn_val = ft_export(data->env, cmd);
+		else if (!ft_strcmp("unset", cmd[0]))
+				g_global->rtn_val = ft_unset(data->env, cmd);
+		else if (!ft_strcmp("exit", cmd[0]))
+				;
+}
+
 void	ft_cmd(t_data *data, t_token **args)
 {
-	pid_t	f = fork();
+	pid_t	f; 
 	char	*cmd;
 	int		status;
+	char	*here_doc;
 
+	if (ft_check_builtin(data, args))
+	{
+		ft_exec_builtin(data, args);
+		return ;
+	}
+	f = fork();
 	if (!f)
 	{
 		ft_redirection(data, args, 0);
-		ft_check_last_heredoc(data, args);
+		here_doc = ft_check_last_heredoc(data, args);
+		if (here_doc)
+			ft_rd_in(data, here_doc, 0);
 		dup2(data->fd_in, STDIN_FILENO);
 		dup2(data->fd_out, STDOUT_FILENO);
 		cmd = ft_join_word(args);
@@ -225,7 +338,7 @@ void	ft_cmd(t_data *data, t_token **args)
 	else
 	{
 		waitpid(f, &status, 0);
-		data->rtn_val = ft_get_return_val(status);
+		g_global->rtn_val = ft_get_return_val(status);
 	}
 }
 
@@ -259,6 +372,7 @@ void	ft_pipeline(t_data *data, t_token **tokens)
 
 	pipeline = tokens;
 	offset = 0;
+	ft_find_heredoc(data, tokens);
 	if (ft_count_exec_blocks(tokens) == 1)
 		ft_cmd(data, tokens);
 	else
@@ -276,16 +390,18 @@ void	ft_pipeline(t_data *data, t_token **tokens)
 				data->childs = ft_update_childs(data, pipes + 1);
 				data->pipes = ft_update_pipes(data, pipes);
 				ft_exec_pipeline(data, pipeline, pipes);
-				data->rtn_val = ft_wait_all(data);
+				g_global->rtn_val = ft_wait_all(data);
 			}
 			pipeline += offset;
-			if (!*pipeline || (*pipeline && (((*pipeline)->type == D_AND && data->rtn_val != 0)
-				|| ((*pipeline)->type == D_PIPE && data->rtn_val == 0))))
+			if (!*pipeline || (((*pipeline)->type == D_AND && g_global->rtn_val != 0)
+				|| ((*pipeline)->type == D_PIPE && g_global->rtn_val == 0)))
 				break;
 			else
 				pipeline++;
 		}
 	}
+	data->act_heredoc = -1;
+	data->nb_heredoc = 0;
 }
 
 size_t	ft_count_pipes(t_token	**tokens, size_t *offset)
@@ -304,3 +420,4 @@ size_t	ft_count_pipes(t_token	**tokens, size_t *offset)
 		*offset = i;
 	return (count);
 }
+

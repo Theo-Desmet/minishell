@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 15:21:42 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/17 21:49:12 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/19 12:41:27 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ int	ft_isvalidtype(int type)
 
 int	ft_check_op(t_token **tokens, size_t i)
 {
-	if (i == 0 || i == ft_tab_size(tokens) - 1)
+	if (i == 0 && tokens[i + 1])
+		return (1);
+	else if (i == ft_tab_size(tokens) - 1)
 		return (0);
 	else if (tokens[i]->type == R_OUT)
 		return (ft_isvalidtype(tokens[i - 1]->type)

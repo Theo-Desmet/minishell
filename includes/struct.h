@@ -6,14 +6,14 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 15:14:11 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/18 17:37:43 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/20 14:50:14 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCT_H
 # define STRUCT_H
 
-# include "libft/includes/libft.h"
+# include "libft.h"
 
 enum	e_type
 {
@@ -59,7 +59,17 @@ typedef struct s_data{
 	int		nb_heredoc;
 	int		act_heredoc;
 	int		nb_pipes;
+	char		*pwd;
 }	t_data;
+
+typedef struct s_global
+{
+		int	in_exec;
+		int	pid;
+		int	rtn_val;
+}	t_global;
+
+extern t_global *g_global;
 
 typedef struct s_temp
 {

@@ -12,8 +12,6 @@
 
 #include "parser.h"
 
-char	**ft_lst_to_tab(t_list **lst);
-
 void	ft_rd_in(t_data *data, char *arg, int i)
 {
 	int	newfd;
@@ -94,7 +92,7 @@ char	*ft_search_path(t_list **env, char *cmd)
 	char	*command;
 	t_list	*temp;
 
-	if (!access(cmd, X_OK|F_OK))
+	if (!access(cmd, X_OK|F_OK) && (!ft_strncmp(cmd, "./", 2) || !ft_strncmp(cmd, "/", 1)))
 		return (cmd);
 	if (!env || !(*env))
 		return (NULL);
@@ -127,14 +125,16 @@ void	ft_free_command_norme(char *arg)
 void	ft_get_cmd(char **command)
 {
 	ssize_t	i;
+	ssize_t	j;
+	size_t	len;
 
 	i = -1;
+	if (!command || !*command)
+		return ;
 	while (command[++i])
 	{
-		if (command[i][0] == '\'' || command[i][0] == '\"')
+		if (ft_issep(command[i][0]))
 		{
-			if (command[i][ft_strlen(command[i]) - 2] == command[i][ft_strlen(command[i]) - 3] && ft_issep(command[i][ft_strlen(command[i]) - 2]))
-				command[i][ft_strlen(command[i]) - 1] = '\0';
 			ft_memmove(command[i], &command[i][1], ft_strlen(command[i]));
 			command[i][ft_strlen(command[i]) - 1] = '\0';
 		}
@@ -150,20 +150,25 @@ void	ft_exec(t_list **env, char *arg)
 	ft_get_cmd(command);
 	if (!command)
 		ft_free_command_norme(arg);
+	if (!*command)
+	{
+		ft_free_tab((void **)command);
+		exit(EXIT_SUCCESS);
+	}
 	free(arg);
 	path = ft_search_path(env, command[0]);
 	if (!path)
 	{
 		ft_command_not_found(command[0]);
 		ft_free_tab((void **)command);
-		exit(EXIT_FAILURE);
+		exit(127);
 	}
 	if (execve(path, command, ft_lst_to_tab(env)))
 	{
 		ft_command_not_found(command[0]);
 		ft_free_tab((void **)command);
 		// free(path);
-		exit(EXIT_FAILURE);
+		exit(127);
 	}
 	ft_free_tab((void **)command);
 }
@@ -220,7 +225,7 @@ void	ft_find_heredoc(t_data *data, t_token **args)
 
 	i = 0;
 	nb_heredoc = 0;
-	while (args[i] && args[i]->type != PIPE)
+	while (args[i])
 	{
 		if (args[i]->type == R_HERE_DOC)
 		{
@@ -262,8 +267,7 @@ char	*ft_join_word(t_token **args)
 	char	*cmd;
 
 	i = 0;
-	cmd = malloc(sizeof(char));
-	*cmd = 0;
+	cmd = NULL;
 	while (args[i] && args[i]->type != PIPE
 		&& args[i]->type != D_PIPE && args[i]->type != D_AND)
 	{
@@ -276,10 +280,12 @@ char	*ft_join_word(t_token **args)
 	}
 	if (!cmd || !(*cmd))
 		return (NULL);
+	if (cmd[ft_strlen(cmd) - 1] == ' ')
+		cmd[ft_strlen(cmd) - 1] = '\0';
 	return (cmd);
 }
 
-void	ft_check_last_heredoc(t_data *data, t_token **args)
+char	*ft_check_last_heredoc(t_data *data, t_token **args)
 {
 	int		i;
 	int		cnth;
@@ -287,8 +293,8 @@ void	ft_check_last_heredoc(t_data *data, t_token **args)
 	char	*name;
 
 	i = 0;
-	cnth = 0;
-	cnti = 0;
+	cnth = -1;
+	cnti = -1;
 	name = NULL;
 	while (args[i] && args[i]->type != PIPE
 		&& args[i]->type != D_PIPE && args[i]->type != D_AND)
@@ -303,7 +309,10 @@ void	ft_check_last_heredoc(t_data *data, t_token **args)
 		i++;
 	}
 	name = ft_strjoin("/tmp/minishell", ft_itoa(data->act_heredoc));
-	if (cnth > cnti && cnth != 0)
-		ft_rd_in(data, name, 0);
-	free(name);
+	if (cnth > cnti)
+		return (name);
+	else
+		return (free(name), NULL);
+	// 	ft_rd_in(data, name, index);
+	// free(name);
 }

@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 14:45:38 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/17 22:00:36 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/21 14:45:00 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	*ft_expand_return_code(char *str)
 {
 	char	*res;
 
-	res = ft_strjoin2(ft_strdup("{RETURN CODE}"), ft_strdup(&str[1]));
+	res = ft_itoa(g_global->rtn_val);
 	return (res);
 } 
 
@@ -34,7 +34,7 @@ char	**ft_init_expand(char **res, char *str, t_temp *temp, t_list	**env)
 
 char	*ft_copy_quotes(char *res, t_temp *temp)
 {
-	res = ft_strjoin(res, ft_get_str(&temp->str[(temp->i++)], 0));
+	res = ft_strjoin(res, ft_get_str(&temp->str[(temp->i)++], 0));
 	while (temp->str[temp->i] && temp->str[temp->i] != '\'')
 		temp->i++;
 	temp->i++;
@@ -68,10 +68,12 @@ char	ft_get_inverted_quote(char *str)
 	char	quote;
 	ssize_t	i;
 
-	if (!str)
+	if (!str || !*str)
 		return ('\"');
+	if (*str == 127)
+		return ('\'');
 	i = -1;
-	quote = str[0];
+	quote = 127;
 	while (str[++i])
 	{
 		if (str[i] && ft_issep(str[i]))
@@ -79,6 +81,8 @@ char	ft_get_inverted_quote(char *str)
 			quote = str[i++];
 			while (str[i] && str[i] != quote)
 				i++;
+			if (!str[i])
+				break;
 		}
 	}
 	if (quote == '\'')
@@ -108,15 +112,10 @@ char	*ft_expand_str(t_list **env, char *str)
 			res = ft_str_var(res, &temp);
 		else if (str[temp.i] == '\'')
 			res = ft_copy_quotes(res, &temp);
-		// else if (str[temp.i + 1] && str[temp.i] == '$'
-		// 	&& str[temp.i + 1] != '$' && !ft_issep(str[temp.i + 1])
-		// 	&& !ft_isspace(str[temp.i + 1]) && !ft_isspecchar(str[temp.i + 1]))
-		// 	res = ft_var(res, &temp);
 		else if (str[temp.i + 1] && str[temp.i] == '$' && (ft_is_valid_var_char(str[temp.i + 1]) || str[temp.i + 1] == '?'))
 			res = ft_var(res, &temp);
 		else if (str[temp.i] == '$' && ft_issep(str[temp.i + 1]))
 			temp.i++;
-			// res = ft_strjoin(res, ft_get_var(env, "HOME"));
 		else
 			res = ft_charjoin(res, str[temp.i++]);
 	}

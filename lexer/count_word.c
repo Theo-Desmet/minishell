@@ -90,6 +90,8 @@ size_t	ft_block_count(char *str)
 	size_t	i;
 	size_t	nb;
 
+	if (!str)
+		return (0);
 	i = 0;
 	nb = 0;
 	while (str[i])

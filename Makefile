@@ -14,9 +14,9 @@ CC = gcc
 
 # CFLAGS = -g3 -lrealine -Ofast libft/libft.az
 
-CFLAGS = -g3 #-Wall -Werror -Wextra
+CFLAGS = -g3 -I includes/#-Wall -Werror -Wextra
 
-FILES =  $(wildcard lexer/*.c) $(wildcard parser/*.c) $(wildcard expansions/*.c) main.c
+FILES = $(wildcard builtin/*.c) $(wildcard lexer/*.c) $(wildcard parser/*.c) $(wildcard expansions/*.c) main.c
 
 OBJS = $(FILES:.c=.o)
 

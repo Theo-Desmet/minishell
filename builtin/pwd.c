@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 14:00:47 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/15 10:28:29 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/20 14:50:44 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 int	ft_pwd(t_data *data)
 {
@@ -22,9 +22,9 @@ int	ft_pwd(t_data *data)
 	if (!cwd)
 		cwd = data->pwd;
 	temp = ft_strjoin(cwd, "\n");
-	ft_putstr(temp, NULL);
+	ft_printf("%s",temp);
 	free(temp);
-	return (1);
+	return (0);
 }
 
 char	*ft_pwd_str(void)
