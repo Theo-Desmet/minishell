@@ -19,7 +19,7 @@ char	*ft_get_var(t_list **env, char *str)
 	char	*content;
 
 	if (!env || !(*env))
-		return (ft_strdup(NULL));
+		return (NULL);
 	if (!ft_strcmp(str, "?"))
 		return (ft_expand_return_code(str));
 	if (ft_isdigit(*str))

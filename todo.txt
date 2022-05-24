@@ -7,4 +7,3 @@ Add:
 	Fonction d'execution des buildins customs
 	Gestion des signaux dans une execution
 	Faire un prompt joli :)
-

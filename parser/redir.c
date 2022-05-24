@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:39:16 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/24 11:01:23 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/04/26 19:39:16 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,10 +152,6 @@ void	ft_exec(t_data *data, t_list **env, char *arg)
 		ft_free_command_norme(arg);
 	if (!*command)
 	{
-		free(data);
-		free(g_global);
-		ft_lstdel_all(data->env);
-		ft_lstdel_all(data->wd);
 		ft_free_tab((void **)command);
 		exit(EXIT_SUCCESS);
 	}
@@ -163,20 +159,12 @@ void	ft_exec(t_data *data, t_list **env, char *arg)
 	path = ft_search_path(env, command[0]);
 	if (!path)
 	{
-		free(data);
-		free(g_global);
-		ft_lstdel_all(data->env);
-		ft_lstdel_all(data->wd);
 		ft_command_not_found(command[0]);
 		ft_free_tab((void **)command);
 		exit(127);
 	}
 	if (execve(path, command, ft_lst_to_tab(env)))
 	{
-		free(data);
-		free(g_global);
-		ft_lstdel_all(data->env);
-		ft_lstdel_all(data->wd);
 		ft_command_not_found(command[0]);
 		ft_free_tab((void **)command);
 		// free(path);
@@ -284,10 +272,7 @@ char	*ft_join_word(t_token **args)
 		&& args[i]->type != D_PIPE && args[i]->type != D_AND)
 	{
 		if (args[i]->type == WORD)
-		{
-			cmd = ft_strjoin(cmd, args[i]->val);
-			cmd = ft_strjoin(cmd, " ");
-		}
+			cmd = ft_strjoin1(ft_strjoin1(cmd, args[i]->val), " ");
 		i++;
 	}
 	if (!cmd || !(*cmd))
@@ -320,7 +305,7 @@ char	*ft_check_last_heredoc(t_data *data, t_token **args)
 			cnti = i;
 		i++;
 	}
-	name = ft_strjoin("/tmp/minishell", ft_itoa(data->act_heredoc));
+	name = ft_strjoin2("/tmp/minishell", ft_itoa(data->act_heredoc));
 	if (cnth > cnti)
 		return (name);
 	else

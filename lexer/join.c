@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:08:45 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/13 11:09:29 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/22 11:25:22 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	**ft_regroup_tokens(t_token **tokens, size_t *i, size_t *j, char **res)
 	if (tokens[*i] && !ft_islimit(tokens[*i]->type))
 	{
 		while (tokens[*i] && !ft_islimit(tokens[*i]->type))
-			temp = ft_strjoin(ft_strjoin(temp, tokens[(*i)++]->val), " ");
+			temp = ft_strjoin1(ft_strjoin1(temp, tokens[(*i)++]->val), " ");
 		if (temp[ft_strlen(temp) - 1] == ' ')
 			temp[ft_strlen(temp) - 1] = '\0';
 		res[(*j)++] = ft_strdup(temp);

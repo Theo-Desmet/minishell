@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 10:28:52 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/24 10:30:27 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/24 11:52:36 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,18 +173,22 @@ char	*ft_prompt(t_list **env)
 	char	*prompt;
 	char	*pwd;
 	char	*home;
+	char	*temp;
 
 	if (!*env)
 		return (ft_strdup("minishell > "));
 	pwd = ft_get_var(env, "PWD");
+	temp = pwd;
 	pwd = ft_strrchr(pwd, '/') + 1;
 	home = ft_get_var(env, "HOME");
-	prompt = ft_strjoin("\1\033[0;32m\2", ft_strjoin(ft_charjoin(ft_get_var(env, "LOGNAME"), '@'), "minishell\1\033[0;37m:\033[0;34m\2"));
+	prompt = ft_strjoin2("\1\033[0;32m\2", ft_strjoin1(ft_charjoin(ft_get_var(env, "LOGNAME"), '@'), "minishell\1\033[0;37m:\033[0;34m\2"));
 	if (ft_strstr(pwd, home))
-		prompt = ft_strjoin(prompt, ft_strjoin("~", pwd + ft_strlen(home)));
+		prompt = ft_strjoin1(prompt, ft_strjoin2("~", pwd + ft_strlen(home)));
 	else
-		prompt = ft_strjoin(prompt, pwd);
-	prompt = ft_strjoin(prompt, "\1\033[0;37m\2$ ");
+		prompt = ft_strjoin1(prompt, pwd);
+	prompt = ft_strjoin1(prompt, "\1\033[0;37m\2$ ");
+	free(home);
+	free(temp);
 	return (prompt);
 }
 
@@ -195,7 +199,7 @@ void    handler_int(int sig)
 		if (sig == SIGINT)
 		{
 			ft_putstr_fd("\b\b  \b\b\n", 1);
-			printf("$> ");
+			printf("%s", g_global->prompt);
 			g_global->rtn_val = 130;
 		}
 		else if (sig == SIGQUIT)
@@ -203,6 +207,7 @@ void    handler_int(int sig)
 	}
 	else if (sig == SIGINT)
 	{
+		ft_putstr_fd("\n", 1);
 		kill(g_global->pid, SIGINT);
 		g_global->rtn_val = 130;
 	}
@@ -212,13 +217,13 @@ int ft_sig_init(void)
 {
 	struct sigaction sig = {0};
 
-	g_global = malloc(sizeof(t_global));
-	if (!g_global)
-		return (0);
 	sig.sa_handler=&handler_int;
 	sigemptyset(&sig.sa_mask);
 	sigaction(SIGINT,&sig,0);
 	sigaction(SIGQUIT,&sig,0);
+	g_global = malloc(sizeof(t_global));
+	if (!g_global)
+		return (0);
 	g_global->in_exec = 0;
 	g_global->pid = 0;
 	g_global->rtn_val = 0;
@@ -235,7 +240,6 @@ int main(int ac, char **av, char **env)
 	char	**lexed; // Tableau des strings une fois "lexee"
 	char	*input;
 	char	**regrouped; // Tableau des strings "regroupees"
-	char	*prompt;
 	
 	ft_sig_init();
 	data = ft_init_data(env);
@@ -246,8 +250,8 @@ int main(int ac, char **av, char **env)
 		tokens = NULL;
 		final = NULL;
 		regrouped = NULL;
-		prompt = ft_prompt(data->env);
-		input = readline(prompt);
+		g_global->prompt = ft_prompt(data->env);
+		input = readline(g_global->prompt);
 		// input = readline("$> ");
 		if (!input)
 			break ;
@@ -294,18 +298,21 @@ int main(int ac, char **av, char **env)
 			ft_free_loop((void **)lexed, (void **)regrouped, tokens, final);
 			g_global->in_exec = 0;
 		}
-		free(prompt);
+		free(g_global->prompt);
 		free(input);
 	}
-	free(prompt);
+	free(g_global->prompt);
 	printf("exit\n");
 	rl_clear_history();
-
+	free(g_global);
+	if (data->pipes)
+		ft_free_tab((void **)data->pipes);
+	if (data->childs)
+		free(data->childs);
 	ft_lstdel_all(data->env);
 	ft_lstdel_all(data->wd);
 	free(data);
-	free(g_global);
 	ft_free_loop((void **)lexed, (void **)regrouped, tokens, final);
-
+	free(g_global);
 	return (0);
 }

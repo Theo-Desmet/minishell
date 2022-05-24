@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 14:45:38 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/21 14:45:00 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/23 00:08:37 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ char	*ft_expand_wildcard(t_list **wd, char *val, t_list **env)
 	}
 	free(val);
 	while (temp[i])
-		res = ft_strjoin(ft_strjoin(res, temp[i++]), " ");
+		res = ft_strjoin1(ft_strjoin1(res, temp[i++]), " ");
 	ft_free_tab((void **)temp);
 	ft_lstclear(wd, free);
 	return (res);
