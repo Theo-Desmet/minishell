@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:39:16 by bbordere          #+#    #+#             */
-/*   Updated: 2022/04/26 19:39:16 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/24 11:01:23 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ void	ft_get_cmd(char **command)
 	}
 }
 
-void	ft_exec(t_list **env, char *arg)
+void	ft_exec(t_data *data, t_list **env, char *arg)
 {
 	char	**command;
 	char	*path;
@@ -152,6 +152,10 @@ void	ft_exec(t_list **env, char *arg)
 		ft_free_command_norme(arg);
 	if (!*command)
 	{
+		free(data);
+		free(g_global);
+		ft_lstdel_all(data->env);
+		ft_lstdel_all(data->wd);
 		ft_free_tab((void **)command);
 		exit(EXIT_SUCCESS);
 	}
@@ -159,12 +163,20 @@ void	ft_exec(t_list **env, char *arg)
 	path = ft_search_path(env, command[0]);
 	if (!path)
 	{
+		free(data);
+		free(g_global);
+		ft_lstdel_all(data->env);
+		ft_lstdel_all(data->wd);
 		ft_command_not_found(command[0]);
 		ft_free_tab((void **)command);
 		exit(127);
 	}
 	if (execve(path, command, ft_lst_to_tab(env)))
 	{
+		free(data);
+		free(g_global);
+		ft_lstdel_all(data->env);
+		ft_lstdel_all(data->wd);
 		ft_command_not_found(command[0]);
 		ft_free_tab((void **)command);
 		// free(path);

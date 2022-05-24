@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 08:10:05 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/20 14:46:16 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/23 15:45:13 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ char	*ft_check_unset_arg(char *str)
 	i = 0;
 	while (str && str[i])
 	{
-		if (!ft_isalnum(str[i]))
+		if (!ft_isalnum(str[i]) && str[i] != '_')
 		{
-			ft_putstr_fd("minishell: `unset': `", 2);
+			ft_putstr_fd("minishell: unset: `", 2);
 			ft_putstr_fd(str, 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
 			return (NULL);

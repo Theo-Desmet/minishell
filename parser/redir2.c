@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 13:41:13 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/21 13:55:43 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/24 10:51:24 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	ft_exec_builtin_pipe(t_data *data, t_token **args)
 	else if (!ft_strcmp("unset", cmd[0]))
 			g_global->rtn_val = ft_unset(data->env, cmd);
 	else if (!ft_strcmp("exit", cmd[0]))
-			;
+			ft_exit(cmd);
 	exit(g_global->rtn_val);
 }
 
@@ -105,7 +105,7 @@ void	ft_exec_first(t_data *data, t_token **args)
 		if (ft_check_builtin(data, args))
 			ft_exec_builtin_pipe(data, args);
 		else
-			ft_exec(data->env, cmd);
+			ft_exec(data, data->env, cmd);
 		//ft_free_data(data);
 	}
 	else
@@ -141,7 +141,7 @@ void	ft_exec_mid(t_data *data, t_token **args, int i)
 		if (ft_check_builtin(data, args))
 			ft_exec_builtin_pipe(data, args);
 		else
-			ft_exec(data->env, cmd);
+			ft_exec(data, data->env, cmd);
 		//ft_free_data(data);
 	}
 	else
@@ -174,7 +174,7 @@ void	ft_exec_last(t_data *data, t_token **args, int last)
 		if (ft_check_builtin(data, args))
 			ft_exec_builtin_pipe(data, args);
 		else
-			ft_exec(data->env, cmd);
+			ft_exec(data, data->env, cmd);
 	}
 	else
 		ft_close(data->fd_out, data->pipes[last - 1][0]);
@@ -308,7 +308,7 @@ int     ft_exec_builtin(t_data *data, t_token **args)
 		else if (!ft_strcmp("unset", cmd[0]))
 				g_global->rtn_val = ft_unset(data->env, cmd);
 		else if (!ft_strcmp("exit", cmd[0]))
-				;
+				ft_exit(cmd);
 }
 
 void	ft_cmd(t_data *data, t_token **args)
@@ -333,7 +333,7 @@ void	ft_cmd(t_data *data, t_token **args)
 		dup2(data->fd_in, STDIN_FILENO);
 		dup2(data->fd_out, STDOUT_FILENO);
 		cmd = ft_join_word(args);
-		ft_exec(data->env, cmd);
+		ft_exec(data, data->env, cmd);
 	}
 	else
 	{

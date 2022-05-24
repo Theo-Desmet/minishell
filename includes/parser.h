@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 15:20:53 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/21 11:56:03 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/24 10:54:25 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,15 @@ char	*ft_check_last_heredoc(t_data *data, t_token **args);
 void	ft_redirection(t_data *data, t_token **args, int index);
 void	ft_rd_in(t_data *data, char *arg, int i);
 char	*ft_join_word(t_token **args);
-void	ft_exec(t_list **env, char *arg);
+void	ft_exec(t_data *data, t_list **env, char *arg);
 void	ft_find_heredoc(t_data *data, t_token **args);
+void    ft_lstdel_all(t_list **lst);
 int     ft_cd(t_data *data, char **str);
 int     ft_echo(char **args);
 int     ft_env(t_list **env);
 int	ft_export(t_list **env, char **arg);
 int     ft_pwd(t_data *data);
 int	ft_unset(t_list **env, char **arg);
-
-
-
+void	ft_exit(char **args);
 
 #endif

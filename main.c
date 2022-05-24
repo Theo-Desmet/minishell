@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 10:28:52 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/21 13:51:40 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/24 10:30:27 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,14 +210,15 @@ void    handler_int(int sig)
 
 int ft_sig_init(void)
 {
-	struct sigaction sig_int;
+	struct sigaction sig = {0};
 
 	g_global = malloc(sizeof(t_global));
 	if (!g_global)
 		return (0);
-	sig_int.sa_handler=&handler_int;
-	sigaction(SIGINT,&sig_int,0);
-	sigaction(SIGQUIT,&sig_int,0);
+	sig.sa_handler=&handler_int;
+	sigemptyset(&sig.sa_mask);
+	sigaction(SIGINT,&sig,0);
+	sigaction(SIGQUIT,&sig,0);
 	g_global->in_exec = 0;
 	g_global->pid = 0;
 	g_global->rtn_val = 0;
@@ -303,6 +304,7 @@ int main(int ac, char **av, char **env)
 	ft_lstdel_all(data->env);
 	ft_lstdel_all(data->wd);
 	free(data);
+	free(g_global);
 	ft_free_loop((void **)lexed, (void **)regrouped, tokens, final);
 
 	return (0);

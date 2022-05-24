@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:34:37 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/20 14:51:51 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/23 14:46:51 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,18 @@ int	ft_env_size(t_list **env)
 
 void	ft_print_export(char *name)
 {
-	size_t	i;
+	ssize_t	i;
 	int		egal;
 
-	i = 0;
+	i = -1;
 	egal = 0;
 	ft_printf("declare -x ");
-	while (name[i] && (ft_isalnum(name[i]) || name[i] == '_'))
-	{
+	while (name[++i] && (ft_isalnum(name[i]) || name[i] == '_'))
 		ft_printf("%c", name[i]);
-		i++;
+	if (!name[i])
+	{
+		ft_printf("\n");
+		return ;
 	}
 	ft_printf("%c", name[i]);
 	if (name[i] == '=')
@@ -46,11 +48,8 @@ void	ft_print_export(char *name)
 	else
 		egal = 1;
 	i++;
-	while (name[i])
-	{
+	while (name[++i])
 		ft_printf("%c", name[i]);
-		i++;
-	}
 	if (!egal)
 		ft_printf("\"");
 	ft_printf("\n");

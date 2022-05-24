@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 11:28:05 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/20 14:46:04 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/23 15:11:46 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	ft_check_export_arg(t_list **env, char *str)
 			return (ft_parse_add_env(env, str),2);
 		if (!(ft_isalnum(str[i]) || str[i] == '_'))
 		{
-			ft_putstr_fd("minishell: `export': `", 2);
+			ft_putstr_fd("minishell: export: `", 2);
 			ft_putstr_fd(str, 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
 			return (1);
@@ -77,7 +77,7 @@ char	*ft_name_env(char *str)
 	while (str[i] && str[i] != '=')
 		i++;
 	name = ft_strdup(str);
-	name[i + 1] = 0;
+	name = ft_charjoin(name, 0);
 	return (name);
 }
 

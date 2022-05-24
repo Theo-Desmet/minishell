@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 10:38:00 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/20 14:56:43 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/24 09:28:10 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,8 @@ char	*ft_pwd_str(void);
 int	ft_unset(t_list **env, char **arg);
 void    ft_del_env(t_list **env, char *str);
 char    *ft_check_unset_arg(char *str);
+
+void	ft_exit(char **args);
+int	ft_free_all(char *rtn);
 
 #endif

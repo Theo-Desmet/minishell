@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 13:51:41 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/20 14:45:39 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/23 13:53:57 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,17 @@ int	ft_cd_home(t_data *data, char **str)
 
 int	ft_cd_error(char **str)
 {
+	char	*msg;
+
+	msg = NULL;
 	if (str[2])
 	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
 		return (1);
 	}
-	perror("minishell: cd");
+	msg = ft_strjoin("minishell: cd: ", str[1]);
+	perror(msg);
+	free(msg);
 	return (1);
 }
 
