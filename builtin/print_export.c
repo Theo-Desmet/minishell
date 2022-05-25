@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:34:37 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/23 14:46:51 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/25 09:36:43 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	ft_print_export(char *name)
 		ft_printf("\"");
 	else
 		egal = 1;
-	i++;
+	//i++;
 	while (name[++i])
 		ft_printf("%c", name[i]);
 	if (!egal)

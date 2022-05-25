@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 11:28:05 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/23 15:11:46 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/25 16:18:57 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,20 @@ int	ft_parse_add_env(t_list **env, char *str)
 	while (temp && ft_strncmp(name, temp->content, ft_strlen(name)))
 		temp = temp->next;
 	if (!temp)
-		ft_lstadd_back(env, ft_lstnew(ft_strjoin(name, str)));//leak ???
+	{
+		name = ft_strjoin1(name, str);
+		ft_lstadd_back(env, ft_lstnew(name));
+	}
 	else
 	{
 		i = 0;
 		while (name[i] && name[i] != '=')
 			i++;
 		if (name[i] == '=')
-			temp->content = ft_strjoin(temp->content, str);//leak ???
+		{
+			free(name);
+			temp->content = ft_strjoin1(temp->content, str);
+		}
 	}
 }
 
@@ -76,8 +82,10 @@ char	*ft_name_env(char *str)
 	i = 0;
 	while (str[i] && str[i] != '=')
 		i++;
+	if (str[i])
+		i++;
 	name = ft_strdup(str);
-	name = ft_charjoin(name, 0);
+	name[i] = 0;
 	return (name);
 }
 
@@ -98,15 +106,16 @@ void	ft_add_env(t_list **env, char *str, char *name)
 	while (temp && (ft_strncmp(name, temp->content, name_lenght)
 			&& ft_strcmp(name2, temp->content)))
 		temp = temp->next;
+	free(name2);
 	if (!temp)
-		ft_lstadd_back(env, ft_lstnew(str));
+		ft_lstadd_back(env, ft_lstnew(ft_strdup(str)));
 	else
 	{
 		i = 0;
 		while (name[i] && name[i] != '=')
 			i++;
 		if (name[i] == '=')
-			temp->content = str;
+			temp->content = ft_strdup(str);
 	}
 }
 
@@ -120,12 +129,14 @@ int 	ft_export(t_list **env, char **arg)
 	i = 1;
 	temp = 0;
 	ret = 0;
-	if (env && !arg[1])
+	if (*env && !arg[1])
 		return (ft_sort_export(env), 0);
 	while (arg && arg[i])
 	{
 		if (ft_check_export_arg(env, arg[i]) == 0)
 		{
+			if (!(*env) && arg[i])
+				ft_lstadd_back(env, ft_lstnew(ft_strdup(arg[i])));
 			name = ft_name_env(arg[i]);
 			ft_add_env(env, arg[i], name);
 			free(name);

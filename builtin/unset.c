@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 08:10:05 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/23 15:45:13 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/25 16:51:15 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	ft_del_env(t_list **env, char *str)
 
 	temp = *env;
 	name_lenght = ft_strlen(str);
+	ft_printf("fuck");
 	if (temp->next && !ft_strncmp(temp->next->content, str, name_lenght))
 	{
 		*env = (*env)->next;
@@ -67,7 +68,7 @@ int	ft_unset(t_list **env, char **arg)
 
 	i = 1;
 	ret = 0;
-	while (arg && env && arg[i])
+	while (arg && arg[i] && env && *env)
 	{
 		name = NULL;
 		name = ft_check_unset_arg(arg[i]);
