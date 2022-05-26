@@ -21,7 +21,7 @@ char	*ft_get_var(t_list **env, char *str)
 	if (!env || !(*env))
 		return (NULL);
 	if (!ft_strcmp(str, "?"))
-		return (ft_expand_return_code(str));
+		return (ft_itoa(g_global.rtn_val));
 	if (ft_isdigit(*str))
 		return (&str[1]);
 	temp = *env;
@@ -51,7 +51,8 @@ char	**ft_extract_var(char *str)
 		return (NULL);
 	while (str[i])
 	{
-		if (str[i + 1] && str[i] == '$' && (ft_is_valid_var_char(str[i + 1]) || str[i + 1] == '?'))
+		if (str[i + 1] && str[i] == '$' && (ft_valid_var_char(str[i + 1])
+				|| str[i + 1] == '?'))
 			res[j++] = ft_substr(str, i, ft_len_vars(str, i));
 		i++;
 	}
@@ -61,11 +62,12 @@ char	**ft_extract_var(char *str)
 
 char	*ft_var(char *res, t_temp *temp)
 {
-	res = ft_strjoin(res, ft_get_var(temp->env, temp->vars[(temp->j)++] + 1));
-	while (temp->str[temp->i + 1] && (ft_is_valid_var_char(temp->str[temp->i + 1]) || temp->str[temp->i + 1] == '?'))
+	res = ft_strjoin3(res, ft_get_var(temp->env, temp->vars[(temp->j)++] + 1));
+	while (temp->str[temp->i + 1] && (ft_valid_var_char(temp->str[temp->i + 1])
+			|| temp->str[temp->i + 1] == '?'))
 	{
 		if (temp->str[temp->i] == '?')
-			break;
+			break ;
 		(temp->i)++;
 	}
 	(temp->i)++;
@@ -77,7 +79,9 @@ char	*ft_str_var(char *res, t_temp *temp)
 	(temp->i)++;
 	while (temp->str[(temp->i)] && temp->str[(temp->i)] != '\"')
 	{
-		if (temp->str[temp->i + 1] && temp->str[temp->i] == '$' && (ft_is_valid_var_char(temp->str[temp->i + 1]) || temp->str[temp->i + 1] == '?'))
+		if (temp->str[temp->i + 1] && temp->str[temp->i] == '$'
+			&& (ft_valid_var_char(temp->str[temp->i + 1])
+				|| temp->str[temp->i + 1] == '?'))
 			res = ft_var(res, temp);
 		else
 			res = ft_charjoin(res, temp->str[(temp->i++)]);

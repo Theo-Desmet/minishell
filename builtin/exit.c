@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 08:34:09 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/26 11:41:40 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/26 15:42:27 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_exit_chiant(char **args, char *rtn, int i)
 {
 	if (rtn[i])
 	{
-		rtn = ft_itoa(g_global->rtn_val);
+		rtn = ft_itoa(g_global.rtn_val);
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(args[1], 2);
 		ft_putstr_fd(": numeric argument required", 2);
@@ -29,7 +29,7 @@ void	ft_exit_chiant(char **args, char *rtn, int i)
 	}
 	if (args[1] && args[2])
 	{
-		rtn = ft_itoa(g_global->rtn_val);
+		rtn = ft_itoa(g_global.rtn_val);
 		ft_putstr_fd("minishell: exit: too many arguments", 2);
 		ft_free_all(rtn);
 	}
@@ -42,7 +42,7 @@ void	ft_exit(char **args)
 
 	i = 0;
 	if (!args || !args[1])
-		rtn = ft_itoa(g_global->rtn_val);
+		rtn = ft_itoa(g_global.rtn_val);
 	else
 		rtn = args[1];
 	ft_printf("exit\n");

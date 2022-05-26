@@ -21,12 +21,13 @@ size_t	ft_count_vars(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i + 1] && str[i] == '$' && (ft_is_valid_var_char(str[i + 1]) || str[i + 1] == '?'))
+		if (str[i + 1] && str[i] == '$' && (ft_valid_var_char(str[i + 1])
+				|| str[i + 1] == '?'))
 		{
-			while (str[i] && (ft_is_valid_var_char(str[i]) || str[i] == '?'))
+			while (str[i] && (ft_valid_var_char(str[i]) || str[i] == '?'))
 			{
 				if (i == 1 && ft_isdigit(str[i + 1]))
-					break;
+					break ;
 				i++;
 			}
 			nb++;
@@ -42,7 +43,8 @@ size_t	ft_len_vars(char *str, size_t i)
 
 	i++;
 	size = 0;
-	while (str[i - 1] && str[i] && (ft_is_valid_var_char(str[i]) || (str[i] == '?' && str[i - 1] == '$')))
+	while (str[i - 1] && str[i] && (ft_valid_var_char(str[i])
+			|| (str[i] == '?' && str[i - 1] == '$')))
 	{
 		if (str[i] == '?')
 			return (2);
@@ -76,4 +78,10 @@ void	ft_init_temp(t_temp *temp, char **vars, char *str, t_list **env)
 	temp->env = env;
 	temp->i = 0;
 	temp->j = 0;
+}
+
+int	ft_valid_var_char(int c)
+{
+	return (c != '$' && !ft_issep(c) && !ft_ispar(c) && !ft_isspace(c)
+		&& !ft_isspecchar(c) && (ft_isalnum(c) || c == '_'));
 }

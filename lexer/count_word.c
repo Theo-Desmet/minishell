@@ -97,20 +97,7 @@ size_t	ft_block_count(char *str)
 	while (str[i])
 	{
 		ft_skip_spaces(str, &i);
-		if ((str[i] == '&' && str[i + 1] == '&')
-			|| (str[i] && ft_ispar(str[i])))
-		{
-			i = i + 1 + !(str[i] && ft_ispar(str[i]));
-			nb++;
-		}
-		else if (str[i] == '$' || (str[i] == '&' && str[i + 1] != '&'
-				&& !ft_issep(str[i + 1]) && !ft_isspace(str[i + 1])
-				&& !ft_isspecchar(str[i + 1]) && !ft_ispar(str[i + 1])))
-			ft_count_var(str, &i, &nb);
-		else if (str[i] && ft_isspecchar(str[i]))
-			ft_count_word_spec(str, &i, &nb);
-		else if (str[i])
-			ft_count_word(str, &i, &nb);
+		ft_get_count(str, &i, &nb);
 		ft_skip_spaces(str, &i);
 	}
 	return (nb);

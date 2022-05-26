@@ -42,6 +42,9 @@ int				ft_isspecchar(int c);
 int				ft_ispar(int c);
 int				ft_issep(int c);
 int				ft_wildcard(t_list **wd, char *str);
-int		ft_is_valid_var_char(int c);
+int				ft_valid_var_char(int c);
+char			*ft_copy_quotes(char *res, t_temp *temp);
+char			*ft_frame_str(char *str, char c);
+char			ft_get_inverted_quote(char *str);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 15:21:42 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/19 12:41:27 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/26 16:39:00 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,14 @@ int	ft_isvalidtype(int type)
 		|| type == VAR || type == OUT_FILE || type == OUT_A_FILE || type == WILDCARD);
 }
 
+int	ft_isredir(t_token *token)
+{
+	return (token->type == R_APPEND || token->type == R_HERE_DOC
+		|| token->type == R_IN || token->type == R_OUT
+		|| token->type == OUT_A_FILE || token->type == OUT_FILE
+		|| token->type == IN_FILE || token->type == DELIMITER);
+}
+
 int	ft_check_op(t_token **tokens, size_t i)
 {
 	if (i == 0 && tokens[i + 1])
@@ -43,7 +51,7 @@ int	ft_check_op(t_token **tokens, size_t i)
 	else if (tokens[i]->type == R_OUT)
 		return (ft_isvalidtype(tokens[i - 1]->type)
 			&& ft_isvalidtype(tokens[i + 1]->type));
-	else if (tokens[i]->type == R_APPEND)
+	else if (tokens[i]->type == R_APPEND || tokens[i]->type == D_AND || tokens[i]->type == D_PIPE)
 		return (ft_isvalidtype(tokens[i + 1]->type));
 	return (1);
 }

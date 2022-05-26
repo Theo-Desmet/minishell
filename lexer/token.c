@@ -12,20 +12,6 @@
 
 #include "lexer.h"
 
-int	ft_isfulldollar(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] != '$' && !ft_issep(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 void	ft_skip_quotes(char *val, ssize_t *i)
 {
 	char	sep;
@@ -35,7 +21,6 @@ void	ft_skip_quotes(char *val, ssize_t *i)
 	while (val[*i] && val[*i] != sep)
 		(*i)++;
 }
-
 
 int	ft_iswildcard(char *val)
 {

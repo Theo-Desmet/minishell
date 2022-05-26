@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 12:07:21 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/14 19:07:49 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/26 15:55:24 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,17 @@ size_t	ft_size_str(char *str, int i)
 	size_t	size;
 	char	sep;
 
-	if (str[i] == '$' && ft_strlen(&str[i]) != 1)
-		str[i] = 127;
 	if (ft_strlen(str) == 1)
 		return (1);
 	size = 0;
-	while (str[i + size] && !ft_isspace(str[i + size]) && !ft_isspecchar(str[i + size]) 
-			&& !ft_ispar(str[i + size]) && !(str[i + size] == '&' && str[i + 1 + size] == '&'))
+	while (str[i + size] && !ft_isspace(str[i + size])
+		&& !ft_isspecchar(str[i + size]) && !ft_ispar(str[i + size])
+		&& !(str[i + size] == '&' && str[i + 1 + size] == '&'))
 	{
 		if (ft_issep(str[i + size]))
 		{
 			sep = str[i + size++];
-			while (str[i + size] && str[i + size] != sep)// && !ft_isspecchar(str[i + size]))
+			while (str[i + size] && str[i + size] != sep)
 				size++;
 			if (str[i + size])
 				size++;
@@ -64,14 +63,16 @@ size_t	ft_word_size(char *str, size_t i)
 	size = 0;
 	if (str[i])
 	{
-		if ((str[i + 1] && str[i] == '$' && !ft_issep(str[i + 1])) || (str[i] == '&' && str[i + 1] != '&'
-				&& !ft_issep(str[i + 1]) && !ft_isspace(str[i + 1])
-				&& !ft_isspecchar(str[i + 1]) && !ft_ispar(str[i + 1])))
+		if ((str[i + 1] && str[i] == '$' && !ft_issep(str[i + 1]))
+			|| (str[i] == '&' && str[i + 1] != '&' && !ft_issep(str[i + 1])
+				&& !ft_isspace(str[i + 1]) && !ft_isspecchar(str[i + 1])
+				&& !ft_ispar(str[i + 1])))
 			return (ft_size_var(str, i));
 		else if (str[i + 1] && str[i] == '&' && str[i + 1] == '&')
 			return (2);
-		else if ((str[i + 1] && ft_ispar(str[i])) || (ft_isspecchar(str[i])
-				&& !ft_isspecchar(str[i + 1])) || (ft_isspecchar(str[i]) && str[i + 1] != str[i]))
+		else if ((ft_ispar(str[i])) || (str[i + 1] && ft_isspecchar(str[i])
+				&& !ft_isspecchar(str[i + 1]))
+			|| (ft_isspecchar(str[i]) && str[i + 1] != str[i]))
 			return (1);
 		else if (str[i + 1] && ft_isspecchar(str[i])
 			&& ft_isspecchar(str[i + 1]))
@@ -96,7 +97,10 @@ void	ft_fill_tab(char *str, size_t *i, size_t *j, char **res)
 		ft_skip_sep(str, j);
 	temp = ft_substr(str, *j, ft_word_size(str, *j));
 	if (!temp)
-		return ; //free all tab + return NULL
+	{
+		ft_free_tab((void **)res);
+		return ;
+	}
 	res[*i] = temp;
 	*j += ft_word_size(str, *j);
 	(*i)++;

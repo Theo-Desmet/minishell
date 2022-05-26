@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 10:28:52 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/24 11:52:36 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/26 15:53:24 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,27 +47,67 @@ t_list	**ft_init_wd(t_list **wd)
 	return (wd);
 }
 
-t_data	*ft_init_data(char **envp)
+t_lexer	*ft_init_lexer(void)
 {
-	t_data	*data;
+	t_lexer	*lexer;
 
-	data = malloc(sizeof(t_data));
-	if (!data)
-		return (NULL);//modifier secu err dans main
-	data->env = ft_init_env(data->env, envp);
-	if (!data->env)
+	lexer = malloc(sizeof(t_lexer));
+	if (!lexer)
 		return (NULL);
-	data->wd = ft_init_wd(data->wd);
-	if (!data->wd)
+	lexer->input = NULL;
+	lexer->lexed = NULL;
+	lexer->tokens = NULL;
+	return (lexer);
+}
+
+t_data    *ft_init_data(char **envp)
+{
+    t_data    *data;
+
+    data = malloc(sizeof(t_data));
+    if (!data)
+        return (NULL);//modifier secu err dans main
+    data->env = ft_init_env(data->env, envp);
+    if (!data->env)
+        return (NULL);
+    data->wd = ft_init_wd(data->wd);
+    if (!data->wd)
+        return (NULL);
+    data->fd_in = STDIN_FILENO;
+    data->fd_out = STDOUT_FILENO;
+    data->pwd = ft_strdup("");
+    data->rtn_val = 0;
+    data->nb_heredoc = 0;
+    data->act_heredoc = -1;
+    data->childs = NULL;
+    data->pipes = NULL;
+	data->lexer = ft_init_lexer();
+	if (!data->lexer)
 		return (NULL);
-	data->fd_in = STDIN_FILENO;
-	data->fd_out = STDOUT_FILENO;
-	data->rtn_val = 0;
-	data->nb_heredoc = 0;
-	data->act_heredoc = -1;
-	data->childs = NULL;
-	data->pipes = NULL;
-	return (data);
+    return (data);
+}
+
+char	**ft_lst_to_tab(t_list **lst)
+{
+	t_list	*temp;
+	char	**res;
+	size_t	i;
+
+	temp = *lst;
+	res = malloc(sizeof(char *) * (ft_lstsize(temp) + 1));
+	if (!res)
+		return (NULL);
+	i = 0;
+	while (temp)
+	{
+		res[i] = ft_strdup(((char *)temp->content));
+		if (!res[i])
+			return (NULL);// FREE ALL
+		i++;
+		temp = temp->next;
+	}
+	res[i] = NULL;
+	return (res);
 }
 
 void	ft_lstdel_all(t_list **lst)
@@ -148,59 +188,48 @@ void	ft_update_type(t_token **tokens, int mode) // Mode sert juste a rechanger l
 	}	
 }
 
-void	ft_free_loop(void **lexed, void **regrouped, t_token **tokens, t_token **final)
+char    *ft_prompt(t_list **env)
 {
-	if (lexed)
-		ft_free((void **)lexed);
-	if (regrouped)
-		ft_free((void **)regrouped);
-	if (tokens)
-		ft_free_tokens(tokens);
-	if (final)
-		ft_free_tokens(final);
-	lexed = NULL;
-	regrouped = NULL;
-	tokens = NULL;
-	final = NULL;
-}
+    char    *prompt;
+    char    *pwd;
+    char    *home;
+    char    *temp;
 
-/*
-Pour skip suppress les leaks de readline avec valgrind : valgrind --suppressions=rl ./minishell
-*/
-
-char	*ft_prompt(t_list **env)
-{
-	char	*prompt;
-	char	*pwd;
-	char	*home;
-	char	*temp;
-
-	if (!*env)
-		return (ft_strdup("minishell > "));
-	pwd = ft_get_var(env, "PWD");
-	temp = pwd;
-	pwd = ft_strrchr(pwd, '/') + 1;
-	home = ft_get_var(env, "HOME");
-	prompt = ft_strjoin2("\1\033[0;32m\2", ft_strjoin1(ft_charjoin(ft_get_var(env, "LOGNAME"), '@'), "minishell\1\033[0;37m:\033[0;34m\2"));
-	if (ft_strstr(pwd, home))
-		prompt = ft_strjoin1(prompt, ft_strjoin2("~", pwd + ft_strlen(home)));
-	else
-		prompt = ft_strjoin1(prompt, pwd);
-	prompt = ft_strjoin1(prompt, "\1\033[0;37m\2$ ");
-	free(home);
-	free(temp);
-	return (prompt);
+    if (!*env)
+        return (ft_strdup("minishell > "));
+    pwd = ft_get_var(env, "PWD");
+    if (!*pwd)
+        return (free(pwd), ft_strdup("minishell > "));
+    temp = pwd;
+    pwd = ft_strrchr(pwd, '/') + 1;
+    home = ft_get_var(env, "HOME");
+    if (!*home)
+        return (free(temp), free(home), ft_strdup("minishell > "));
+    prompt = ft_strjoin2("\1\033[0;31m\2", ft_strjoin1(ft_charjoin(ft_get_var(env, "LOGNAME"), '@'),
+		"minishell\1\033[0;37m:\033[0;33m\2"));
+    if (ft_strstr(pwd, home))
+        prompt = ft_strjoin1(prompt, ft_strjoin2("~", pwd + ft_strlen(home)));
+    else
+        prompt = ft_strjoin1(prompt, pwd);
+    prompt = ft_strjoin1(prompt, "\1\033[0;37m\2$ ");
+    free(home);
+    free(temp);
+    return (prompt);
 }
 
 void    handler_int(int sig)
 {
-	if (g_global->in_exec == 0)
+
+	if (g_global.in_exec == 0)
 	{
 		if (sig == SIGINT)
 		{
-			ft_putstr_fd("\b\b  \b\b\n", 1);
-			printf("%s", g_global->prompt);
-			g_global->rtn_val = 130;
+			write(1, "\n", 1); // Move to a new line
+			rl_replace_line("", 0); // Clear the previous text
+			rl_on_new_line();
+			if (g_global.pid == 0)
+				rl_redisplay();
+			g_global.rtn_val = 130;
 		}
 		else if (sig == SIGQUIT)
 			ft_putstr_fd("\b\b  \b\b\n", 1);
@@ -208,111 +237,109 @@ void    handler_int(int sig)
 	else if (sig == SIGINT)
 	{
 		ft_putstr_fd("\n", 1);
-		kill(g_global->pid, SIGINT);
-		g_global->rtn_val = 130;
+		g_global.rtn_val = 130;
+		kill(g_global.pid, SIGINT);
 	}
 }
 
 int ft_sig_init(void)
 {
-	struct sigaction sig = {0};
+	struct sigaction sig;
+	t_global g_global;
 
 	sig.sa_handler=&handler_int;
 	sigemptyset(&sig.sa_mask);
-	sigaction(SIGINT,&sig,0);
-	sigaction(SIGQUIT,&sig,0);
-	g_global = malloc(sizeof(t_global));
-	if (!g_global)
-		return (0);
-	g_global->in_exec = 0;
-	g_global->pid = 0;
-	g_global->rtn_val = 0;
+	signal(SIGINT, &handler_int);
+	signal(SIGABRT, &handler_int);
+	signal(SIGSEGV, &handler_int);
+	g_global.in_exec = 0;
+	g_global.pid = -1;
+	g_global.rtn_val = 0;
 	return (1);
 }
 
-t_global	*g_global;
-
-int main(int ac, char **av, char **env)
+void	ft_free_lexer(t_data *data)
 {
-	t_data *data;
-	t_token **tokens; //Premier tableau de tokens
-	t_token	**final; // Tableau de tokens une fois regroupe
-	char	**lexed; // Tableau des strings une fois "lexee"
-	char	*input;
-	char	**regrouped; // Tableau des strings "regroupees"
-	
-	ft_sig_init();
-	data = ft_init_data(env);
-	while (1)
-	{
-		input = NULL;
-		lexed = NULL;
-		tokens = NULL;
-		final = NULL;
-		regrouped = NULL;
-		g_global->prompt = ft_prompt(data->env);
-		input = readline(g_global->prompt);
-		// input = readline("$> ");
-		if (!input)
-			break ;
-		if (*input)
-		{
-			g_global->in_exec = 1;
-			add_history(input);
-			lexed = ft_lexer(input);
-			tokens = ft_tokenize(lexed);
+	if (data->lexer->lexed)
+		data->lexer->lexed = ft_free_tab((void **)data->lexer->lexed);
+	if (data->lexer->tokens)
+		data->lexer->tokens = ft_free_tokens(data->lexer->tokens);
+	if (data->lexer->input)
+		free(data->lexer->input);
+	data->lexer->input = NULL;
+}
 
-			if (!ft_check_grammar(tokens)) // Renvoie le msg d'erreur dans la fonction ft_check_grammar
-			{
-				ft_free((void **)lexed);
-				ft_free_tokens(tokens);
-				free(input);
-				continue ;
-			}
-			ft_update_type(tokens, 0);
-			ft_expand(tokens, data->env, data->wd);
-			regrouped = ft_join(tokens);
-			final = ft_tokenize(regrouped);
-			ft_update_type(final, 1);
-			ft_pipeline(data, final);
-			// int i = 0;
-			// while (final[i])
-			// {
-			// 	printf("%s:%d\n", final[i]->val, final[i]->type);
-			// 	i++;
-			// }			
-			// int i = 0;
-			// while (tokens[i])
-			// {
-			// 	printf("%s : %d -%d-\n", tokens[i]->val, tokens[i]->type, ft_strcmp(tokens[i]->val, "\'\'"));
-			// 	i++;
-			// }
-			// int i = 0;
-			// while (lexed[i])
-			// {
-			// 	printf("%s\n", lexed[i]);
-			// 	i++;
-			// }
-			// ft_check_builtin(final);  //Desactiver pour les tests de pipes
-			// ft_check_separator(data, final, data->env); // Changer le nom de la fonction
-			ft_free_loop((void **)lexed, (void **)regrouped, tokens, final);
-			g_global->in_exec = 0;
-		}
-		free(g_global->prompt);
-		free(input);
-	}
-	free(g_global->prompt);
-	printf("exit\n");
-	rl_clear_history();
-	free(g_global);
+int	ft_get_cmd_line(t_data *data)
+{
+	data->lexer->lexed = ft_lexer(data->lexer->input);
+	data->lexer->tokens = ft_tokenize(data->lexer->lexed);
+	data->fd_in = dup(STDIN_FILENO);
+	data->fd_out = dup(STDOUT_FILENO);
+	if (!ft_check_grammar(data->lexer->tokens))
+		return (ft_free_lexer(data), -1);
+	ft_update_type(data->lexer->tokens, 0);
+	ft_expand(data->lexer->tokens, data->env, data->wd);
+	ft_free_tab((void **)data->lexer->lexed);
+	data->lexer->lexed = ft_join(data->lexer->tokens);
+	ft_free_tokens(data->lexer->tokens);
+	data->lexer->tokens = ft_tokenize(data->lexer->lexed);
+	ft_update_type(data->lexer->tokens, 1);
+	return (0);
+}
+
+void	ft_free_data(t_data *data)
+{
 	if (data->pipes)
 		ft_free_tab((void **)data->pipes);
 	if (data->childs)
 		free(data->childs);
 	ft_lstdel_all(data->env);
 	ft_lstdel_all(data->wd);
+	if (data->lexer)
+	{
+		ft_free_lexer(data);
+		free(data->lexer);
+	}
+	if (data->pwd)
+		free(data->pwd);
 	free(data);
-	ft_free_loop((void **)lexed, (void **)regrouped, tokens, final);
-	free(g_global);
+	if (g_global.prompt)
+		free(g_global.prompt);
+}
+
+t_global	g_global;
+
+int main(int ac, char **av, char **env)
+{
+	t_data *data;
+	
+	ft_sig_init();
+	data = ft_init_data(env);
+	while (1)
+	{
+		g_global.prompt = ft_prompt(data->env);
+		data->lexer->input = readline(g_global.prompt);
+		// input = readline("$> ");
+		if (!data->lexer->input)
+			break ;
+		if (*(data->lexer->input))
+		{
+			g_global.in_exec = 1;
+			add_history(data->lexer->input);
+			if (ft_get_cmd_line(data) == -1)
+			{
+				g_global.in_exec = 0;
+				free(g_global.prompt);
+				continue ;
+			}
+			ft_pipeline(data, data->lexer->tokens);
+			g_global.in_exec = 0;
+		}
+		ft_free_lexer(data);
+		free(g_global.prompt);
+	}
+	ft_free_data(data);
+	printf("exit\n");
+	rl_clear_history();
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 15:14:11 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/24 12:02:00 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/26 15:42:02 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,25 @@ enum	e_type
 	OUT_A_FILE = 23
 };
 
+
+
 typedef struct s_token
 {
 	char	*val;
 	int		type;
 }	t_token;
 
+typedef struct s_lexer
+{
+	t_token	**tokens;
+	char	**lexed;
+	char	*input;
+}	t_lexer;
+
 typedef struct s_data{
 	t_list	**env;
 	t_list	**wd;
+	t_lexer	*lexer;
 	pid_t	*childs;
 	int		**pipes;
 	int		fd_in;
@@ -70,7 +80,7 @@ typedef struct s_global
 	char	*prompt;
 }	t_global;
 
-extern t_global *g_global;
+extern t_global g_global;
 
 typedef struct s_temp
 {
