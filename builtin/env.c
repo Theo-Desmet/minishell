@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 16:51:45 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/20 14:49:27 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/26 11:38:33 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ int	ft_env(t_list **env)
 		{
 			if (((char *)temp->content)[i] == '=')
 			{
-				ft_printf("%s\n",temp->content);
-				break;
+				ft_printf("%s\n", temp->content);
+				break ;
 			}
 			i++;
 		}

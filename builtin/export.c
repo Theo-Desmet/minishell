@@ -6,45 +6,13 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 11:28:05 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/25 16:18:57 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/26 10:47:58 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_parse_add_env(t_list **env, char *str)
-{
-	t_list	*temp;
-	char	*name;
-	int	i;
-
-	i = 0;
-	temp = *env;
-	name = ft_strdup(str);
-	while (name[i] && name[i] != '+')
-		i++;
-	name[i] = '=';
-	name[i + 1] = 0;
-	str = &str[i + 2];
-	while (temp && ft_strncmp(name, temp->content, ft_strlen(name)))
-		temp = temp->next;
-	if (!temp)
-	{
-		name = ft_strjoin1(name, str);
-		ft_lstadd_back(env, ft_lstnew(name));
-	}
-	else
-	{
-		i = 0;
-		while (name[i] && name[i] != '=')
-			i++;
-		if (name[i] == '=')
-		{
-			free(name);
-			temp->content = ft_strjoin1(temp->content, str);
-		}
-	}
-}
+int	ft_parse_add_env(t_list **env, char *str);
 
 int	ft_check_export_arg(t_list **env, char *str)
 {
@@ -61,7 +29,7 @@ int	ft_check_export_arg(t_list **env, char *str)
 	while (str[i] && str[i] != '=')
 	{
 		if (str[i] == '+' && str[i + 1] == '=')
-			return (ft_parse_add_env(env, str),2);
+			return (ft_parse_add_env(env, str), 2);
 		if (!(ft_isalnum(str[i]) || str[i] == '_'))
 		{
 			ft_putstr_fd("minishell: export: `", 2);
@@ -94,7 +62,6 @@ void	ft_add_env(t_list **env, char *str, char *name)
 	t_list	*temp;
 	char	*name2;
 	size_t	i;
-	int		name_lenght;
 
 	i = 0;
 	while (str[i] && str[i] != '=')
@@ -102,8 +69,7 @@ void	ft_add_env(t_list **env, char *str, char *name)
 	name2 = ft_strdup(str);
 	name2[i] = 0;
 	temp = *env;
-	name_lenght = ft_strlen(name);
-	while (temp && (ft_strncmp(name, temp->content, name_lenght)
+	while (temp && (ft_strncmp(name, temp->content, ft_strlen(name))
 			&& ft_strcmp(name2, temp->content)))
 		temp = temp->next;
 	free(name2);
@@ -119,7 +85,7 @@ void	ft_add_env(t_list **env, char *str, char *name)
 	}
 }
 
-int 	ft_export(t_list **env, char **arg)
+int	ft_export(t_list **env, char **arg)
 {
 	size_t	i;
 	char	*name;

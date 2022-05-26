@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 14:00:47 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/20 14:50:44 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/26 11:32:10 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_pwd(t_data *data)
 	if (!cwd)
 		cwd = data->pwd;
 	temp = ft_strjoin(cwd, "\n");
-	ft_printf("%s",temp);
+	ft_printf("%s", temp);
 	free(temp);
 	return (0);
 }
@@ -42,13 +42,15 @@ void	ft_update_env(t_data *data, t_list **env, char *name, char *value)
 {
 	t_list	*temp;
 	char	*str;
+	char	*mem;
 	int		str_lenght;
 
 	if (!env || !(*env) || !value)
 		return ;
 	temp = *env;
-	value = strdup(value);
-	data->pwd = value;
+	mem = ft_strdup(value);
+	free(data->pwd);
+	data->pwd = mem;
 	str = ft_strjoin(name, value);
 	str_lenght = ft_strlen(name);
 	while (temp && ft_strncmp(name, temp->content, str_lenght))
