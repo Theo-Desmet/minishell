@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:42:33 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/26 16:43:35 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/29 11:52:16 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_here_doc(char *limiter, char *line, int fd, int len)
 		if (!line)
 		{
 			if (close(fd))
-				continue; //error close
+				continue ; //error close
 			return ;
 			//warning error
 		}

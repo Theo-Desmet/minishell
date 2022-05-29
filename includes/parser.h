@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 15:20:53 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/26 16:52:05 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/29 12:45:08 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ int		ft_isop(int type);
 int		ft_check_grammar(t_token **tokens);
 int		ft_check_quotes(t_token	*token, char *quote);
 int		ft_check_here_doc(t_token **tokens, size_t i);
-int     ft_check_builtin(t_data *data, t_token **args);
+int		ft_check_builtin(t_data *data, t_token **args);
 void	ft_get_cmd(char **command);
-int     ft_exec_builtin(t_data *data, t_token **args);
+int		ft_exec_builtin(t_data *data, t_token **args);
 void	ft_restore_fd(t_data *data);
 size_t	ft_count_pipes(t_token	**tokens, size_t *offset);
 void	ft_pipeline(t_data *data, t_token **tokens);
@@ -43,13 +43,13 @@ void	ft_rd_in(t_data *data, char *arg, int i);
 char	*ft_join_word(t_token **args);
 void	ft_exec(t_data *data, t_list **env, char *arg);
 void	ft_find_heredoc(t_data *data, t_token **args);
-void    ft_lstdel_all(t_list **lst);
-int     ft_cd(t_data *data, char **str);
-int     ft_echo(char **args);
-int     ft_env(t_list **env);
-int	ft_export(t_list **env, char **arg);
-int     ft_pwd(t_data *data);
-int	ft_unset(t_list **env, char **arg);
+void	ft_lstdel_all(t_list **lst);
+int		ft_cd(t_data *data, char **str);
+int		ft_echo(char **args);
+int		ft_env(t_list **env);
+int		ft_export(t_list **env, char **arg);
+int		ft_pwd(t_data *data);
+int		ft_unset(t_list **env, char **arg);
 void	ft_exit(char **args);
 void	ft_free_lexer(t_data *data);
 void	ft_free_data(t_data *data);
@@ -74,7 +74,7 @@ void	ft_exec_last(t_data *data, t_token **args, int last);
 int		ft_is_last_pipe(t_token **args);
 size_t	ft_go_to_next_pipe(t_token **args);
 pid_t	*ft_update_childs(t_data *data, size_t n);
-int	**ft_update_pipes(t_data *data, size_t n);
+int		**ft_update_pipes(t_data *data, size_t n);
 void	ft_close(int fd1, int fd2);
 void	ft_exec_pipeline(t_data *data, t_token **args, size_t pipes);
 int		ft_get_return_val(int status);

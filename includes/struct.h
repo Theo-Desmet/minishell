@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 15:14:11 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/26 15:42:02 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/29 12:45:44 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ enum	e_type
 	OUT_A_FILE = 23
 };
 
-
-
 typedef struct s_token
 {
 	char	*val;
@@ -69,18 +67,18 @@ typedef struct s_data{
 	int		nb_heredoc;
 	int		act_heredoc;
 	int		nb_pipes;
-	char		*pwd;
+	char	*pwd;
 }	t_data;
 
 typedef struct s_global
 {
-	int	in_exec;
-	int	pid;
-	int	rtn_val;
+	int		in_exec;
+	int		pid;
+	int		rtn_val;
 	char	*prompt;
 }	t_global;
 
-extern t_global g_global;
+extern t_global	g_global;
 
 typedef struct s_temp
 {

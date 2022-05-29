@@ -17,8 +17,6 @@
 # include <stdio.h>
 # include "struct.h"
 # include <dirent.h>
-
-#include <string.h>
 # include <ctype.h>
 
 int		ft_isspecchar(int c);

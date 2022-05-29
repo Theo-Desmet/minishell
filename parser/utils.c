@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:31:09 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/26 16:38:11 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/29 12:32:30 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*ft_search_path(t_list **env, char *cmd)
 	t_list	*temp;
 
 	if (!access(cmd, X_OK | F_OK) && (!ft_strncmp(cmd, "./", 2)
-		|| !ft_strncmp(cmd, "/", 1)))
+			|| !ft_strncmp(cmd, "/", 1)))
 		return (cmd);
 	if (!env || !(*env))
 		return (NULL);

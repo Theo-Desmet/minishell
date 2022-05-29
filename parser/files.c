@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:18:32 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/26 16:42:39 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/29 11:51:56 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,3 @@ void	ft_rd_append(t_data *data, char *arg, int i)
 	else
 		data->pipes[i][1] = newfd;
 }
-

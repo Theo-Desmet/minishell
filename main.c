@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 10:28:52 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/26 15:53:24 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/29 12:42:42 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,31 +60,31 @@ t_lexer	*ft_init_lexer(void)
 	return (lexer);
 }
 
-t_data    *ft_init_data(char **envp)
+t_data	*ft_init_data(char **envp)
 {
-    t_data    *data;
+	t_data	*data;
 
-    data = malloc(sizeof(t_data));
-    if (!data)
-        return (NULL);//modifier secu err dans main
-    data->env = ft_init_env(data->env, envp);
-    if (!data->env)
-        return (NULL);
-    data->wd = ft_init_wd(data->wd);
-    if (!data->wd)
-        return (NULL);
-    data->fd_in = STDIN_FILENO;
-    data->fd_out = STDOUT_FILENO;
-    data->pwd = ft_strdup("");
-    data->rtn_val = 0;
-    data->nb_heredoc = 0;
-    data->act_heredoc = -1;
-    data->childs = NULL;
-    data->pipes = NULL;
+	data = malloc(sizeof(t_data));
+	if (!data)
+		return (NULL);//modifier secu err dans main
+	data->env = ft_init_env(data->env, envp);
+	if (!data->env)
+		return (NULL);
+	data->wd = ft_init_wd(data->wd);
+	if (!data->wd)
+		return (NULL);
+	data->fd_in = STDIN_FILENO;
+	data->fd_out = STDOUT_FILENO;
+	data->pwd = ft_strdup("");
+	data->rtn_val = 0;
+	data->nb_heredoc = 0;
+	data->act_heredoc = -1;
+	data->childs = NULL;
+	data->pipes = NULL;
 	data->lexer = ft_init_lexer();
 	if (!data->lexer)
 		return (NULL);
-    return (data);
+	return (data);
 }
 
 char	**ft_lst_to_tab(t_list **lst)
@@ -148,13 +148,26 @@ void	ft_lstprint(t_list *lst)
 {
 	while (lst)
 	{
-		printf("%s {%d} |%p| -> ", ((t_token *)lst->content)->val, ((t_token *)lst->content)->type, lst);
+		printf("%s {%d} |%p| -> ", ((t_token *)lst->content)->val,
+			((t_token *)lst->content)->type, lst);
 		lst = lst->next;
 	}
 	printf("NULL\n");
 }
 
-void	ft_update_type(t_token **tokens, int mode) // Mode sert juste a rechanger le type des wildcards qui ont deja ete expand 
+void	ft_update_files(t_token **tokens, size_t i)
+{
+	if (tokens[i - 1]->type == R_OUT)
+		tokens[i]->type = OUT_FILE;
+	else if (tokens[i - 1]->type == R_IN)
+		tokens[i]->type = IN_FILE;
+	else if (tokens[i - 1]->type == R_HERE_DOC)
+		tokens[i]->type = DELIMITER;
+	else if (tokens[i - 1]->type == R_APPEND)
+		tokens[i]->type = OUT_A_FILE;
+}
+
+void	ft_update_type(t_token **tokens, int mode)
 {
 	size_t	i;
 
@@ -162,70 +175,63 @@ void	ft_update_type(t_token **tokens, int mode) // Mode sert juste a rechanger l
 	while (tokens[i])
 	{
 		if (mode == 1)
-			if (tokens[i]->type == WILDCARD || tokens[i]->type == S_QUOTE || tokens[i]->type == D_QUOTE || tokens[i]->type == VAR)
+			if (tokens[i]->type == WILDCARD || tokens[i]->type == S_QUOTE
+				|| tokens[i]->type == D_QUOTE || tokens[i]->type == VAR)
 				tokens[i]->type = WORD;
 		if (i != 0 && tokens[i - 1])
-		{
-			if (tokens[i - 1]->type == R_OUT)
-				tokens[i]->type = OUT_FILE;
-			else if (tokens[i - 1]->type == R_IN)
-				tokens[i]->type = IN_FILE;
-			else if (tokens[i - 1]->type == R_HERE_DOC)
-				tokens[i]->type = DELIMITER;
-			else if (tokens[i - 1]->type == R_APPEND)
-				tokens[i]->type = OUT_A_FILE;
-		}
+			ft_update_files(tokens, i);
 		if (tokens[i]->type == OUT_A_FILE || tokens[i]->type == OUT_FILE
-		||tokens[i]->type == IN_FILE || tokens[i]->type == DELIMITER)
+			||tokens[i]->type == IN_FILE || tokens[i]->type == DELIMITER)
 		{
 			if (tokens[i]->val[0] == '\'')
 			{
-				ft_memmove(tokens[i]->val, &tokens[i]->val[1], ft_strlen(tokens[i]->val));
+				ft_memmove(tokens[i]->val, &tokens[i]->val[1],
+					ft_strlen(tokens[i]->val));
 				tokens[i]->val[ft_strlen(tokens[i]->val) - 1] = '\0';
 			}
 		}
 		i++;
-	}	
+	}
 }
 
-char    *ft_prompt(t_list **env)
+char	*ft_prompt(t_list **env)
 {
-    char    *prompt;
-    char    *pwd;
-    char    *home;
-    char    *temp;
+	char	*prompt;
+	char	*pwd;
+	char	*home;
+	char	*temp;
 
-    if (!*env)
-        return (ft_strdup("minishell > "));
-    pwd = ft_get_var(env, "PWD");
-    if (!*pwd)
-        return (free(pwd), ft_strdup("minishell > "));
-    temp = pwd;
-    pwd = ft_strrchr(pwd, '/') + 1;
-    home = ft_get_var(env, "HOME");
-    if (!*home)
-        return (free(temp), free(home), ft_strdup("minishell > "));
-    prompt = ft_strjoin2("\1\033[0;31m\2", ft_strjoin1(ft_charjoin(ft_get_var(env, "LOGNAME"), '@'),
-		"minishell\1\033[0;37m:\033[0;33m\2"));
-    if (ft_strstr(pwd, home))
-        prompt = ft_strjoin1(prompt, ft_strjoin2("~", pwd + ft_strlen(home)));
-    else
-        prompt = ft_strjoin1(prompt, pwd);
-    prompt = ft_strjoin1(prompt, "\1\033[0;37m\2$ ");
-    free(home);
-    free(temp);
-    return (prompt);
+	if (!*env)
+		return (ft_strdup("minishell > "));
+	pwd = ft_get_var(env, "PWD");
+	if (!*pwd)
+		return (free(pwd), ft_strdup("minishell > "));
+	temp = pwd;
+	pwd = ft_strrchr(pwd, '/') + 1;
+	home = ft_get_var(env, "HOME");
+	if (!*home)
+		return (free(temp), free(home), ft_strdup("minishell > "));
+	prompt = ft_strjoin2("\1\033[0;31m\2", ft_strjoin1(
+				ft_charjoin(ft_get_var(env, "LOGNAME"), '@'),
+				"minishell\1\033[0;37m:\033[0;33m\2"));
+	if (ft_strstr(pwd, home))
+		prompt = ft_strjoin1(prompt, ft_strjoin2("~", pwd + ft_strlen(home)));
+	else
+		prompt = ft_strjoin1(prompt, pwd);
+	prompt = ft_strjoin1(prompt, "\1\033[0;37m\2$ ");
+	free(home);
+	free(temp);
+	return (prompt);
 }
 
-void    handler_int(int sig)
+void	handler_int(int sig)
 {
-
 	if (g_global.in_exec == 0)
 	{
 		if (sig == SIGINT)
 		{
-			write(1, "\n", 1); // Move to a new line
-			rl_replace_line("", 0); // Clear the previous text
+			write(1, "\n", 1);
+			rl_replace_line("", 0);
 			rl_on_new_line();
 			if (g_global.pid == 0)
 				rl_redisplay();
@@ -242,12 +248,12 @@ void    handler_int(int sig)
 	}
 }
 
-int ft_sig_init(void)
+int	ft_sig_init(void)
 {
-	struct sigaction sig;
-	t_global g_global;
+	struct sigaction	sig;
+	t_global			g_global;
 
-	sig.sa_handler=&handler_int;
+	sig.sa_handler = &handler_int;
 	sigemptyset(&sig.sa_mask);
 	signal(SIGINT, &handler_int);
 	signal(SIGABRT, &handler_int);
@@ -309,10 +315,10 @@ void	ft_free_data(t_data *data)
 
 t_global	g_global;
 
-int main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **env)
 {
 	t_data *data;
-	
+
 	ft_sig_init();
 	data = ft_init_data(env);
 	while (1)
