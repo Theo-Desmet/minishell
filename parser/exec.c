@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:47:01 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/29 12:34:23 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/31 08:35:04 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	ft_exec_builtin(t_data *data, t_token **args)
 	in = dup(data->fd_in);
 	out = dup(data->fd_out);
 	ft_redirection(data, args, 0);
-	ft_check_last_heredoc(data, args);
+	unlink(ft_check_last_heredoc(data, args));
 	dup2(data->fd_in, STDIN_FILENO);
 	dup2(data->fd_out, STDOUT_FILENO);
 	command = ft_join_word(args);
@@ -86,7 +86,10 @@ void	ft_cmd(t_data *data, t_token **args)
 		ft_redirection(data, args, 0);
 		here_doc = ft_check_last_heredoc(data, args);
 		if (here_doc)
+		{
 			ft_rd_in(data, here_doc, 0);
+			unlink(here_doc);
+		}
 		dup2(data->fd_in, STDIN_FILENO);
 		dup2(data->fd_out, STDOUT_FILENO);
 		cmd = ft_join_word(args);

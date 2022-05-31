@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:48:47 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/29 11:51:44 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/31 08:34:46 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	ft_exec_first(t_data *data, t_token **args)
 		if (here_doc)
 		{
 			ft_rd_in(data, here_doc, 0);
+			unlink(here_doc);
 			free(here_doc);
 		}
 		ft_child(data, args, data->fd_in, data->pipes[0][1]);
@@ -77,6 +78,7 @@ void	ft_exec_mid(t_data *data, t_token **args, int i)
 		if (here_doc)
 		{
 			ft_rd_in(data, here_doc, i);
+			unlink(here_doc);
 			free(here_doc);
 		}
 		ft_child(data, args, data->pipes[i - 1][0], data->pipes[i][1]);
@@ -105,6 +107,7 @@ void	ft_exec_last(t_data *data, t_token **args, int last)
 		if (here_doc)
 		{
 			ft_rd_in(data, here_doc, last);
+			unlink(here_doc);
 			free(here_doc);
 		}
 		ft_child(data, args, data->pipes[last - 1][0], data->fd_out);
