@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 14:14:33 by bbordere          #+#    #+#             */
-/*   Updated: 2022/03/05 20:48:03 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/25 15:20:52 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ft_lstadd_back(t_list **alst, t_list *new)
 {	
 	t_list	*p;
 
-	if (!*alst)
+	if (!(*alst))
 		*alst = new;
 	else
 	{

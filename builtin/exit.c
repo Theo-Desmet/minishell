@@ -6,48 +6,48 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 08:34:09 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/26 15:42:27 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/31 15:58:18 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_free_all(char *rtn)
+int	ft_free_all(t_data *data, char **args, int rtn)
 {
-	exit(ft_atoi(rtn));
+	ft_free_data(data);
+	ft_free_tab((void **)args);
+	exit(rtn);
 }
 
-void	ft_exit_chiant(char **args, char *rtn, int i)
+void	ft_exit_chiant(t_data *data, char **args, char *rtn, int i)
 {
 	if (rtn[i])
 	{
-		rtn = ft_itoa(g_global.rtn_val);
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(args[1], 2);
-		ft_putstr_fd(": numeric argument required", 2);
-		ft_free_all(rtn);
+		ft_putstr_fd(": numeric argument required\n", 2);
+		ft_free_all(data, args, g_global.rtn_val);
 	}
 	if (args[1] && args[2])
 	{
-		rtn = ft_itoa(g_global.rtn_val);
-		ft_putstr_fd("minishell: exit: too many arguments", 2);
-		ft_free_all(rtn);
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+		ft_free_all(data, args, g_global.rtn_val);
 	}
 }
 
-void	ft_exit(char **args)
+void	ft_exit(t_data *data, char **args, char *command)
 {
 	char	*rtn;
 	int		i;
 
 	i = 0;
-	if (!args || !args[1])
-		rtn = ft_itoa(g_global.rtn_val);
-	else
-		rtn = args[1];
 	ft_printf("exit\n");
+	free(command);
+	if (!args || !args[1])
+		ft_free_all(data, args, g_global.rtn_val);
+	rtn = args[1];
 	while (rtn[i] && ft_isdigit(rtn[i]))
 		i++;
-	ft_exit_chiant(args, rtn, i);
-	ft_free_all(rtn);
+	ft_exit_chiant(data, args, rtn, i);
+	ft_free_all(data, args, ft_atoi(rtn));
 }

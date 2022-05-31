@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 09:53:05 by bbordere          #+#    #+#             */
-/*   Updated: 2022/01/25 12:01:25 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/05/31 11:31:43 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*get_memory(int fd, int *bytes, char *memory)
 		if (!*bytes && !*tmp)
 			break ;
 		tmp[*bytes] = '\0';
-		memory = ft_strjoin(memory, tmp);
+		memory = ft_strjoin1(memory, tmp);
 	}
 	free(tmp);
 	return (memory);

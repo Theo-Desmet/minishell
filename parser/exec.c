@@ -6,13 +6,13 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:47:01 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/31 08:35:04 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/31 15:59:49 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-void	ft_builtin(t_data *data, char **cmd)
+void	ft_builtin(t_data *data, char **cmd, char *command)
 {
 	if (!ft_strcmp("cd", cmd[0]))
 		g_global.rtn_val = ft_cd(data, cmd);
@@ -27,7 +27,7 @@ void	ft_builtin(t_data *data, char **cmd)
 	else if (!ft_strcmp("unset", cmd[0]))
 		g_global.rtn_val = ft_unset(data->env, cmd);
 	else if (!ft_strcmp("exit", cmd[0]))
-		ft_exit(cmd);
+		ft_exit(data, cmd, command);
 }
 
 void	ft_exec_builtin_pipe(t_data *data, t_token **args)
@@ -38,14 +38,14 @@ void	ft_exec_builtin_pipe(t_data *data, t_token **args)
 	command = ft_join_word(args);
 	cmd = ft_lexer(command);
 	ft_get_cmd(cmd);
-	ft_builtin(data, cmd);
+	ft_builtin(data, cmd, command);
 	ft_free_tab((void **)cmd);
 	free(command);
 	ft_free_data(data);
 	exit(g_global.rtn_val);
 }
 
-int	ft_exec_builtin(t_data *data, t_token **args)
+void	ft_exec_builtin(t_data *data, t_token **args)
 {
 	char	*command;
 	char	**cmd;
@@ -55,13 +55,19 @@ int	ft_exec_builtin(t_data *data, t_token **args)
 	in = dup(data->fd_in);
 	out = dup(data->fd_out);
 	ft_redirection(data, args, 0);
-	unlink(ft_check_last_heredoc(data, args));
+	command = ft_check_last_heredoc(data, args);
+	if (command)
+	{
+		ft_rd_in(data, command, 0);
+		unlink(command);
+		free(command);
+	}
 	dup2(data->fd_in, STDIN_FILENO);
 	dup2(data->fd_out, STDOUT_FILENO);
 	command = ft_join_word(args);
 	cmd = ft_lexer(command);
 	ft_get_cmd(cmd);
-	ft_builtin(data, cmd);
+	ft_builtin(data, cmd, command);
 	ft_free_tab((void **)cmd);
 	dup2(in, STDIN_FILENO);
 	dup2(out, STDOUT_FILENO);

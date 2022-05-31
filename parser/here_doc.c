@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:42:33 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/31 11:12:34 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/05/31 12:01:43 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int	*ft_check_last_heredoc2(t_data *data, t_token **args, int cnt[2])
 {
 	int		i;
 	int		multi_doc;
-	char	*name;
 
 	i = -1;
 	multi_doc = 0;
@@ -66,11 +65,8 @@ int	*ft_check_last_heredoc2(t_data *data, t_token **args, int cnt[2])
 		if (args[i]->type == R_HERE_DOC)
 		{
 			if (multi_doc)
-			{
-				name = ft_strjoin2("/tmp/minishell", ft_itoa(data->act_heredoc));
-				unlink(name);
-				free(name);
-			}
+				unlink(ft_strjoin2("/tmp/minishell",
+				ft_itoa(data->act_heredoc)));
 			data->act_heredoc++;
 			cnt[0] = i;
 			multi_doc = 1;
