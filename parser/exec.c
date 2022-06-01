@@ -6,104 +6,45 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:47:01 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/31 15:59:49 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/01 18:52:08 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-void	ft_builtin(t_data *data, char **cmd, char *command)
+void	ft_child_cmd(t_data *data, t_token **args)
 {
-	if (!ft_strcmp("cd", cmd[0]))
-		g_global.rtn_val = ft_cd(data, cmd);
-	else if (!ft_strcmp("pwd", cmd[0]))
-		g_global.rtn_val = ft_pwd(data);
-	else if (!ft_strcmp("env", cmd[0]))
-		g_global.rtn_val = ft_env(data->env);
-	else if (!ft_strcmp("echo", cmd[0]))
-		g_global.rtn_val = ft_echo(cmd);
-	else if (!ft_strcmp("export", cmd[0]))
-		g_global.rtn_val = ft_export(data->env, cmd);
-	else if (!ft_strcmp("unset", cmd[0]))
-		g_global.rtn_val = ft_unset(data->env, cmd);
-	else if (!ft_strcmp("exit", cmd[0]))
-		ft_exit(data, cmd, command);
-}
+	char	*here_doc;
+	char	*cmd;
 
-void	ft_exec_builtin_pipe(t_data *data, t_token **args)
-{
-	char	**cmd;
-	char	*command;
-
-	command = ft_join_word(args);
-	cmd = ft_lexer(command);
-	ft_get_cmd(cmd);
-	ft_builtin(data, cmd, command);
-	ft_free_tab((void **)cmd);
-	free(command);
-	ft_free_data(data);
-	exit(g_global.rtn_val);
-}
-
-void	ft_exec_builtin(t_data *data, t_token **args)
-{
-	char	*command;
-	char	**cmd;
-	int		in;
-	int		out;
-
-	in = dup(data->fd_in);
-	out = dup(data->fd_out);
 	ft_redirection(data, args, 0);
-	command = ft_check_last_heredoc(data, args);
-	if (command)
+	here_doc = ft_check_last_heredoc(data, args);
+	if (here_doc)
 	{
-		ft_rd_in(data, command, 0);
-		unlink(command);
-		free(command);
+		ft_rd_in(data, here_doc, 0);
+		unlink(here_doc);
 	}
 	dup2(data->fd_in, STDIN_FILENO);
 	dup2(data->fd_out, STDOUT_FILENO);
-	command = ft_join_word(args);
-	cmd = ft_lexer(command);
-	ft_get_cmd(cmd);
-	ft_builtin(data, cmd, command);
-	ft_free_tab((void **)cmd);
-	dup2(in, STDIN_FILENO);
-	dup2(out, STDOUT_FILENO);
-	free(command);
+	cmd = ft_join_word(args);
+	ft_exec(data, data->env, cmd);
 }
 
 void	ft_cmd(t_data *data, t_token **args)
 {
-	pid_t	f;
-	char	*cmd;
 	int		status;
-	char	*here_doc;
 
-	if (ft_check_builtin(data, args))
+	if (ft_check_builtin(args))
 	{
 		ft_exec_builtin(data, args);
 		return ;
 	}
 	g_global.pid = fork();
 	if (!g_global.pid)
-	{
-		ft_redirection(data, args, 0);
-		here_doc = ft_check_last_heredoc(data, args);
-		if (here_doc)
-		{
-			ft_rd_in(data, here_doc, 0);
-			unlink(here_doc);
-		}
-		dup2(data->fd_in, STDIN_FILENO);
-		dup2(data->fd_out, STDOUT_FILENO);
-		cmd = ft_join_word(args);
-		ft_exec(data, data->env, cmd);
-	}
+		ft_child_cmd(data, args);
 	else
 	{
-		waitpid(g_global.pid, &status, 0);
+		waitpid(g_global.pid, &status, WUNTRACED);
 		g_global.rtn_val = ft_get_return_val(status);
 	}
 }

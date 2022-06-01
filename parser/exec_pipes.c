@@ -6,29 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:48:47 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/31 08:34:46 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/01 18:53:22 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-void	ft_child(t_data *data, t_token **args, int in, int out)
-{
-	char	*cmd;
-
-	cmd = ft_join_word(args);
-	dup2(in, STDIN_FILENO);
-	dup2(out, STDOUT_FILENO);
-	ft_close(in, out);
-	if (ft_check_builtin(data, args))
-	{
-		free(cmd);
-		ft_exec_builtin_pipe(data, args);
-	}
-	else
-		ft_exec(data, data->env, cmd);
-	ft_free_data(data);
-}
 
 void	ft_exec_first(t_data *data, t_token **args)
 {
@@ -60,7 +42,6 @@ void	ft_exec_first(t_data *data, t_token **args)
 
 void	ft_exec_mid(t_data *data, t_token **args, int i)
 {
-	char	*cmd;
 	char	*here_doc;
 
 	here_doc = ft_check_last_heredoc(data, args);
@@ -89,7 +70,6 @@ void	ft_exec_mid(t_data *data, t_token **args, int i)
 
 void	ft_exec_last(t_data *data, t_token **args, int last)
 {
-	char	*cmd;
 	char	*here_doc;
 
 	here_doc = ft_check_last_heredoc(data, args);

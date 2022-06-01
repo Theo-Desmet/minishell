@@ -6,12 +6,13 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 10:24:23 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/20 14:32:12 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/01 18:44:38 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
 # include <fcntl.h>
 # include <stdio.h>
 # include <errno.h>

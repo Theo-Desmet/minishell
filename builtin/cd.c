@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 13:51:41 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/23 13:53:57 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/01 15:35:01 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 char	*ft_getenv(t_list **env, char *str)
 {
 	t_list	*temp;
-	size_t	i;
 	int		lenght;
 
-	i = 0;
 	if (!env || !(*env))
 		return (NULL);
 	temp = *env;

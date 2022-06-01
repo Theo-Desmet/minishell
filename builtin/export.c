@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 11:28:05 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/26 10:47:58 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/01 15:54:14 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,8 @@ int	ft_export(t_list **env, char **arg)
 	size_t	i;
 	char	*name;
 	int		ret;
-	int		temp;
 
 	i = 1;
-	temp = 0;
 	ret = 0;
 	if (*env && !arg[1])
 		return (ft_sort_export(env), 0);

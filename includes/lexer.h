@@ -44,5 +44,6 @@ void	ft_sort_lst(t_list **wd, int (*comp)(char *, char *));
 void	ft_check_wildcard(t_list **wd, char **tab, char *name);
 char	**ft_split_conserve(const char *str, char c);
 int		ft_strstr_len(const char *s1, const char *s2);
+void	ft_update_type(t_token **tokens, int mode);
 
 #endif

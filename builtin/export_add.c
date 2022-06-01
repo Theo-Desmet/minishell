@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_add.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 10:08:13 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/26 10:47:33 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/01 15:34:03 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	ft_parse_add_env2(t_list **env, t_list *temp, char *str, char *name)
 {
 	int		i;
-	t_list	*save;
 
 	i = 0;
 	if (!temp)
@@ -31,7 +30,7 @@ void	ft_parse_add_env2(t_list **env, t_list *temp, char *str, char *name)
 		temp->content = ft_strjoin1(temp->content, str);
 }
 
-int	ft_parse_add_env(t_list **env, char *str)
+void	ft_parse_add_env(t_list **env, char *str)
 {
 	t_list	*temp;
 	char	*name;

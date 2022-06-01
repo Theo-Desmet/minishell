@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:42:33 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/31 12:01:43 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/01 18:37:16 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	*ft_check_last_heredoc2(t_data *data, t_token **args, int cnt[2])
 		{
 			if (multi_doc)
 				unlink(ft_strjoin2("/tmp/minishell",
-				ft_itoa(data->act_heredoc)));
+						ft_itoa(data->act_heredoc)));
 			data->act_heredoc++;
 			cnt[0] = i;
 			multi_doc = 1;
@@ -76,6 +76,7 @@ int	*ft_check_last_heredoc2(t_data *data, t_token **args, int cnt[2])
 	}
 	return (cnt);
 }
+
 char	*ft_check_last_heredoc(t_data *data, t_token **args)
 {
 	int		cnt[2];

@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:31:09 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/29 12:32:30 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/01 15:36:16 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@ void	ft_free_command_norme(t_data *data, char *arg)
 void	ft_get_cmd(char **command)
 {
 	ssize_t	i;
-	ssize_t	j;
-	size_t	len;
 
 	i = -1;
 	if (!command || !*command)
