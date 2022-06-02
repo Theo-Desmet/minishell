@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 10:28:52 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/01 18:51:28 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/02 15:26:24 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int	ft_get_cmd_line(t_data *data)
 	ft_free_tokens(data->lexer->tokens);
 	data->lexer->tokens = ft_tokenize(data->lexer->lexed);
 	ft_update_type(data->lexer->tokens, 1);
+	ft_close(data->fd_in, data->fd_out);
 	return (0);
 }
 
@@ -68,7 +69,7 @@ void	ft_update_shlvl(t_list **env)
 	char	*str;
 	void	*addr;
 
-	if (!*env)
+	if (!*env || !ft_getenv(env, "SHLVL"))
 	{
 		ft_export(env, ft_split("export SHLVL=1", ' '));
 		return ;

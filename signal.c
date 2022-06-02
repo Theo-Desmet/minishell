@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:48:23 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/01 18:48:48 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/02 12:10:24 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ void	ft_sig_inter(int sig)
 		rl_redisplay();
 		g_global.rtn_val = 130;
 	}
-	else if (sig == SIGQUIT)
-		ft_putstr_fd("\b\b  \b\b\n", 1);
-	else if (sig == SIGTSTP)
+	else if (sig == SIGTSTP || sig == SIGQUIT)
 		ft_putstr_fd("\b\b  \b\b", 1);
 }
 
@@ -44,10 +42,12 @@ void	sig_handler(int sig)
 		g_global.rtn_val = 148;
 		kill(g_global.pid, SIGSTOP);
 	}
+	else if (sig == SIGQUIT)
+		ft_putstr_fd("Quit (core dumped)\n", 1);
 	else if (sig == SIGSEGV)
-		write(1, "Segmentation fault\n", 19);
+		ft_putstr_fd("Segmentation fault\n", 1);
 	else if (sig == SIGABRT)
-		write(1, "Abort\n", 6);
+		ft_putstr_fd("Abort\n", 1);
 }
 
 int	ft_sig_init(void)
@@ -56,6 +56,7 @@ int	ft_sig_init(void)
 	signal(SIGTSTP, &sig_handler);
 	signal(SIGABRT, &sig_handler);
 	signal(SIGSEGV, &sig_handler);
+	signal(SIGQUIT, &sig_handler);
 	g_global.in_exec = 0;
 	g_global.pid = -1;
 	g_global.rtn_val = 0;

@@ -23,7 +23,7 @@ char	*ft_get_var(t_list **env, char *str)
 	if (!ft_strcmp(str, "?"))
 		return (ft_itoa(g_global.rtn_val));
 	if (ft_isdigit(*str))
-		return (&str[1]);
+		return (ft_strdup(&str[1]));
 	temp = *env;
 	len = ft_strlen(str);
 	while (temp)
