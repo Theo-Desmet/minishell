@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 10:38:00 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/06/01 18:50:51 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/02 09:52:35 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,6 @@ void	ft_del_env(t_list **env, char *str);
 char	*ft_check_unset_arg(char *str);
 
 void	ft_exit(t_data *data, char **args, char *command);
-int		ft_free_all(t_data *data, char **args, int rtn);
+int		ft_free_all(t_data *data, char **args, int rtn, char *command);
 
 #endif

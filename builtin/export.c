@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 11:28:05 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/06/01 15:54:14 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/02 10:47:54 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,10 @@ void	ft_add_env(t_list **env, char *str, char *name)
 		ft_lstadd_back(env, ft_lstnew(ft_strdup(str)));
 	else
 	{
-		i = 0;
-		while (name[i] && name[i] != '=')
-			i++;
+		i = -1;
+		while (name[++i] && name[i] != '=')
+			if (name[i + 1] == '=')
+				free(temp->content);
 		if (name[i] == '=')
 			temp->content = ft_strdup(str);
 	}

@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 10:08:13 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/06/01 15:34:03 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/02 13:36:50 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@ void	ft_parse_add_env2(t_list **env, t_list *temp, char *str, char *name)
 		return ;
 	}
 	free(name);
-	while (str[i] && str[i] != '=')
+	while (((char *)temp->content)[i] && ((char *)temp->content)[i] != '=')
 		i++;
-	if (str[i])
-		temp->content = ft_strjoin1(temp->content, str);
+	if (!((char *)temp->content)[i])
+		temp->content = ft_strjoin1(temp->content, "=");
+	temp->content = ft_strjoin1(temp->content, str);
 }
 
 void	ft_parse_add_env(t_list **env, char *str)
