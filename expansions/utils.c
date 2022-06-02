@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 12:16:10 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/26 12:17:07 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/02 12:08:55 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*ft_copy_quotes(char *res, t_temp *temp)
 {
-	res = ft_strjoin(res, ft_get_str(&temp->str[(temp->i)++], 0));
+	res = ft_strjoin3(res, ft_get_str(&temp->str[(temp->i)++], 0));
 	while (temp->str[temp->i] && temp->str[temp->i] != '\'')
 		temp->i++;
 	temp->i++;

@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:31:09 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/01 15:36:16 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/02 15:33:56 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,15 @@
 
 char	*ft_check_path(char **paths, char *cmd)
 {
-	char	*tmp;
-	char	*command;
-	int		i;
+	char		*tmp;
+	char		*command;
+	size_t		i;
 
+	i = 0;
+	while (cmd[i] && (cmd[i] == '/' || cmd[i] == '.'))
+		i++;
+	if (!cmd[i])
+		return (NULL);
 	i = 0;
 	while (paths[i])
 	{
@@ -39,7 +44,8 @@ char	*ft_search_path(t_list **env, char *cmd)
 	t_list	*temp;
 
 	if (!access(cmd, X_OK | F_OK) && (!ft_strncmp(cmd, "./", 2)
-			|| !ft_strncmp(cmd, "/", 1)))
+			|| !ft_strncmp(cmd, "../", 3) || (cmd[0] == '/' && cmd[1]
+				&& cmd[1] != '/')))
 		return (cmd);
 	if (!env || !(*env))
 		return (NULL);
