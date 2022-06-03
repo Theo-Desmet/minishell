@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 10:28:52 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/02 15:26:24 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/03 11:52:34 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	ft_get_cmd_line(t_data *data)
 	ft_free_tokens(data->lexer->tokens);
 	data->lexer->tokens = ft_tokenize(data->lexer->lexed);
 	ft_update_type(data->lexer->tokens, 1);
-	ft_close(data->fd_in, data->fd_out);
+	// ft_close(data->fd_in, data->fd_out);
 	return (0);
 }
 
