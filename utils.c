@@ -6,11 +6,23 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:46:47 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/01 18:48:06 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/05 11:56:10 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_close_all(t_data *data)
+{
+	size_t	i;
+
+	i = 0;
+	while (data->pipes[i])
+	{
+		ft_close(data->pipes[i][0], data->pipes[i][1]);
+		i++;
+	}
+}
 
 char	**ft_lst_to_tab(t_list **lst)
 {

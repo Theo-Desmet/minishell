@@ -12,10 +12,11 @@
 
 #include "parser.h"
 
-void	ft_exit_exec(char **command, t_data *data)
+void	ft_exit_exec(char **command, t_data *data, char **tab_env)
 {
-	ft_command_not_found(command[0]);
 	ft_free_tab((void **)command);
+	if (tab_env)
+		ft_free_tab((void **)tab_env);
 	ft_free_data(data);
 	exit(127);
 }
@@ -23,6 +24,7 @@ void	ft_exit_exec(char **command, t_data *data)
 void	ft_exec(t_data *data, t_list **env, char *arg)
 {
 	char	**command;
+	char	**tab_env;
 	char	*path;
 
 	command = ft_lexer(arg);
@@ -38,9 +40,10 @@ void	ft_exec(t_data *data, t_list **env, char *arg)
 	free(arg);
 	path = ft_search_path(env, command[0]);
 	if (!path)
-		ft_exit_exec(command, data);
-	if (execve(path, command, ft_lst_to_tab(env)))
-		ft_exit_exec(command, data);
+		ft_exit_exec(command, data, NULL);
+	tab_env = ft_lst_to_tab(env);
+	if (execve(path, command, tab_env))
+		ft_exit_exec(command, data, tab_env);
 	ft_free_tab((void **)command);
 }
 

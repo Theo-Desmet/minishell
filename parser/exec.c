@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:47:01 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/03 11:51:30 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/05 14:15:09 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	ft_child_cmd(t_data *data, t_token **args)
 	}
 	dup2(data->fd_in, STDIN_FILENO);
 	dup2(data->fd_out, STDOUT_FILENO);
+	ft_close(data->fd_in, data->fd_out);
 	cmd = ft_join_word(args);
 	ft_exec(data, data->env, cmd);
 }
@@ -49,32 +50,11 @@ void	ft_cmd(t_data *data, t_token **args)
 	}
 }
 
-size_t	ft_count_exec_blocks(t_token **tokens)
-{
-	size_t	res;
-	size_t	i;
-
-	res = 1;
-	i = 0;
-	while (tokens[i])
-	{
-		while (tokens[i] && tokens[i]->type != PIPE
-			&& tokens[i]->type != D_PIPE && tokens[i]->type != D_AND)
-			i++;
-		if (tokens[i] && (tokens[i]->type == PIPE
-				|| tokens[i]->type == D_PIPE || tokens[i]->type == D_AND))
-		{
-			res++;
-			i++;
-		}
-	}
-	return (res);
-}
-
 void	ft_prepare_pipeline(t_data *data, size_t *offset, t_token **pipeline)
 {
 	size_t	pipes;
 
+	ft_close(data->fd_in, data->fd_out);
 	data->fd_in = dup(STDIN_FILENO);
 	data->fd_out = dup(STDOUT_FILENO);
 	pipes = ft_count_pipes(pipeline, offset);
@@ -90,27 +70,47 @@ void	ft_prepare_pipeline(t_data *data, size_t *offset, t_token **pipeline)
 	}
 }
 
+void	ft_pipeline_routine(t_data *data, t_token ***pipeline)
+{
+	size_t	offset;
+	size_t	i;
+
+	offset = 0;
+	i = 1;
+	ft_prepare_pipeline(data, &offset, *pipeline);
+	(*pipeline) += offset;
+	if (!**pipeline)
+		return ;
+	if ((((**pipeline)->type == D_AND && g_global.rtn_val != 0)))
+	{
+		while ((*pipeline)[i] && (*pipeline)[i]->type != D_PIPE)
+				i++;
+		(*pipeline) += i;
+	}
+	else if ((**pipeline)->type == D_PIPE && g_global.rtn_val == 0)
+	{
+		while ((*pipeline)[i] && (*pipeline)[i]->type != D_AND)
+				i++;
+		(*pipeline) += i;
+	}
+}
+
 void	ft_pipeline(t_data *data, t_token **tokens)
 {
 	t_token	**pipeline;
-	size_t	offset;
 
-	pipeline = tokens - 1;
-	offset = 0;
+	pipeline = tokens;
 	ft_find_heredoc(data, tokens);
 	if (ft_count_exec_blocks(tokens) == 1)
 		ft_cmd(data, tokens);
 	else
 	{
-		while (*(++pipeline))
+		while (*(pipeline))
 		{
-			ft_prepare_pipeline(data, &offset, pipeline);
-			pipeline += offset;
-			if (!*pipeline || (((*pipeline)->type == D_AND
-						&& g_global.rtn_val != 0)
-					|| ((*pipeline)->type == D_PIPE
-						&& g_global.rtn_val == 0)))
+			ft_pipeline_routine(data, &pipeline);
+			if (!*pipeline)
 				break ;
+			pipeline++;
 		}
 	}
 	data->act_heredoc = -1;

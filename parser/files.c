@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:18:32 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/03 11:33:09 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/05 12:14:58 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_not_such_file(t_data *data, char *arg)
 	ft_putstr_fd(arg, 2);
 	ft_putstr_fd(": Not such file or directory\n", 2);
 	ft_free_data(data);
-	exit(EXIT_FAILURE);	
+	exit(EXIT_FAILURE);
 }
 
 void	ft_rd_in(t_data *data, char *arg, int i)

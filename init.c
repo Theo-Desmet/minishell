@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:45:03 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/01 18:50:00 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/04 10:35:23 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ t_data	*ft_init_data(char **envp)
 	data->wd = ft_init_wd(data->wd);
 	if (!data->wd)
 		return (NULL);
-	data->fd_in = STDIN_FILENO;
-	data->fd_out = STDOUT_FILENO;
+	data->fd_in = -1;
+	data->fd_out = -1;
 	data->pwd = ft_strdup("");
 	data->rtn_val = 0;
 	data->nb_heredoc = 0;

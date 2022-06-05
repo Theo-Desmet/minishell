@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:41:08 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/01 18:42:01 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/05 12:17:54 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,10 @@ void	ft_free_lexer(t_data *data)
 void	ft_free_data(t_data *data)
 {
 	if (data->pipes)
+	{
+		ft_close_all(data);
 		ft_free_tab((void **)data->pipes);
+	}
 	if (data->childs)
 		free(data->childs);
 	ft_lstdel_all(data->env);

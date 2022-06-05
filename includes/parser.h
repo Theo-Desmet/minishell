@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 15:20:53 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/01 18:56:12 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/05 12:01:27 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,8 @@ void	ft_exec_builtin(t_data *data, t_token **args);
 void	ft_child(t_data *data, t_token **args, int in, int out);
 int		ft_glhf(char *args, char *args2);
 void	ft_close(int fd1, int fd2);
+void	ft_close_all(t_data *data);
+size_t	ft_count_exec_blocks(t_token **tokens);
+void	ft_redir_here_doc(t_data *data, char *command, int i);
 
 #endif

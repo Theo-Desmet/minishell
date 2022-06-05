@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 10:28:52 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/03 11:52:34 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/05 11:56:26 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	ft_get_cmd_line(t_data *data)
 {
 	data->lexer->lexed = ft_lexer(data->lexer->input);
 	data->lexer->tokens = ft_tokenize(data->lexer->lexed);
+	ft_close(data->fd_in, data->fd_out);
 	data->fd_in = dup(STDIN_FILENO);
 	data->fd_out = dup(STDOUT_FILENO);
 	if (!ft_check_grammar(data->lexer->tokens))
@@ -57,7 +58,6 @@ int	ft_get_cmd_line(t_data *data)
 	ft_free_tokens(data->lexer->tokens);
 	data->lexer->tokens = ft_tokenize(data->lexer->lexed);
 	ft_update_type(data->lexer->tokens, 1);
-	// ft_close(data->fd_in, data->fd_out);
 	return (0);
 }
 
@@ -112,9 +112,11 @@ int	main(int ac, char **av, char **env)
 			{
 				g_global.in_exec = 0;
 				free(g_global.prompt);
+				ft_close(data->fd_in, data->fd_out);
 				continue ;
 			}
 			ft_pipeline(data, data->lexer->tokens);
+			ft_close(data->fd_in, data->fd_out);
 			g_global.in_exec = 0;
 			if (g_global.rtn_val == 139)
 				write(2, "Segmentation fault\n", 19);

@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:51:59 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/01 18:54:16 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/05 12:01:45 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,11 @@ void	ft_builtin(t_data *data, char **cmd, char *command)
 		ft_exit(data, cmd, command);
 }
 
-void	ft_exec_builtin_pipe(t_data *data, t_token **args)
-{
-	char	**cmd;
-	char	*command;
-
-	command = ft_join_word(args);
-	cmd = ft_lexer(command);
-	ft_get_cmd(cmd);
-	ft_builtin(data, cmd, command);
-	ft_free_tab((void **)cmd);
+void	ft_redir_here_doc(t_data *data, char *command, int i)
+{	
+	ft_rd_in(data, command, i);
+	unlink(command);
 	free(command);
-	ft_free_data(data);
-	exit(g_global.rtn_val);
 }
 
 void	ft_exec_builtin(t_data *data, t_token **args)
@@ -57,11 +49,7 @@ void	ft_exec_builtin(t_data *data, t_token **args)
 	ft_redirection(data, args, 0);
 	command = ft_check_last_heredoc(data, args);
 	if (command)
-	{
-		ft_rd_in(data, command, 0);
-		unlink(command);
-		free(command);
-	}
+		ft_redir_here_doc(data, command, 0);
 	dup2(data->fd_in, STDIN_FILENO);
 	dup2(data->fd_out, STDOUT_FILENO);
 	command = ft_join_word(args);
@@ -71,6 +59,7 @@ void	ft_exec_builtin(t_data *data, t_token **args)
 	ft_free_tab((void **)cmd);
 	dup2(in, STDIN_FILENO);
 	dup2(out, STDOUT_FILENO);
+	ft_close(in, out);
 	free(command);
 }
 
@@ -82,6 +71,7 @@ void	ft_child(t_data *data, t_token **args, int in, int out)
 	dup2(in, STDIN_FILENO);
 	dup2(out, STDOUT_FILENO);
 	ft_close(in, out);
+	ft_close_all(data);
 	if (ft_check_builtin(args))
 	{
 		free(cmd);
