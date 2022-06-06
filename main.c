@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 10:28:52 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/05 11:56:26 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/06 17:18:48 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ int	ft_get_cmd_line(t_data *data)
 		return (ft_free_lexer(data), -1);
 	ft_update_type(data->lexer->tokens, 0);
 	ft_expand(data->lexer->tokens, data->env, data->wd);
+	if (ft_issep(*(*data->lexer->tokens)->val) && ft_strlen((*data->lexer->tokens)->val) == 2 &&(*data->lexer->tokens)->type == VAR)
+		return (ft_free_lexer(data), -1);
 	ft_free_tab((void **)data->lexer->lexed);
 	data->lexer->lexed = ft_join(data->lexer->tokens);
 	ft_free_tokens(data->lexer->tokens);

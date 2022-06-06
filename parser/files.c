@@ -6,11 +6,29 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:18:32 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/05 12:14:58 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/06 17:50:11 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+void	ft_wd_file(t_data *data, char *var)
+{
+	ft_wildcard(data->wd, var);
+	if (ft_lstsize(*data->wd) == 1)
+	{
+		free(var);
+		var = ft_strdup((*data->wd)->content);
+		return ;
+	}
+	else if (ft_lstsize(*data->wd) == 0)
+		return ;
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(var, 2);
+	ft_putstr_fd(": ambiguous redirect\n", 2);
+	ft_free_data(data);
+	exit(EXIT_FAILURE);
+}
 
 void	ft_not_such_file(t_data *data, char *arg)
 {
@@ -25,6 +43,8 @@ void	ft_rd_in(t_data *data, char *arg, int i)
 {
 	int	newfd;
 
+	if (ft_strchr(arg, '*'))
+		ft_wd_file(data, arg);
 	newfd = open(arg, O_RDONLY);
 	if (newfd < 0)
 		ft_not_such_file(data, arg);
@@ -44,6 +64,8 @@ void	ft_rd_out(t_data *data, char *arg, int i)
 {
 	int	newfd;
 
+	if (ft_strchr(arg, '*'))
+		ft_wd_file(data, arg);
 	newfd = open(arg, O_CREAT | O_RDWR | O_TRUNC, 0664);
 	if (newfd < 0)
 		ft_not_such_file(data, arg);
@@ -63,6 +85,8 @@ void	ft_rd_append(t_data *data, char *arg, int i)
 {
 	int	newfd;
 
+	if (ft_strchr(arg, '*'))
+		ft_wd_file(data, arg);
 	newfd = open(arg, O_CREAT | O_RDWR | O_APPEND, 0664);
 	if (newfd < 0)
 		ft_not_such_file(data, arg);

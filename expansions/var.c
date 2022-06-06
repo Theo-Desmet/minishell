@@ -33,7 +33,7 @@ char	*ft_get_var(t_list **env, char *str)
 			return (ft_strdup(&content[len + 1]));
 		temp = temp->next;
 	}
-	return (ft_strdup(""));
+	return (ft_charjoin(NULL, 127));
 }
 
 char	**ft_extract_var(char *str)
@@ -87,6 +87,7 @@ char	*ft_str_var(char *res, t_temp *temp)
 			res = ft_charjoin(res, temp->str[(temp->i++)]);
 	}
 	(temp->i)++;
+
 	return (res);
 }
 

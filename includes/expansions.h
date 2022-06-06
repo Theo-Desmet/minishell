@@ -14,6 +14,7 @@
 # define EXPANSIONS_H
 
 # include "struct.h"
+# include "stdio.h"
 
 t_list			**ft_init_env(t_list **env, char **envp);
 t_data			*ft_init_data(char **envp);

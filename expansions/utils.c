@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 12:16:10 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/02 12:08:55 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/06 17:04:58 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ char	*ft_frame_str(char *str, char c)
 	if (!str)
 		return (ft_strdup("\"\""));
 	if (!*str)
-		return (str);
+		return (ft_strdup("\'\'"));
+	if (*str == 127)
+		return (free(str), ft_strdup(""));
 	res = malloc(sizeof(char) * (ft_strlen(str) + 3));
 	if (!res)
 		return (NULL);
