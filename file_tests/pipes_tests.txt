@@ -31,8 +31,8 @@ err diff: lorsque 2 command passer dans une ligne sans pipe: oursh: exec 1er cmd
 
 cat | cat | ls
 cat | cat | wc
-cat |
-| cat
+cat |						non a gerer
+| cat						err diff: oursh affiche pas de message d'erreur
 cat | cat | cat
 cat | cat
 cat | cat | cat| ls
@@ -47,7 +47,7 @@ cat | wc | cat
 <<cat|cat
 <<cat cat|cat
 <<ls cat|cat
-ls | >out
+ls | >out					err diff: oursh affiche un message d'erreur en trop
 ls | >>out
 ls | <Makefile
 ls | <<eof
@@ -55,7 +55,7 @@ ls | <<ls
 <out cat >out | cat
 <out cat >out | <out cat
 <out cat >out | <out cat >out
-<out cat >out | >out cat
+<out cat >out | >out cat			err diff: oursh affiche un message d'erreur en trop
 ls | cat | wc
 ls <out | cat | wc
 ls >out | cat <out | wc
@@ -63,28 +63,28 @@ ls >out | cat >out | wc
 ls >out | cat >out | wc >out
 ls >out | cat <out | wc <out
 
-<Makefile cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat|cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat
+<Makefile cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat|cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat 				ajouter une secu !!!!
  
 err fd
 
-cat <*Make | cat >out*
+cat <*Make | cat >out*				err diff: regler les wd dans les redirections
 ls *| cat
 </dev/urandom cat|cat
 </dev/urandom cat|cat|ls
 </dev/urandom cat|head -1
 </dev/urandom cat|head -1 | wc
-ls && echo ca marche || ca marche pas
+ls && echo ca marche || ca marche pas		err: invalid read
 ls || echo ca marche pas && ca marche
 ls || echo aled || echo oskour
 ls && echo ca && echo marche
 ls && <Makefile cat | cat 
-ls && <Makefile cat | cat && echo ca marche || echo ca marche pas
+ls && <Makefile cat | cat && echo ca marche || echo ca marche pas	err: invalid read
 ls && <Makefile cat | cat || echo ca marche pas && echo ca marche
-ls && <Make cat | cat && echo ca marche || echo ca marche pas
+ls && <Make cat | cat && echo ca marche || echo ca marche pas		err: invalid read
 ls && <Make cat | cat || echo ca marche pas && echo ca marche
-&& ls
+&& ls									err diff: ne devrait pas marcher
 ls &&
-|| ls
+|| ls									err diff: ne devrait pas marcher + invalid read
 ls ||
 ls && || echo a
 ls || && echo a
@@ -94,10 +94,10 @@ ls && ls &&
 ls || ls && 
 <Makefile <<eof>out<Makefile cat <<eof <Makefile >out2 | wc && <out2 cat | cat >in || <<eof cat >out 
 <Makefile <<eof>out<Makefile cat <<eof <Makefile >out2 | wc || <out2 cat | cat >in && <<eof cat >out
-ls <<eof && <<eof ls || ls <<eof
+ls <<eof && <<eof ls || ls <<eof					err diff: leak here_doc
 ls <<eof && <<eof ls && ls <<eof
-ls <<eof || <<eof ls || ls <<eof
-ls <<eof || <<eof ls && ls <<eof
+ls <<eof || <<eof ls || ls <<eof					err diff: leak here_doc
+ls <<eof || <<eof ls && ls <<eofa					err diff: leak here_doc
 ls | ls || ls | ls 
 ls || ls | ls || ls
 ls ||| cat
