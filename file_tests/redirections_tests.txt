@@ -1,0 +1,47 @@
+ls *
+ls *Makefile*
+ls *M*a*k*e*f*i*l*e*
+ls *Ma*le*
+ls M*a*k*e*f*i*l*e*
+ls Makefile*
+ls Ma*
+ls Ma*le*
+ls *Makefile
+ls *M*a*k*e*f*i*l*e
+ls *file
+ls *Ma*le
+ls M*a*k*e*f*i*l*e
+ls Ma*le
+ls Ma*e*ile
+<Makefile cat
+<Makefile<main.c cat
+<Makefile      <main.c<<eof cat
+<<eof<main.c<Makefile cat
+<main.c   <<eof   <Makefile cat
+cat <Makefile
+cat <Makefile<main.c 
+cat <Makefile<main.c    <<eof
+<<eof    <main.c<Makefile cat
+<main.c     <<eof<Makefile cat
+<Makefile cat >out
+<Makefile cat >out>out2
+<Makefile cat >out>>out2
+<Makefile cat >>out>out
+<Makefile cat >>out>out
+>out cat <Makefile      
+>>out cat <Makefile
+>out>out2 cat <Makefile
+>out>>out2 cat <Makefile
+>out cat <out 
+<out cat >out
+<out cat >out>out2
+<out<out2 cat >out>out2
+<out<out2 cat >out2>>out2
+<out<out2 cat >out    
+<<eof
+<<eof<<eof<<eof<<eof<<eof<<eof<<eof<<eof<<eof<<eof<<eof<<eof<<eof
+cat <<eof<<eof<<eof<<eof<<eof<<eof<<eof<<eof<<eof<<eof<<eof<<eof<<eof<<eof
+cat <<eof<in<eof
+cat <<eof<<eof<in
+cat <in<<eof<<eof
+

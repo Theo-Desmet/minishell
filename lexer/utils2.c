@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 12:28:22 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/26 16:03:50 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/06 11:09:13 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,58 +52,4 @@ int	ft_strcasecmp(char *s1, char *s2)
 	while (s1[i] && s2[i] && ft_tolower(s1[i]) == ft_tolower(s2[i]))
 		i++;
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-}
-
-void	ft_check_wildcard(t_list **wd, char **tab, char *name)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	j = 0;
-	while (tab[j])
-	{
-		while (tab[j][0] == '*' && tab[j + 1] && tab[j + 1][0] == '*')
-			j++;
-		if (tab[j] && !ft_strcmp(tab[j], "*"))
-		{
-			if (!ft_strcmp(tab[j], "*") && tab[j + 1] == 0)
-				break ;
-			if (!ft_strstr(&name[i], tab[j + 1]))
-				return ;
-			i += ft_strstr_len(&name[i], tab[j + 1]);
-		}
-		else if (ft_strncmp(tab[j], &name[i], ft_strlen(tab[j])))
-			return ;
-		else
-			i += ft_strlen(tab[j]);
-		j++;
-	}
-	ft_lstadd_back(wd, ft_lstnew(ft_strdup(name)));
-}
-
-void	ft_sort_lst(t_list **wd, int (*comp)(char *, char *))
-{
-	t_list	*temp;
-	t_list	*save;
-	char	*str;
-
-	temp = *wd;
-	save = *wd;
-	while (save)
-	{
-		str = "~";
-		while (temp)
-		{
-			if (comp(temp->content, str) < 0)
-			{
-				str = temp->content;
-				temp->content = save->content;
-				save->content = str;
-			}
-			temp = temp->next;
-		}
-		save = save->next;
-		temp = save;
-	}
 }

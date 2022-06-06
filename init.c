@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:45:03 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/04 10:35:23 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/06 12:30:41 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ t_data	*ft_init_data(char **envp)
 	data->pwd = ft_strdup("");
 	data->rtn_val = 0;
 	data->nb_heredoc = 0;
+	data->nb_pipes = 0;
 	data->act_heredoc = -1;
 	data->childs = NULL;
 	data->pipes = NULL;

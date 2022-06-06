@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 13:51:41 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/06/01 15:35:01 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/06 09:18:31 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	ft_cd_home(t_data *data, char **str)
 	char	*cwd;
 
 	home = ft_getenv(data->env, "HOME");
+	if (str[1] && !str[1][0])
+		return (0);
 	if (!home)
 	{
 		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
@@ -63,6 +65,8 @@ int	ft_cd_error(char **str)
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
 		return (1);
 	}
+	if (!str[1][0])
+		return (0);
 	msg = ft_strjoin("minishell: cd: ", str[1]);
 	perror(msg);
 	free(msg);

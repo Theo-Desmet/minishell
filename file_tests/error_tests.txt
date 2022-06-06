@@ -1,0 +1,51 @@
+test
+| test				err diff: oursh: ras		  bash: syntax error '|'
+echo > < 			err diff: oursh:syntax error '>'  bash: syntax error '<'
+echo | |			
+<				err diff: oursh:syntax error '<'  bash: syntax error 'newline'
+|
+| | |
+hello world
+||||||||
+            
+cat wouaf wouaf
+>				err diff: oursh:syntax error '>'  bash: syntax error 'newline'
+>>>>>>>>
+<<<<<<<<<			err diff: oursh:syntax error '<<'  bash: syntax error '<<<'
+> > > >
+>> >> >> >>
+<<				err diff: oursh:syntax error '<<'  bash: syntax error 'newline'
+/Users
+ 
+.
+..
+../
+../.
+../..
+../../
+/
+EechoE
+.echo.
+>echo>				err diff: oursh:syntax error '>'  bash: syntax error 'newline'
+<echo<				err diff: oursh:syntax error '<'  bash: syntax error 'newline'
+>>echo>>			err diff: oursh:syntax error '>>' bash: syntax error 'newline'
+echo
+|echo|
+echo -n
+echo -n
+echo
+echo something
+rm -f something
+cat something
+| echo -n oui			err diff: oursh: invalid read    bash: syntax error '|'
+echo -n oui
+trying to destroy your minishell
+trying something again echo if you see this message thats not a good new
+qewew
+wtf
+hi im thallard
+nice to meet you if these tests are green
+your minishell is perfect
+
+
+p, u, e, c pas de message d'erreur + [ mauvais message, manque minishell

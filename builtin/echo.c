@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 09:35:47 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/24 09:55:51 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/03 14:31:00 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_check_option(char **args)
 		return (0);
 	while (args[i])
 	{
-		if (args[i][0] != '-')
+		if (args[i][0] != '-' || (args[i][0] == '-' && !args[i][1]))
 			return (i);
 		while (args[i][j] == 'n')
 			j++;

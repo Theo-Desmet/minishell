@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:48:47 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/05 12:02:05 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/06 16:20:26 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	ft_exec_first(t_data *data, t_token **args)
 	g_global.pid = data->childs[0];
 	if (data->childs[0] < 0)
 	{
+		free(here_doc);
 		ft_free_data(data);
 		return ;
 	}
@@ -34,6 +35,7 @@ void	ft_exec_first(t_data *data, t_token **args)
 	}
 	else
 		ft_close(data->fd_in, data->pipes[0][1]);
+	free(here_doc);
 }
 
 void	ft_exec_mid(t_data *data, t_token **args, int i)
@@ -45,6 +47,7 @@ void	ft_exec_mid(t_data *data, t_token **args, int i)
 	g_global.pid = data->childs[i];
 	if (data->childs[i] < 0)
 	{
+		free(here_doc);
 		ft_free_data(data);
 		return ;
 	}
@@ -58,6 +61,7 @@ void	ft_exec_mid(t_data *data, t_token **args, int i)
 	}
 	else
 		ft_close(data->pipes[i - 1][0], data->pipes[i][1]);
+	free(here_doc);
 }
 
 void	ft_exec_last(t_data *data, t_token **args, int last)
@@ -69,6 +73,7 @@ void	ft_exec_last(t_data *data, t_token **args, int last)
 	g_global.pid = data->childs[last];
 	if (data->childs[last] < 0)
 	{
+		free(here_doc);
 		ft_free_data(data);
 		return ;
 	}
@@ -82,6 +87,7 @@ void	ft_exec_last(t_data *data, t_token **args, int last)
 	}
 	else
 		ft_close(data->fd_out, data->pipes[last - 1][0]);
+	free(here_doc);
 }
 
 int	ft_is_last_pipe(t_token **args)

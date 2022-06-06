@@ -1,0 +1,38 @@
+cd 
+cd .. 
+cd . 
+cd /Users 
+cd /
+cd '/etc' 
+cd '/var'
+cd '~'
+cd "/etc"
+cd "/var"
+cd "~"
+cd "$PWD/file_tests" 
+cd "doesntexist" 
+cd ../../..
+cd .. 
+cd ..
+cd ?
+cd +
+cd _
+cd woof
+cd bark bark
+cd '/'
+cd $PWD/file_tests 
+cd $OLDPWD/something 
+cd
+cd Desktop/minishel
+cd ~
+cd /home/bocal
+cd $HOME
+cd -n
+cd 
+cd ''					err diff: oursh: cd $HOME	bash: ne fait rien
+cd ''''					err diff: oursh: cd $HOME	bash: ne fait rien
+cd ""
+cd """"
+mkdir testcd
+chmod 000 testcd
+cd testcd

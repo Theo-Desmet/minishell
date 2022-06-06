@@ -1,0 +1,112 @@
+env | grep "_="
+
+echo oui | cat -e
+echo oui | echo non | echo something | grep oui
+echo oui | echo non | echo something | grep non
+echo oui | echo non | echo something | grep something
+cd .. | echo "something"
+cd .. | echo "something"
+cd / | echo "something"
+cd .. | pwd
+ifconfig | grep ":"
+ifconfig | grep nothing
+whoami | grep $USER
+whoami | grep $USER > tmp/file
+whoami | cat -e | cat -e > tmp/file 
+cat Makefile | grep "FLAGS"
+cat Makefile | cat -e | cat -e
+cat Makefile | grep "FLAGS" | grep "FLAGS" | cat -e
+export TEST=123 | cat -e | cat -e
+unset TEST | cat -e
+echo test | cat -e | cat -e | cat -e
+whereis ls | cat -e | cat -e > test		err diff: oursh: No such file		bash: is a directory
+echo test | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e
+ls -la | grep "."
+whereis grep > tmp/file 
+whereis grep > tmp/file
+ls -la > tmp/file
+ls -la > tmp/file 
+
+err diff: lorsque 2 command passer dans une ligne sans pipe: oursh: exec 1er cmd	bash: exec second
+
+cat | cat | ls
+cat | cat | wc
+cat |
+| cat
+cat | cat | cat
+cat | cat
+cat | cat | cat| ls
+cat | cat | cat | cat | ls
+cat | wc | cat
+<Makefile | cat
+<Makefile cat | cat
+<Makefile cat | cat >out
+>>out | cat
+>out | cat
+<<|cat
+<<cat|cat
+<<cat cat|cat
+<<ls cat|cat
+ls | >out
+ls | >>out
+ls | <Makefile
+ls | <<eof
+ls | <<ls
+<out cat >out | cat
+<out cat >out | <out cat
+<out cat >out | <out cat >out
+<out cat >out | >out cat
+ls | cat | wc
+ls <out | cat | wc
+ls >out | cat <out | wc
+ls >out | cat >out | wc
+ls >out | cat >out | wc >out
+ls >out | cat <out | wc <out
+
+<Makefile cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat|cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat |cat
+ 
+err fd
+
+cat <*Make | cat >out*
+ls *| cat
+</dev/urandom cat|cat
+</dev/urandom cat|cat|ls
+</dev/urandom cat|head -1
+</dev/urandom cat|head -1 | wc
+ls && echo ca marche || ca marche pas
+ls || echo ca marche pas && ca marche
+ls || echo aled || echo oskour
+ls && echo ca && echo marche
+ls && <Makefile cat | cat 
+ls && <Makefile cat | cat && echo ca marche || echo ca marche pas
+ls && <Makefile cat | cat || echo ca marche pas && echo ca marche
+ls && <Make cat | cat && echo ca marche || echo ca marche pas
+ls && <Make cat | cat || echo ca marche pas && echo ca marche
+&& ls
+ls &&
+|| ls
+ls ||
+ls && || echo a
+ls || && echo a
+ls && ls ||
+ls || ls ||
+ls && ls &&
+ls || ls && 
+<Makefile <<eof>out<Makefile cat <<eof <Makefile >out2 | wc && <out2 cat | cat >in || <<eof cat >out 
+<Makefile <<eof>out<Makefile cat <<eof <Makefile >out2 | wc || <out2 cat | cat >in && <<eof cat >out
+ls <<eof && <<eof ls || ls <<eof
+ls <<eof && <<eof ls && ls <<eof
+ls <<eof || <<eof ls || ls <<eof
+ls <<eof || <<eof ls && ls <<eof
+ls | ls || ls | ls 
+ls || ls | ls || ls
+ls ||| cat
+ls <| | wc
+ls >| | wc
+ls <<| | wc
+ls >>| | wc
+ls | <| wc
+ls | >| wc
+ls | <<| wc
+ls | >>| wc
+
