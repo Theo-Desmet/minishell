@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:47:01 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/06 16:14:16 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/07 11:45:59 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,8 @@
 
 void	ft_child_cmd(t_data *data, t_token **args)
 {
-	char	*here_doc;
 	char	*cmd;
 
-	ft_redirection(data, args, 0);
-	here_doc = ft_check_last_heredoc(data, args);
-	if (here_doc)
-	{
-		ft_rd_in(data, here_doc, 0);
-		unlink(here_doc);
-		free(here_doc);
-	}
 	dup2(data->fd_in, STDIN_FILENO);
 	dup2(data->fd_out, STDOUT_FILENO);
 	ft_close(data->fd_in, data->fd_out);
@@ -35,11 +26,20 @@ void	ft_child_cmd(t_data *data, t_token **args)
 void	ft_cmd(t_data *data, t_token **args)
 {
 	int		status;
+	char	*here_doc;
 
 	if (ft_check_builtin(args))
 	{
 		ft_exec_builtin(data, args);
 		return ;
+	}
+	ft_redirection(data, args, 0);
+	here_doc = ft_check_last_heredoc(data, args);
+	if (here_doc)
+	{
+		ft_rd_in(data, here_doc, 0);
+		unlink(here_doc);
+		free(here_doc);
 	}
 	g_global.pid = fork();
 	if (!g_global.pid)
@@ -91,11 +91,9 @@ void	ft_pipeline_routine(t_data *data, t_token ***pipeline)
 	else if ((**pipeline)->type == D_PIPE && g_global.rtn_val == 0)
 	{
 		while ((*pipeline)[i] && (*pipeline)[i]->type != D_AND)
-		{
 			i++;
-			(*pipeline) += i;
-			ft_check_last_heredoc(data, (*pipeline));
-		}
+		ft_check_last_heredoc(data, *pipeline);
+		(*pipeline) += i;
 	}
 }
 
