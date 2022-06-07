@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 15:20:53 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/06 17:27:04 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/07 15:15:48 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <sys/stat.h>
 
 # define ERROR_MSG "minishell: syntax error near unexpected token "
+# define ERROR_QUOTE "minishell: unexpected EOF while looking for matching "
+# define ERROR_NL "minishell: syntax error near unexpected token `newline`"
 
 int		ft_check_op(t_token **tokens, size_t	i);
 int		ft_isvalidtype(int type);

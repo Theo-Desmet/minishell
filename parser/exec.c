@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:47:01 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/07 11:45:59 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/07 13:22:06 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@ void	ft_child_cmd(t_data *data, t_token **args)
 {
 	char	*cmd;
 
+	if (data->fd_in == -1)
+	{
+		ft_free_data(data);
+		exit(EXIT_FAILURE);
+	}
 	dup2(data->fd_in, STDIN_FILENO);
 	dup2(data->fd_out, STDOUT_FILENO);
 	ft_close(data->fd_in, data->fd_out);

@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 14:46:39 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/06 17:29:46 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/07 15:46:14 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int	ft_check_here_doc(t_token **tokens, size_t i)
 {
-	if (i == ft_tab_size(tokens) - 1)
+	if (!tokens[i + 1])
 		return (0);
 	return (tokens[i + 1]->type == WORD || tokens[i + 1]->type == VAR
 		|| tokens[i + 1]->type == IN_FILE || tokens[i + 1]->type == DELIMITER
-		|| tokens[i + 1]->type == WILDCARD || !tokens[i + 1]);
+		|| tokens[i + 1]->type == WILDCARD);
 }
 
 int	ft_in_quotes(char *str, size_t *i, char *quote)
@@ -59,30 +59,37 @@ int	ft_check_quotes(t_token	*token, char *quote)
 	return (1);
 }
 
+int	ft_check_redir(t_token **tokens, size_t i)
+{
+	if (i == 0 && !tokens[i + 1])
+		return (printf("%s\n", ERROR_NL), 0);
+	if (tokens[i]->type == R_HERE_DOC || tokens[i]->type == R_IN)
+		if (!ft_check_here_doc(tokens, i))
+			return (printf("%s'%s'\n", ERROR_MSG, tokens[i]->val), 0);
+	if (tokens[i]->type == R_APPEND || tokens[i]->type == D_AND)
+		if (!tokens[i + 1] || !ft_isvalidtype(tokens[i + 1]->type))
+			return (printf("%s'%s'\n", ERROR_MSG, tokens[i]->val), 0);
+	return 1;
+	
+}
+
 int	ft_check_grammar(t_token **tokens)
 {
 	ssize_t	i;
 	char	quote;
 
-	i = -1;
-	while (tokens[++i])
+	i = ft_tab_size(tokens);
+	while (--i >= 0)
 	{
+		if (ft_isredir(tokens[i]))
+			if (!ft_check_redir(tokens, i))
+				return (0);
 		if (ft_isop(tokens[i]->type))
-		{
 			if (!ft_check_op(tokens, i))
 				return (printf("%s'%s'\n", ERROR_MSG, tokens[i]->val), 0);
-		}
-		if (tokens[i]->type == R_HERE_DOC || tokens[i]->type == R_IN)
-		{
-			if (!ft_check_here_doc(tokens, i))
-				return (printf("%s'%s'\n", ERROR_MSG, tokens[i]->val), 0);
-		}
 		if (tokens[i]->type == S_QUOTE || tokens[i]->type == D_QUOTE)
-		{
 			if (!ft_check_quotes(tokens[i], &quote))
-				return (printf("minishell: unexpected EOF while	looking\
-				 for matching \'%c\'\n", quote), 0);
-		}
+				return (printf("%s`%c`\n", ERROR_QUOTE, quote), 0);
 	}
 	return (1);
 }

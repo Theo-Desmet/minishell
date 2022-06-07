@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:18:32 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/06 17:50:11 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/07 14:37:15 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	ft_wd_file(t_data *data, char *var)
 	{
 		free(var);
 		var = ft_strdup((*data->wd)->content);
+		ft_lstclear(data->wd, free);
 		return ;
 	}
 	else if (ft_lstsize(*data->wd) == 0)
@@ -26,8 +27,7 @@ void	ft_wd_file(t_data *data, char *var)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(var, 2);
 	ft_putstr_fd(": ambiguous redirect\n", 2);
-	ft_free_data(data);
-	exit(EXIT_FAILURE);
+	ft_lstclear(data->wd, free);
 }
 
 void	ft_not_such_file(t_data *data, char *arg)
@@ -35,8 +35,7 @@ void	ft_not_such_file(t_data *data, char *arg)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(arg, 2);
 	ft_putstr_fd(": Not such file or directory\n", 2);
-	ft_free_data(data);
-	exit(EXIT_FAILURE);
+	(void)data;
 }
 
 void	ft_rd_in(t_data *data, char *arg, int i)
