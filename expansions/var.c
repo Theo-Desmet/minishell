@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 21:36:02 by bbordere          #+#    #+#             */
-/*   Updated: 2022/04/19 21:36:02 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/08 10:58:39 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ char	*ft_str_var(char *res, t_temp *temp)
 			res = ft_charjoin(res, temp->str[(temp->i++)]);
 	}
 	(temp->i)++;
-
 	return (res);
 }
 

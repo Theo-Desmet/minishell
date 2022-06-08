@@ -46,6 +46,3 @@ wtf
 hi im thallard
 nice to meet you if these tests are green
 your minishell is perfect
-
-
-p, u, e, c pas de message d'erreur + [ mauvais message, manque minishell

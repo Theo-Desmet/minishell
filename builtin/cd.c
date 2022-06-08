@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 13:51:41 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/06/06 09:18:31 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/08 10:35:58 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ char	*ft_getenv(t_list **env, char *str)
 	while (temp && ft_strncmp(str, temp->content, lenght))
 		temp = temp->next;
 	if (!temp)
+		return (NULL);
+	if (((char *)temp->content)[lenght] == 0)
 		return (NULL);
 	return (&((char *)temp->content)[lenght + 1]);
 }

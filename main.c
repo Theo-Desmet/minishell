@@ -6,41 +6,14 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 10:28:52 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/07 12:07:35 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/08 14:51:03 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_prompt(t_list **env)
-{
-	char	*prompt;
-	char	*pwd;
-	char	*home;
-	char	*temp;
 
-	if (!*env)
-		return (ft_strdup("minishell > "));
-	pwd = ft_get_var(env, "PWD");
-	if (!*pwd)
-		return (free(pwd), ft_strdup("minishell > "));
-	temp = pwd;
-	pwd = ft_strrchr(pwd, '/') + 1;
-	home = ft_get_var(env, "HOME");
-	if (!*home)
-		return (free(temp), free(home), ft_strdup("minishell > "));
-	prompt = ft_strjoin2("\1\033[0;31m\2", ft_strjoin1(
-				ft_charjoin(ft_get_var(env, "LOGNAME"), '@'),
-				"minishell\1\033[0;37m:\033[0;33m\2"));
-	if (ft_strstr(pwd, home))
-		prompt = ft_strjoin1(prompt, ft_strjoin2("~", pwd + ft_strlen(home)));
-	else
-		prompt = ft_strjoin1(prompt, pwd);
-	prompt = ft_strjoin1(prompt, "\1\033[0;37m\2$ ");
-	free(home);
-	free(temp);
-	return (prompt);
-}
+char	*ft_prompt(t_data *data);
 
 int	ft_get_cmd_line(t_data *data)
 {
@@ -102,7 +75,7 @@ int	main(int ac, char **av, char **env)
 	ft_update_shlvl(data->env);
 	while (1)
 	{
-		g_global.prompt = ft_prompt(data->env);
+		g_global.prompt = ft_prompt(data);
 		data->lexer->input = readline(g_global.prompt);
 		if (!data->lexer->input)
 			break ;
@@ -120,10 +93,10 @@ int	main(int ac, char **av, char **env)
 			ft_pipeline(data, data->lexer->tokens);
 			ft_close(data->fd_in, data->fd_out);
 			g_global.in_exec = 0;
-			if (g_global.rtn_val == 139)
-				write(2, "Segmentation fault\n", 19);
-			if (g_global.rtn_val == 134)
-				write(2, "Abort\n", 6);
+		//	if (g_global.rtn_val == 139)
+		//		write(2, "Segmentation fault\n", 19);
+		//	if (g_global.rtn_val == 134)
+		//		write(2, "Abort\n", 6);
 		}
 		ft_free_lexer(data);
 		free(g_global.prompt);

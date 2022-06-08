@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:42:33 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/06 15:20:17 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/08 11:00:08 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,53 +50,4 @@ void	ft_get_doc(char *limiter, int nb_heredoc)
 	len = ft_strlen(limiter);
 	ft_here_doc(limiter, line, fd, len);
 	free(name);
-}
-
-void	ft_unlink_file(t_data *data)
-{
-	char *name;
-
-	name = NULL;
-	name = ft_strjoin2("/tmp/minishell", ft_itoa(data->act_heredoc));
-	unlink(name);
-	free(name);
-}
-
-int	*ft_check_last_heredoc2(t_data *data, t_token **args, int cnt[2])
-{
-	int		i;
-	int		multi_doc;
-
-	i = -1;
-	multi_doc = 0;
-	while (args[++i] && args[i]->type != PIPE
-		&& args[i]->type != D_PIPE && args[i]->type != D_AND)
-	{
-		if (args[i]->type == R_HERE_DOC)
-		{
-			if (multi_doc)
-				ft_unlink_file(data);
-			data->act_heredoc++;
-			cnt[0] = i;
-			multi_doc = 1;
-		}
-		if (args[i]->type == R_IN)
-			cnt[1] = i;
-	}
-	return (cnt);
-}
-
-char	*ft_check_last_heredoc(t_data *data, t_token **args)
-{
-	int		cnt[2];
-	char	*name;
-
-	cnt[0] = -1;
-	cnt[1] = -1;
-	ft_check_last_heredoc2(data, args, cnt);
-	name = ft_strjoin2("/tmp/minishell", ft_itoa(data->act_heredoc));
-	if (cnt[0] > cnt[1])
-		return (name);
-	else
-		return (free(name), NULL);
 }

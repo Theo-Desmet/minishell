@@ -6,7 +6,7 @@
 #    By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/18 21:36:22 by bbordere          #+#    #+#              #
-#    Updated: 2022/06/06 09:14:03 by tdesmet          ###   ########.fr        #
+#    Updated: 2022/06/07 15:10:59 by tdesmet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ CC = cc
 
 CFLAGS = -g3 -I includes/ -Wall -Werror -Wextra
 
-FILES = $(wildcard builtin/*.c) $(wildcard lexer/*.c) $(wildcard parser/*.c) $(wildcard expansions/*.c) main.c cleaning.c init.c utils.c signal.c
+FILES = $(wildcard builtin/*.c) $(wildcard lexer/*.c) $(wildcard parser/*.c) $(wildcard expansions/*.c) main.c prompt.c cleaning.c init.c utils.c signal.c
 
 OBJS = $(FILES:.c=.o)
 

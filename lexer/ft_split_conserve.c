@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 12:42:07 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/26 12:42:32 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/08 10:53:04 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,14 @@ char	**ft_split_conserve(const char *str, char c)
 	if (!str || *str == '\0')
 	{
 		tab = malloc(sizeof(char *));
+		if (!tab)
+			return (NULL);
 		tab[0] = 0;
 		return (tab);
 	}
 	tab = malloc(sizeof(char *) * (ft_countword(str, c) + 1));
+	if (!tab)
+		return (NULL);
 	i = ft_wrsplit(str, c, tab, index);
 	tab[i] = 0;
 	return (tab);

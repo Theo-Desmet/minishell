@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:45:03 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/07 12:09:03 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/08 14:50:51 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,18 @@ t_lexer	*ft_init_lexer(void)
 	return (lexer);
 }
 
+char	*ft_init_pwd(t_data *data)
+{
+	char	buf[PATH_MAX];
+	char	*cwd;
+
+	cwd = getcwd(buf, PATH_MAX);
+	if (!cwd)
+		return (NULL);
+	data->pwd = ft_strjoin(cwd, "\n");
+	return (data->pwd);
+}
+
 t_data	*ft_init_data(char **envp)
 {
 	t_data	*data;
@@ -71,11 +83,11 @@ t_data	*ft_init_data(char **envp)
 	if (!data->env)
 		return (NULL);
 	data->wd = ft_init_wd(data->wd);
-	if (!data->wd)
+	data->pwd = ft_init_pwd(data);
+	if (!data->pwd || !data->wd)
 		return (NULL);
 	data->fd_in = -1;
 	data->fd_out = -1;
-	data->pwd = ft_strdup("");
 	data->rtn_val = 0;
 	data->nb_heredoc = 0;
 	data->nb_pipes = 0;

@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:47:01 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/07 13:22:06 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/08 14:51:17 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	ft_child_cmd(t_data *data, t_token **args)
 {
 	char	*cmd;
-
 	if (data->fd_in == -1)
 	{
 		ft_free_data(data);
@@ -89,15 +88,16 @@ void	ft_pipeline_routine(t_data *data, t_token ***pipeline)
 		return ;
 	if ((((**pipeline)->type == D_AND && g_global.rtn_val != 0)))
 	{
+		ft_unlink_wrong_heredoc(data, (*pipeline) + 1);
 		while ((*pipeline)[i] && (*pipeline)[i]->type != D_PIPE)
 				i++;
 		(*pipeline) += i;
 	}
 	else if ((**pipeline)->type == D_PIPE && g_global.rtn_val == 0)
 	{
+		ft_unlink_wrong_heredoc(data, (*pipeline) + 1);
 		while ((*pipeline)[i] && (*pipeline)[i]->type != D_AND)
 			i++;
-		ft_check_last_heredoc(data, *pipeline);
 		(*pipeline) += i;
 	}
 }

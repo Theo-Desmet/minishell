@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 14:00:47 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/26 11:32:10 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/08 10:45:06 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,24 @@ void	ft_update_env(t_data *data, t_list **env, char *name, char *value)
 	char	*mem;
 	int		str_lenght;
 
-	if (!env || !(*env) || !value)
+	temp = NULL;
+	if (!value)
 		return ;
-	temp = *env;
 	mem = ft_strdup(value);
 	free(data->pwd);
 	data->pwd = mem;
+	if (!*env)
+		return ;
+	temp = *env;
 	str = ft_strjoin(name, value);
 	str_lenght = ft_strlen(name);
 	while (temp && ft_strncmp(name, temp->content, str_lenght))
 		temp = temp->next;
 	if (!temp)
+	{
+		free(str);
 		return ;
+	}
 	free(temp->content);
 	temp->content = str;
 }

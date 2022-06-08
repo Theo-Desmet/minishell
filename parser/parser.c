@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 14:46:39 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/07 15:46:14 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/08 14:51:56 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ int	ft_check_redir(t_token **tokens, size_t i)
 		if (!tokens[i + 1] || !ft_isvalidtype(tokens[i + 1]->type))
 			return (printf("%s'%s'\n", ERROR_MSG, tokens[i]->val), 0);
 	return 1;
-	
 }
 
 int	ft_check_grammar(t_token **tokens)
