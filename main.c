@@ -6,19 +6,18 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 10:28:52 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/08 14:51:03 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/08 17:08:56 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-char	*ft_prompt(t_data *data);
+char   *ft_prompt(t_data *data);
 
 int	ft_get_cmd_line(t_data *data)
 {
-	data->lexer->lexed = ft_lexer(data->lexer->input);
-	data->lexer->tokens = ft_tokenize(data->lexer->lexed);
+	data->lexer->lexed = ft_lexer(data->lexer->input); //SECU
+	data->lexer->tokens = ft_tokenize(data->lexer->lexed); //SECU
 	ft_close(data->fd_in, data->fd_out);
 	data->fd_in = dup(STDIN_FILENO);
 	data->fd_out = dup(STDOUT_FILENO);
@@ -26,6 +25,8 @@ int	ft_get_cmd_line(t_data *data)
 		return (ft_free_lexer(data), -1);
 	ft_update_type(data->lexer->tokens, 0);
 	ft_expand(data->lexer->tokens, data->env, data->wd);
+	if (!data->lexer->tokens)
+		return (-1);
 	if (ft_issep(*(*data->lexer->tokens)->val) && ft_strlen((*data->lexer->tokens)->val) == 2 &&(*data->lexer->tokens)->type == VAR)
 		return (ft_free_lexer(data), -1);
 	ft_free_tab((void **)data->lexer->lexed);
@@ -93,10 +94,10 @@ int	main(int ac, char **av, char **env)
 			ft_pipeline(data, data->lexer->tokens);
 			ft_close(data->fd_in, data->fd_out);
 			g_global.in_exec = 0;
-		//	if (g_global.rtn_val == 139)
-		//		write(2, "Segmentation fault\n", 19);
-		//	if (g_global.rtn_val == 134)
-		//		write(2, "Abort\n", 6);
+			if (g_global.rtn_val == 139)
+				write(2, "Segmentation fault\n", 19);
+			if (g_global.rtn_val == 134)
+				write(2, "Abort\n", 6);
 		}
 		ft_free_lexer(data);
 		free(g_global.prompt);

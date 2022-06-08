@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 15:21:42 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/08 14:52:13 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/08 11:47:31 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ int	ft_isvalidtype(int type)
 	return (type == S_QUOTE || type == D_QUOTE || type == WORD || type == ARGS
 		|| type == VAR || type == OUT_FILE || type == OUT_A_FILE
 		|| type == WILDCARD || type == R_IN || type == R_APPEND
-		|| type == R_OUT || type == R_HERE_DOC);
+		|| type == R_OUT || type == R_HERE_DOC || type == PIPE);
 }
 
 int	ft_isredir(t_token *token)
 {
 	return (token->type == R_APPEND || token->type == R_HERE_DOC
-			|| token->type == R_IN || token->type == R_OUT);
+		|| token->type == R_IN || token->type == R_OUT);
 }
 
 int	ft_check_op(t_token **tokens, size_t i)

@@ -6,11 +6,13 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 14:45:38 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/06 17:03:07 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/08 17:19:55 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansions.h"
+
+void	*ft_free_tokens(t_token **tokens);
 
 char	**ft_init_expand(char **res, char *str, t_temp *temp, t_list	**env)
 {
@@ -45,7 +47,7 @@ char	*ft_expand_str(t_list **env, char *str)
 		else if (str[temp.i] == '$' && ft_issep(str[temp.i + 1]))
 			temp.i++;
 		else
-			res = ft_charjoin(res, str[temp.i++]);
+			res = ft_charjoin(res, str[temp.i++]);		
 	}
 	res = ft_frame_str(res, ft_get_inverted_quote(res));
 	ft_free((void **)temp.vars);
@@ -104,6 +106,11 @@ void	ft_expand(t_token **tokens, t_list **env, t_list **wd)
 			tokens[i]->val = ft_expand_str(env, tokens[i]->val);
 		else if (tokens[i]->type == WILDCARD)
 			tokens[i]->val = ft_expand_wildcard(wd, tokens[i]->val, env);
+		if (!tokens[i]->val)
+		{
+			ft_free_tokens(tokens);
+			return ;
+		}
 		i++;
 	}	
 }

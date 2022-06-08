@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:55:23 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/05 11:58:57 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/08 11:37:18 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	ft_glhf(char *args, char *args2)
 			break ;
 		i++;
 	}
-	if (args2[i] == ' ' || (!args2[i] && !args[i]))
+	if ((args2[i] == ' ' && !args[i])|| (!args2[i] && !args[i]))
 		return (1);
 	return (0);
 }

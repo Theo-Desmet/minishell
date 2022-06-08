@@ -6,13 +6,13 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:45:03 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/08 14:50:51 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/08 17:07:40 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_list	**ft_init_env(t_list **env, char **envp)
+t_list	**ft_inenv(t_list **env, char **envp)
 {
 	size_t	i;
 	t_list	*temp;
@@ -34,6 +34,27 @@ t_list	**ft_init_env(t_list **env, char **envp)
 		value = temp->content;
 		temp->content = ft_strdup(value);
 		temp = temp->next;
+	}
+	return (env);
+}
+
+t_list	**ft_init_env(t_list **env, char **envp)
+{
+	size_t	i;
+	t_list	*temp;
+	
+	env = malloc(sizeof(t_list));
+	if (!env)
+		return (NULL);
+	*env = NULL;
+	i = 0;
+	while (envp && envp[i])
+	{
+		temp = ft_lstnew(ft_strdup(envp[i]));
+		if (!temp->content)
+			return (ft_lstdel_all(env), NULL);
+		ft_lstadd_back(env, temp);
+		i++;
 	}
 	return (env);
 }

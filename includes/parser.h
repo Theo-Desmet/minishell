@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/08 14:36:06 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/06/08 14:36:10 by tdesmet          ###   ########.fr       */
+/*   Created: 2022/04/20 15:20:53 by bbordere          #+#    #+#             */
+/*   Updated: 2022/06/08 15:02:44 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,12 @@ size_t	ft_count_pipes(t_token	**tokens, size_t *offset);
 void	ft_pipeline(t_data *data, t_token **tokens);
 char	**ft_lst_to_tab(t_list **lst);
 char	*ft_check_last_heredoc(t_data *data, t_token **args);
-void	ft_unlink_file(t_data *data);
 void	ft_redirection(t_data *data, t_token **args, int index);
 void	ft_rd_in(t_data *data, char *arg, int i);
 char	*ft_join_word(t_token **args);
 void	ft_exec(t_data *data, t_list **env, char *arg);
 void	ft_find_heredoc(t_data *data, t_token **args);
 void	ft_lstdel_all(t_list **lst);
-void	ft_unlink_wrong_heredoc(t_data *data, t_token **args);
 int		ft_cd(t_data *data, char **str);
 int		ft_echo(char **args);
 int		ft_env(t_list **env);
@@ -98,5 +96,9 @@ void	ft_close_all(t_data *data);
 size_t	ft_count_exec_blocks(t_token **tokens);
 void	ft_redir_here_doc(t_data *data, char *command, int i);
 int		ft_wildcard(t_list **wd, char *str);
+void	ft_quit(t_data *data, char *here_doc, int fork);
+void   ft_unlink_file(t_data *data);
+void   ft_unlink_wrong_heredoc(t_data *data, t_token **args);
+
 
 #endif

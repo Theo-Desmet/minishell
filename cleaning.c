@@ -6,11 +6,22 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:41:08 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/05 12:17:54 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/08 16:58:01 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_quit(t_data *data, char *here_doc, int fork)
+{
+	ft_close(data->fd_in, data->fd_out);
+	if (here_doc)
+		free(here_doc);
+	if (data)
+		ft_free_data(data);
+	if (fork)
+		exit(EXIT_FAILURE);
+}
 
 void	ft_lstdel_all(t_list **lst)
 {

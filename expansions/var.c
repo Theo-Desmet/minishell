@@ -53,7 +53,11 @@ char	**ft_extract_var(char *str)
 	{
 		if (str[i + 1] && str[i] == '$' && (ft_valid_var_char(str[i + 1])
 				|| str[i + 1] == '?'))
+		{
 			res[j++] = ft_substr(str, i, ft_len_vars(str, i));
+			if (!res[j - 1])
+				return (ft_free_tab((void **)res), NULL);
+		}
 		i++;
 	}
 	res[nb] = NULL;

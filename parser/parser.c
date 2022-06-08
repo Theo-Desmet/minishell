@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 14:46:39 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/08 14:51:56 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/08 13:56:27 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ int	ft_check_here_doc(t_token **tokens, size_t i)
 {
 	if (!tokens[i + 1])
 		return (0);
-	return (tokens[i + 1]->type == WORD || tokens[i + 1]->type == VAR
+	return ((tokens[i + 1]->type == WORD || tokens[i + 1]->type == VAR
 		|| tokens[i + 1]->type == IN_FILE || tokens[i + 1]->type == DELIMITER
-		|| tokens[i + 1]->type == WILDCARD);
+		|| tokens[i + 1]->type == WILDCARD) && !ft_isredir(tokens[i + 1]));
 }
 
 int	ft_in_quotes(char *str, size_t *i, char *quote)
@@ -61,15 +61,16 @@ int	ft_check_quotes(t_token	*token, char *quote)
 
 int	ft_check_redir(t_token **tokens, size_t i)
 {
-	if (i == 0 && !tokens[i + 1])
+	if ((i == 0 && !tokens[i + 1]) ||(i == ft_tab_size(tokens) && !tokens[i + 1]) || (i != 0 && tokens[i - 1]->type == WORD && !tokens[i + 1]))
 		return (printf("%s\n", ERROR_NL), 0);
 	if (tokens[i]->type == R_HERE_DOC || tokens[i]->type == R_IN)
 		if (!ft_check_here_doc(tokens, i))
 			return (printf("%s'%s'\n", ERROR_MSG, tokens[i]->val), 0);
-	if (tokens[i]->type == R_APPEND || tokens[i]->type == D_AND)
+	if (tokens[i]->type == R_APPEND || tokens[i]->type == R_OUT)
 		if (!tokens[i + 1] || !ft_isvalidtype(tokens[i + 1]->type))
 			return (printf("%s'%s'\n", ERROR_MSG, tokens[i]->val), 0);
 	return 1;
+	
 }
 
 int	ft_check_grammar(t_token **tokens)
