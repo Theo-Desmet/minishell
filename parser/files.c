@@ -6,11 +6,13 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:18:32 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/09 16:43:28 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/09 17:20:25 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+char	*ft_search_in_directory(char *cmd);
 
 int	ft_wd_file(t_data *data, char *var)
 {
@@ -47,11 +49,21 @@ void	ft_rd_in(t_data *data, char *arg, int i)
 	int	newfd;
 	int	wd;
 
+	wd = 0;
 	if (ft_strchr(arg, '*'))
 		wd = ft_wd_file(data, arg);
+	if (!ft_search_in_directory(arg))
+	{
+		data->fd_in = -1;
+		ft_close(data->fd_in, data->fd_out);
+		return ;
+	}
 	newfd = open(arg, O_RDONLY);
 	if (newfd < 0)
+	{
 		ft_not_such_file(data, arg, wd);
+		return ;
+	}
 	if (i == 0)
 	{
 		close(data->fd_in);
@@ -69,11 +81,19 @@ void	ft_rd_out(t_data *data, char *arg, int i)
 	int	newfd;
 	int	wd;
 
+	wd = 0;
 	if (ft_strchr(arg, '*'))
 		wd = ft_wd_file(data, arg);
+	if (!ft_search_in_directory(arg))
+	{
+		// data->fd_out = -1;
+		fprintf(stderr, "%d\n", data->fd_out);
+		ft_close(data->fd_in, data->fd_out);
+		return ;
+	}
 	newfd = open(arg, O_CREAT | O_RDWR | O_TRUNC, 0664);
 	if (newfd < 0)
-		ft_not_such_file(data, arg, wd);
+		return ;
 	if (i == data->nb_pipes)
 	{
 		close(data->fd_out);
@@ -91,11 +111,21 @@ void	ft_rd_append(t_data *data, char *arg, int i)
 	int	newfd;
 	int	wd;
 
+	wd = 0;
 	if (ft_strchr(arg, '*'))
 		wd = ft_wd_file(data, arg);
+	if (!ft_search_in_directory(arg))
+	{
+		data->fd_out = -1;
+		ft_close(data->fd_in, data->fd_out);
+		return ;
+	}
 	newfd = open(arg, O_CREAT | O_RDWR | O_APPEND, 0664);
 	if (newfd < 0)
+	{
 		ft_not_such_file(data, arg, wd);
+		return ;
+	}
 	if (i == data->nb_pipes)
 	{
 		close(data->fd_out);

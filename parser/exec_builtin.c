@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:51:59 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/07 13:22:52 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/09 17:15:03 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	ft_exec_builtin(t_data *data, t_token **args)
 	command = ft_check_last_heredoc(data, args);
 	if (command)
 		ft_redir_here_doc(data, command, 0);
-	if (data->fd_in == -1)
+	if (data->fd_in == -1 || data->fd_out == -1)
 		return ;
 	dup2(data->fd_in, STDIN_FILENO);
 	dup2(data->fd_out, STDOUT_FILENO);
