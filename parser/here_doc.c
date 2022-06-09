@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:42:33 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/08 15:06:56 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/09 15:35:33 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,14 @@ void	ft_get_doc(char *limiter, int nb_heredoc)
 
 	line = NULL;
 	name = ft_strjoin2("/tmp/minishell", ft_itoa(nb_heredoc));
+	if (!name)
+		return ;
 	fd = open(name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
-		exit(EXIT_FAILURE);
+	{
+		free(name);
+		return ;
+	}
 	len = ft_strlen(limiter);
 	ft_here_doc(limiter, line, fd, len);
 	free(name);

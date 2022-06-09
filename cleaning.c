@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:41:08 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/08 16:58:01 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/09 08:35:19 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ void	ft_lstdel_all(t_list **lst)
 	while (lst && *lst)
 	{
 		(*lst) = (*lst)->next;
-		free(temp->content);
+		if (temp->content)
+			free(temp->content);
 		free(temp);
 		temp = *lst;
 	}
@@ -70,22 +71,24 @@ void	ft_free_lexer(t_data *data)
 
 void	ft_free_data(t_data *data)
 {
+	if (data->env)
+		ft_lstdel_all(data->env);
+	if (data->pwd)
+		ft_lstdel_all(data->wd);
+	if (data->pwd)
+		free(data->pwd);
+	if (data->childs)
+		free(data->childs);
 	if (data->pipes)
 	{
 		ft_close_all(data);
 		ft_free_tab((void **)data->pipes);
 	}
-	if (data->childs)
-		free(data->childs);
-	ft_lstdel_all(data->env);
-	ft_lstdel_all(data->wd);
 	if (data->lexer)
 	{
 		ft_free_lexer(data);
 		free(data->lexer);
 	}
-	if (data->pwd)
-		free(data->pwd);
 	free(data);
 	if (g_global.prompt)
 		free(g_global.prompt);

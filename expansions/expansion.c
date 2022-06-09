@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 14:45:38 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/08 17:19:55 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/09 11:12:55 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	ft_expand(t_token **tokens, t_list **env, t_list **wd)
 			tokens[i]->val = ft_expand_wildcard(wd, tokens[i]->val, env);
 		if (!tokens[i]->val)
 		{
-			ft_free_tokens(tokens);
+			//ft_free_tokens(tokens);
 			return ;
 		}
 		i++;

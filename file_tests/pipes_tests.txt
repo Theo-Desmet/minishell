@@ -31,8 +31,7 @@ err diff: lorsque 2 command passer dans une ligne sans pipe: oursh: exec 1er cmd
 
 cat | cat | ls
 cat | cat | wc
-cat |						non a gerer
-| cat						err diff: oursh affiche pas de message d'erreur
+| cat
 cat | cat | cat
 cat | cat
 cat | cat | cat| ls
@@ -47,7 +46,7 @@ cat | wc | cat
 <<cat|cat
 <<cat cat|cat
 <<ls cat|cat
-ls | >out					err diff: oursh affiche un message d'erreur en trop
+ls | >out
 ls | >>out
 ls | <Makefile
 ls | <<eof
@@ -55,7 +54,7 @@ ls | <<ls
 <out cat >out | cat
 <out cat >out | <out cat
 <out cat >out | <out cat >out
-<out cat >out | >out cat			err diff: oursh affiche un message d'erreur en trop
+<out cat >out | >out cat
 ls | cat | wc
 ls <out | cat | wc
 ls >out | cat <out | wc
@@ -71,7 +70,7 @@ ls *| cat
 </dev/urandom cat|cat|ls
 </dev/urandom cat|head -1
 </dev/urandom cat|head -1 | wc
-ls && echo ca marche || echo ca marche pas		err: probleme de parsing, exec || au lieux de &&
+ls && echo ca marche || echo ca marche pas
 ls || echo ca marche pas && echo ca marche
 ls || echo aled || echo oskour
 ls && echo ca && echo marche
@@ -79,10 +78,10 @@ ls && <Makefile cat | cat
 ls && <Makefile cat | cat && echo ca marche || echo ca marche pas	err: invalid read
 ls && <Makefile cat | cat || echo ca marche pas && echo ca marche
 ls && <Make cat | cat && echo ca marche || echo ca marche pas		err: invalid read
-ls && <Make cat | cat || echo ca marche pas && echo ca marche
-&& ls									err diff: ne devrait pas marcher
+ls && <Make* cat | cat || echo ca marche pas && echo ca marche
+&& ls
 ls &&
-|| ls									err diff: ne devrait pas marcher + invalid read
+|| ls
 ls ||
 ls && || echo a
 ls || && echo a
@@ -92,12 +91,12 @@ ls && ls &&
 ls || ls && 
 <Makefile <<eof>out<Makefile cat <<eof <Makefile >out2 | wc && <out2 cat | cat >in || <<eof cat >out 
 <Makefile <<eof>out<Makefile cat <<eof <Makefile >out2 | wc || <out2 cat | cat >in && <<eof cat >out
-ls <<eof && <<eof ls || ls <<eof					err diff: leak here_doc
+ls <<eof && <<eof ls || ls <<eof
 ls <<eof && <<eof ls && ls <<eof
-ls <<eof || <<eof ls || ls <<eof					err diff: leak here_doc
-ls <<eof || <<eof ls && ls <<eofa					err diff: leak here_doc
+ls <<eof || <<eof ls || ls <<eof
+ls <<eof || <<eof ls && ls <<eof
 ls | ls || ls | ls 
-ls || ls | ls || ls							err: invalid read
+ls || ls | ls || ls
 ls ||| cat
 ls <| | wc
 ls >| | wc

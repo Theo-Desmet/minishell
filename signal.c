@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:48:23 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/05 12:17:18 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/09 15:10:05 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ void	ft_sig_inter(int sig)
 {
 	if (sig == SIGINT)
 	{
+		g_global.rtn_val = 130;
 		write(1, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		g_global.rtn_val = 130;
 	}
 	else if (sig == SIGTSTP || sig == SIGQUIT)
 		ft_putstr_fd("\b\b  \b\b", 1);

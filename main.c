@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 10:28:52 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/08 17:08:56 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/09 15:10:20 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	ft_sig_init();
 	data = ft_init_data(env);
+	if (!data)
+		return (1);
 	ft_update_shlvl(data->env);
 	while (1)
 	{
