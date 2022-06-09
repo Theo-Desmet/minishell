@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 14:00:47 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/06/08 10:45:06 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/09 10:20:54 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,23 +38,12 @@ char	*ft_pwd_str(void)
 	return ((char *)cwd);
 }
 
-void	ft_update_env(t_data *data, t_list **env, char *name, char *value)
+void	ft_update_env_norme(t_list **env, char *name, char *str)
 {
-	t_list	*temp;
-	char	*str;
-	char	*mem;
 	int		str_lenght;
+	t_list	*temp;
 
-	temp = NULL;
-	if (!value)
-		return ;
-	mem = ft_strdup(value);
-	free(data->pwd);
-	data->pwd = mem;
-	if (!*env)
-		return ;
 	temp = *env;
-	str = ft_strjoin(name, value);
 	str_lenght = ft_strlen(name);
 	while (temp && ft_strncmp(name, temp->content, str_lenght))
 		temp = temp->next;
@@ -65,4 +54,28 @@ void	ft_update_env(t_data *data, t_list **env, char *name, char *value)
 	}
 	free(temp->content);
 	temp->content = str;
+	return ;
+}
+
+void	ft_update_env(t_data *data, t_list **env, char *name, char *value)
+{
+	char	*str;
+	char	*mem;
+
+	if (!value)
+		return ;
+	mem = ft_strdup(value);
+	if (!mem)
+		return ;
+	free(data->pwd);
+	data->pwd = mem;
+	if (!*env)
+		return ;
+	str = ft_strjoin(name, value);
+	if (!str)
+	{
+		free(mem);
+		return ;
+	}
+	ft_update_env_norme(env, name, str);
 }

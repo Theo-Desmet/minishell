@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 13:51:41 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/06/08 10:35:58 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/09 08:27:56 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ int	ft_cd_error(char **str)
 	if (!str[1][0])
 		return (0);
 	msg = ft_strjoin("minishell: cd: ", str[1]);
+	if (!msg)
+		perror("minishell: cd: ");
 	perror(msg);
 	free(msg);
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 08:10:05 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/05/26 10:05:55 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/09 10:40:17 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ char	*ft_check_unset_arg(char *str)
 		i++;
 	}
 	str = ft_strjoin(str, "=");
+	if (!str)
+		return (NULL);
 	return (str);
 }
 
@@ -41,6 +43,8 @@ char	*ft_get_name(char *str)
 	while (str[i] && str[i] != '=')
 		i++;
 	name = ft_strdup(str);
+	if (!name)
+		return (NULL);
 	name[i] = 0;
 	return (name);
 }
@@ -67,6 +71,8 @@ void	ft_del_env(t_list **env, char *str)
 	char	*name;
 
 	name = ft_get_name(str);
+	if (!name)
+		return ;
 	temp = *env;
 	name_lenght = ft_strlen(str);
 	if (ft_check_first_env(env, temp, str, name))
