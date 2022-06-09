@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:51:59 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/09 17:15:03 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/09 19:05:56 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ void	ft_exec_builtin(t_data *data, t_token **args)
 	if (command)
 		ft_redir_here_doc(data, command, 0);
 	if (data->fd_in == -1 || data->fd_out == -1)
+	{
+		ft_close(&in, &out);
 		return ;
+	}
 	dup2(data->fd_in, STDIN_FILENO);
 	dup2(data->fd_out, STDOUT_FILENO);
 	command = ft_join_word(args);
@@ -61,7 +64,7 @@ void	ft_exec_builtin(t_data *data, t_token **args)
 	ft_free_tab((void **)cmd);
 	dup2(in, STDIN_FILENO);
 	dup2(out, STDOUT_FILENO);
-	ft_close(in, out);
+	ft_close(&in, &out);
 	free(command);
 }
 
@@ -72,7 +75,7 @@ void	ft_child(t_data *data, t_token **args, int in, int out)
 	cmd = ft_join_word(args);
 	dup2(in, STDIN_FILENO);
 	dup2(out, STDOUT_FILENO);
-	ft_close(in, out);
+	ft_close(&in, &out);
 	ft_close_all(data);
 	if (ft_check_builtin(args))
 	{

@@ -6,23 +6,23 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:55:23 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/09 17:23:52 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/09 19:00:54 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-void	ft_close(int fd1, int fd2)
+void	ft_close(int *fd1, int *fd2)
 {
-	if (fd1 != -1)
+	if (*fd1 != -1)
 	{
-		close(fd1);
-		fd1 = -1;
+		close(*fd1);
+		*fd1 = -1;
 	}
-	if (fd2 != -1)
+	if (*fd2 != -1)
 	{
-		close(fd2);
-		fd2 = -1;
+		close(*fd2);
+		*fd2 = -1;
 	}
 }
 

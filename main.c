@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 10:28:52 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/09 15:10:20 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/09 18:59:48 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_get_cmd_line(t_data *data)
 {
 	data->lexer->lexed = ft_lexer(data->lexer->input); //SECU
 	data->lexer->tokens = ft_tokenize(data->lexer->lexed); //SECU
-	ft_close(data->fd_in, data->fd_out);
+	ft_close(&data->fd_in, &data->fd_out);
 	data->fd_in = dup(STDIN_FILENO);
 	data->fd_out = dup(STDOUT_FILENO);
 	if (!ft_check_grammar(data->lexer->tokens))
@@ -90,11 +90,11 @@ int	main(int ac, char **av, char **env)
 			{
 				g_global.in_exec = 0;
 				free(g_global.prompt);
-				ft_close(data->fd_in, data->fd_out);
+				ft_close(&data->fd_in, &data->fd_out);
 				continue ;
 			}
 			ft_pipeline(data, data->lexer->tokens);
-			ft_close(data->fd_in, data->fd_out);
+			ft_close(&data->fd_in, &data->fd_out);
 			g_global.in_exec = 0;
 			if (g_global.rtn_val == 139)
 				write(2, "Segmentation fault\n", 19);

@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:47:01 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/09 17:14:30 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/09 19:00:31 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ void	ft_child_cmd(t_data *data, t_token **args)
 
 	if (data->fd_in == -1 || data->fd_out == -1)
 	{
-		ft_close(data->fd_in, data->fd_out);
+		ft_close(&data->fd_in, &data->fd_out);
 		ft_free_data(data);
 		exit(EXIT_FAILURE);
 	}
 	dup2(data->fd_in, STDIN_FILENO);
 	dup2(data->fd_out, STDOUT_FILENO);
-	ft_close(data->fd_in, data->fd_out);
+	ft_close(&data->fd_in, &data->fd_out);
 	cmd = ft_join_word(args);
 	ft_exec(data, data->env, cmd);
 }
@@ -61,7 +61,7 @@ void	ft_prepare_pipeline(t_data *data, size_t *offset, t_token **pipeline)
 {
 	size_t	pipes;
 
-	ft_close(data->fd_in, data->fd_out);
+	ft_close(&data->fd_in, &data->fd_out);
 	data->fd_in = dup(STDIN_FILENO);
 	data->fd_out = dup(STDOUT_FILENO);
 	pipes = ft_count_pipes(pipeline, offset);

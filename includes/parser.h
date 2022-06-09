@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 15:20:53 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/08 15:02:44 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/09 18:59:29 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int		ft_is_last_pipe(t_token **args);
 size_t	ft_go_to_next_pipe(t_token **args);
 pid_t	*ft_update_childs(t_data *data, size_t n);
 int		**ft_update_pipes(t_data *data, size_t n);
-void	ft_close(int fd1, int fd2);
+void	ft_close(int *fd1, int *fd2);
 void	ft_exec_pipeline(t_data *data, t_token **args, size_t pipes);
 int		ft_get_return_val(int status);
 int		ft_wait_all(t_data *data);
@@ -91,7 +91,7 @@ void	ft_exec_builtin_pipe(t_data *data, t_token **args);
 void	ft_exec_builtin(t_data *data, t_token **args);
 void	ft_child(t_data *data, t_token **args, int in, int out);
 int		ft_glhf(char *args, char *args2);
-void	ft_close(int fd1, int fd2);
+void	ft_close(int *fd1, int *fd2);
 void	ft_close_all(t_data *data);
 size_t	ft_count_exec_blocks(t_token **tokens);
 void	ft_redir_here_doc(t_data *data, char *command, int i);

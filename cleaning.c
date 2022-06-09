@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:41:08 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/09 08:35:19 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/09 18:59:34 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_quit(t_data *data, char *here_doc, int fork)
 {
-	ft_close(data->fd_in, data->fd_out);
+	ft_close(&data->fd_in, &data->fd_out);
 	if (here_doc)
 		free(here_doc);
 	if (data)
