@@ -34,6 +34,7 @@ void	ft_exec(t_data *data, t_list **env, char *arg)
 	if (!*command)
 	{
 		ft_free_data(data);
+		free(arg);
 		ft_free_tab((void **)command);
 		exit(EXIT_SUCCESS);
 	}

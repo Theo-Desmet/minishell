@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:55:23 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/08 11:37:18 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/09 15:25:26 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,6 @@ void	ft_close(int fd1, int fd2)
 
 int	ft_get_return_val(int status)
 {
-	if ((g_global.rtn_val == 130 || g_global.rtn_val == 148)
-		&& g_global.in_exec == 1)
-		return (g_global.rtn_val);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	if (WIFSIGNALED(status))
