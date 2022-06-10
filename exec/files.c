@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:18:32 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/09 19:01:53 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/10 14:31:52 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,13 @@ void	ft_rd_in(t_data *data, char *arg, int i)
 
 	if (ft_strchr(arg, '*'))
 		ft_wd_file(data, arg);
-	if (!ft_search_in_directory(arg))
+	newfd = open(arg, O_RDONLY);
+	if (newfd == -1)
 	{
+		ft_search_in_directory(arg);
 		ft_close(&data->fd_in, &data->fd_out);
 		return ;
 	}
-	newfd = open(arg, O_RDONLY);
 	if (newfd < 0)
 		return ;
 	if (i == 0)
