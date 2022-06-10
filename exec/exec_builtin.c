@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:51:59 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/09 19:05:56 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/10 09:57:46 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,14 @@ void	ft_builtin(t_data *data, char **cmd, char *command)
 		ft_exit(data, cmd, command);
 }
 
-void	ft_redir_here_doc(t_data *data, char *command, int i)
-{	
-	ft_rd_in(data, command, i);
-	unlink(command);
-	free(command);
+int	ft_open_err_builtin(t_data *data, int in, int out)
+{
+	if (data->fd_in == -1 || data->fd_out == -1)
+	{
+		ft_close(&in, &out);
+		return (1);
+	}
+	return (0);
 }
 
 void	ft_exec_builtin(t_data *data, t_token **args)
@@ -50,11 +53,8 @@ void	ft_exec_builtin(t_data *data, t_token **args)
 	command = ft_check_last_heredoc(data, args);
 	if (command)
 		ft_redir_here_doc(data, command, 0);
-	if (data->fd_in == -1 || data->fd_out == -1)
-	{
-		ft_close(&in, &out);
+	if (ft_open_err_builtin(data, in, out))
 		return ;
-	}
 	dup2(data->fd_in, STDIN_FILENO);
 	dup2(data->fd_out, STDOUT_FILENO);
 	command = ft_join_word(args);

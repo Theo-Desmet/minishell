@@ -6,16 +6,16 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:45:03 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/09 08:36:10 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/10 08:31:04 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_list    **ft_init_env(t_list **env, char **envp)
+t_list	**ft_init_env(t_list **env, char **envp)
 {
-	size_t    i;
-	t_list    *temp;
+	size_t	i;
+	t_list	*temp;
 
 	env = malloc(sizeof(t_list));
 	if (!env)

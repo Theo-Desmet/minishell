@@ -1,9 +1,0 @@
-Fix:
-	Fonctionnement des pipes (probablement un probleme de redirection de fd)
-	Gestion des '&&' et '||'
-	Gestion du here_doc: << EOF cat (cat ne prend pas en entree le here_doc, attend simplement STDIN) (probablement un probleme de redirection de fd)
-	Certains buildins customs renvoient "command not found" alors qu'ils sont censes etre executes par execve
-Add:
-	Fonction d'execution des buildins customs
-	Gestion des signaux dans une execution
-	Faire un prompt joli :)

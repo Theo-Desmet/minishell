@@ -6,7 +6,7 @@
 #    By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/18 21:36:22 by bbordere          #+#    #+#              #
-#    Updated: 2022/06/07 15:10:59 by tdesmet          ###   ########.fr        #
+#    Updated: 2022/06/10 09:55:24 by tdesmet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,24 @@ CC = cc
 
 CFLAGS = -g3 -I includes/ -Wall -Werror -Wextra
 
-FILES = $(wildcard builtin/*.c) $(wildcard lexer/*.c) $(wildcard parser/*.c) $(wildcard expansions/*.c) main.c prompt.c cleaning.c init.c utils.c signal.c
+BUILTIN = cd echo exit export export_add env print_export pwd unset
+
+EXPANSIONS = expansion utils utils_expand var
+
+PARSER = parser path utils utils_parser utils_pipe
+
+EXEC = check_here_doc exec_builtin exec exec_pipes files here_doc pipe redir
+
+LEXER = count_word ft_split_conserve join lexer token utils utils2 wd
+
+INIT = cleaning init signal utils prompt main
+
+FILES =	$(addsuffix .c, $(addprefix builtin/, $(BUILTIN))) \
+	$(addsuffix .c, $(addprefix expansions/, $(EXPANSIONS))) \
+	$(addsuffix .c, $(addprefix parser/, $(PARSER))) \
+	$(addsuffix .c, $(addprefix exec/, $(EXEC))) \
+	$(addsuffix .c, $(addprefix lexer/, $(LEXER))) \
+	$(addsuffix .c, $(addprefix init/, $(INIT))) \
 
 OBJS = $(FILES:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:48:47 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/09 19:00:22 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/10 09:27:51 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	ft_exec_first(t_data *data, t_token **args)
 	{
 		if (data->fd_in == -1)
 			ft_quit(data, NULL, 1);
-		close(data->pipes[0][0]);		
+		close(data->pipes[0][0]);
 		ft_child(data, args, data->fd_in, data->pipes[0][1]);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 14:45:38 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/09 11:12:55 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/10 08:56:19 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*ft_expand_str(t_list **env, char *str)
 		else if (str[temp.i] == '$' && ft_issep(str[temp.i + 1]))
 			temp.i++;
 		else
-			res = ft_charjoin(res, str[temp.i++]);		
+			res = ft_charjoin(res, str[temp.i++]);
 	}
 	res = ft_frame_str(res, ft_get_inverted_quote(res));
 	ft_free((void **)temp.vars);

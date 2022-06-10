@@ -29,8 +29,8 @@ cd /home/bocal
 cd $HOME
 cd -n
 cd 
-cd ''					err diff: oursh: cd $HOME	bash: ne fait rien
-cd ''''					err diff: oursh: cd $HOME	bash: ne fait rien
+cd ''
+cd ''''
 cd ""
 cd """"
 mkdir testcd

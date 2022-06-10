@@ -6,7 +6,7 @@
 /*   By: tdesmet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 11:00:57 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/06/08 11:02:40 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/10 09:59:42 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ void	ft_unlink_wrong_heredoc(t_data *data, t_token **args)
 			ft_unlink_file(data);
 		}
 	}
+}
+
+void	ft_redir_here_doc(t_data *data, char *command, int i)
+{
+	ft_rd_in(data, command, i);
+	unlink(command);
+	free(command);
 }
 
 int	*ft_check_last_heredoc2(t_data *data, t_token **args, int cnt[2])

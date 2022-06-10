@@ -6,13 +6,13 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 10:28:52 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/09 18:59:48 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/10 08:55:05 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char   *ft_prompt(t_data *data);
+char	*ft_prompt(t_data *data);
 
 int	ft_get_cmd_line(t_data *data)
 {
@@ -27,7 +27,9 @@ int	ft_get_cmd_line(t_data *data)
 	ft_expand(data->lexer->tokens, data->env, data->wd);
 	if (!data->lexer->tokens)
 		return (-1);
-	if (ft_issep(*(*data->lexer->tokens)->val) && ft_strlen((*data->lexer->tokens)->val) == 2 &&(*data->lexer->tokens)->type == VAR)
+	if (ft_issep(*(*data->lexer->tokens)->val)
+		&& ft_strlen((*data->lexer->tokens)->val) == 2
+		&& (*data->lexer->tokens)->type == VAR)
 		return (ft_free_lexer(data), -1);
 	ft_free_tab((void **)data->lexer->lexed);
 	data->lexer->lexed = ft_join(data->lexer->tokens);
@@ -65,17 +67,18 @@ void	ft_update_shlvl(t_list **env)
 	}
 }
 
-int	main(int ac, char **av, char **env)
+void	ft_exit_prompt(t_data *data)
 {
-	t_data	*data;
+	ft_close(&data->fd_in, &data->fd_out);
+	g_global.in_exec = 0;
+	if (g_global.rtn_val == 139)
+		write(2, "Segmentation fault\n", 19);
+	if (g_global.rtn_val == 134)
+		write(2, "Abort\n", 6);
+}
 
-	(void)ac;
-	(void)av;
-	ft_sig_init();
-	data = ft_init_data(env);
-	if (!data)
-		return (1);
-	ft_update_shlvl(data->env);
+void	ft_exec_prompt(t_data *data)
+{
 	while (1)
 	{
 		g_global.prompt = ft_prompt(data);
@@ -94,16 +97,25 @@ int	main(int ac, char **av, char **env)
 				continue ;
 			}
 			ft_pipeline(data, data->lexer->tokens);
-			ft_close(&data->fd_in, &data->fd_out);
-			g_global.in_exec = 0;
-			if (g_global.rtn_val == 139)
-				write(2, "Segmentation fault\n", 19);
-			if (g_global.rtn_val == 134)
-				write(2, "Abort\n", 6);
+			ft_exit_prompt(data);
 		}
 		ft_free_lexer(data);
 		free(g_global.prompt);
 	}
+}
+
+int	main(int ac, char **av, char **env)
+{
+	t_data	*data;
+
+	(void)ac;
+	(void)av;
+	ft_sig_init();
+	data = ft_init_data(env);
+	if (!data)
+		return (1);
+	ft_update_shlvl(data->env);
+	ft_exec_prompt(data);
 	ft_free_data(data);
 	printf("exit\n");
 	rl_clear_history();
