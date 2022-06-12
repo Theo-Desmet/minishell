@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:47:01 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/09 19:00:31 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/11 17:08:30 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	ft_cmd(t_data *data, t_token **args)
 	here_doc = ft_check_last_heredoc(data, args);
 	if (here_doc)
 	{
-		ft_rd_in(data, here_doc, 0);
+		ft_rd_in(data, &here_doc, 0);
 		unlink(here_doc);
 		free(here_doc);
 	}

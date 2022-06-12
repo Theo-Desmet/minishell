@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:51:59 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/10 09:57:46 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/11 18:06:16 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,38 +44,39 @@ void	ft_exec_builtin(t_data *data, t_token **args)
 {
 	char	*command;
 	char	**cmd;
-	int		in;
-	int		out;
+	int		fd[2];
 
-	in = dup(data->fd_in);
-	out = dup(data->fd_out);
+	fd[0] = dup(data->fd_in);
+	fd[1] = dup(data->fd_out);
 	ft_redirection(data, args, 0);
 	command = ft_check_last_heredoc(data, args);
 	if (command)
 		ft_redir_here_doc(data, command, 0);
-	if (ft_open_err_builtin(data, in, out))
+	if (ft_open_err_builtin(data, fd[0], fd[1]))
 		return ;
 	dup2(data->fd_in, STDIN_FILENO);
 	dup2(data->fd_out, STDOUT_FILENO);
 	command = ft_join_word(args);
 	cmd = ft_lexer(command);
 	ft_get_cmd(cmd);
+	if (!ft_strcmp("exit", cmd[0]))
+		ft_close(&fd[0], &fd[1]);
 	ft_builtin(data, cmd, command);
 	ft_free_tab((void **)cmd);
-	dup2(in, STDIN_FILENO);
-	dup2(out, STDOUT_FILENO);
-	ft_close(&in, &out);
+	dup2(fd[0], STDIN_FILENO);
+	dup2(fd[1], STDOUT_FILENO);
+	ft_close(&fd[0], &fd[1]);
 	free(command);
 }
 
-void	ft_child(t_data *data, t_token **args, int in, int out)
+void	ft_child(t_data *data, t_token **args, int *in, int *out)
 {
 	char	*cmd;
 
 	cmd = ft_join_word(args);
-	dup2(in, STDIN_FILENO);
-	dup2(out, STDOUT_FILENO);
-	ft_close(&in, &out);
+	dup2(*in, STDIN_FILENO);
+	dup2(*out, STDOUT_FILENO);
+	ft_close(in, out);
 	ft_close_all(data);
 	if (ft_check_builtin(args))
 	{

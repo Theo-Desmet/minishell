@@ -76,11 +76,11 @@ void	ft_redirection(t_data *data, t_token **args, int index)
 		&& args[i]->type != D_PIPE && args[i]->type != D_AND)
 	{
 		if (args[i]->type == R_IN)
-			ft_rd_in(data, args[++i]->val, index);
+			ft_rd_in(data, &args[++i]->val, index);
 		if (args[i]->type == R_OUT)
-			ft_rd_out(data, args[++i]->val, index);
+			ft_rd_out(data, &args[++i]->val, index);
 		if (args[i]->type == R_APPEND)
-			ft_rd_append(data, args[++i]->val, index);
+			ft_rd_append(data, &args[++i]->val, index);
 		i++;
 	}
 }

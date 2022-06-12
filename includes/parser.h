@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 15:20:53 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/09 18:59:29 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/11 18:06:01 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # define ERROR_MSG "minishell: syntax error near unexpected token "
 # define ERROR_QUOTE "minishell: unexpected EOF while looking for matching "
 # define ERROR_NL "minishell: syntax error near unexpected token `newline`"
+# define ERROR_HD "minishell: warning: here-document delimited by end-of-file"
 
 int		ft_check_op(t_token **tokens, size_t	i);
 int		ft_isvalidtype(int type);
@@ -41,7 +42,6 @@ void	ft_pipeline(t_data *data, t_token **tokens);
 char	**ft_lst_to_tab(t_list **lst);
 char	*ft_check_last_heredoc(t_data *data, t_token **args);
 void	ft_redirection(t_data *data, t_token **args, int index);
-void	ft_rd_in(t_data *data, char *arg, int i);
 char	*ft_join_word(t_token **args);
 void	ft_exec(t_data *data, t_list **env, char *arg);
 void	ft_find_heredoc(t_data *data, t_token **args);
@@ -55,9 +55,9 @@ int		ft_unset(t_list **env, char **arg);
 void	ft_exit(t_data *data, char **args, char *command);
 void	ft_free_lexer(t_data *data);
 void	ft_free_data(t_data *data);
-void	ft_rd_in(t_data *data, char *arg, int i);
-void	ft_rd_out(t_data *data, char *arg, int i);
-void	ft_rd_append(t_data *data, char *arg, int i);
+void	ft_rd_in(t_data *data, char **arg, int i);
+void	ft_rd_out(t_data *data, char **arg, int i);
+void	ft_rd_append(t_data *data, char **arg, int i);
 void	ft_here_doc(char *limiter, char *line, int fd, int len);
 char	*ft_check_path(char **paths, char *cmd);
 char	*ft_search_path(t_list **env, char *cmd);
@@ -89,7 +89,7 @@ int		ft_sig_init(void);
 void	ft_builtin(t_data *data, char **cmd, char *command);
 void	ft_exec_builtin_pipe(t_data *data, t_token **args);
 void	ft_exec_builtin(t_data *data, t_token **args);
-void	ft_child(t_data *data, t_token **args, int in, int out);
+void	ft_child(t_data *data, t_token **args, int *in, int *out);
 int		ft_glhf(char *args, char *args2);
 void	ft_close(int *fd1, int *fd2);
 void	ft_close_all(t_data *data);
@@ -97,8 +97,7 @@ size_t	ft_count_exec_blocks(t_token **tokens);
 void	ft_redir_here_doc(t_data *data, char *command, int i);
 int		ft_wildcard(t_list **wd, char *str);
 void	ft_quit(t_data *data, char *here_doc, int fork);
-void   ft_unlink_file(t_data *data);
-void   ft_unlink_wrong_heredoc(t_data *data, t_token **args);
-
+void	ft_unlink_file(t_data *data);
+void	ft_unlink_wrong_heredoc(t_data *data, t_token **args);
 
 #endif

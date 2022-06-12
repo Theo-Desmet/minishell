@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 15:21:42 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/09 16:35:26 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/11 18:07:10 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,5 @@ int	ft_check_op(t_token **tokens, size_t i)
 		return (0);
 	if (ft_isredir(tokens[i - 1]) || ft_isop(tokens[i - 1]->type))
 		return (0);
-	// else if (tokens[i]->type == R_OUT)
-	// 	return (ft_isvalidtype(tokens[i - 1]->type)
-	// 		&& ft_isvalidtype(tokens[i + 1]->type));
-	// else if (tokens[i]->type == R_APPEND || tokens[i]->type == D_AND
-	// 	|| tokens[i]->type == D_PIPE)
-	// 	return (ft_isvalidtype(tokens[i + 1]->type));
 	return (1);
 }

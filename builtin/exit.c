@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 08:34:09 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/06/10 14:30:33 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/11 18:00:00 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	ft_free_all(t_data *data, char **args, int rtn, char *command)
 {
 	free(command);
+	ft_close(&data->fd_in, &data->fd_out);
 	ft_free_data(data);
 	ft_free_tab((void **)args);
 	exit(rtn);

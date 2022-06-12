@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 11:00:57 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/06/10 14:23:15 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/11 16:46:48 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ft_unlink_wrong_heredoc(t_data *data, t_token **args)
 
 void	ft_redir_here_doc(t_data *data, char *command, int i)
 {
-	ft_rd_in(data, command, i);
+	ft_rd_in(data, &command, i);
 	unlink(command);
 	free(command);
 }

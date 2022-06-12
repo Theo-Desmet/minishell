@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:46:47 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/09 18:59:55 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/11 15:08:14 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	ft_close_all(t_data *data)
 		ft_close(&data->pipes[i][0], &data->pipes[i][1]);
 		i++;
 	}
+	ft_close(&data->fd_in, &data->fd_out);
 }
 
 char	**ft_lst_to_tab(t_list **lst)

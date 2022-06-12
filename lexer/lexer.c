@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 12:07:21 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/26 15:55:24 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/11 18:07:43 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,8 @@ char	**ft_lexer(char *str)
 		return (NULL);
 	while (i < nb)
 		ft_fill_tab(str, &i, &j, res);
+	if (!res)
+		return (NULL);
 	res[nb] = NULL;
 	return (res);
 }
