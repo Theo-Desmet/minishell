@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:08:45 by bbordere          #+#    #+#             */
-/*   Updated: 2022/05/22 11:25:22 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/13 15:49:17 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "minishell.h"
 
 int	ft_islimit(int type)
 {

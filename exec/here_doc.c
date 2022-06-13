@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:42:33 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/11 15:30:10 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/13 16:00:13 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "minishell.h"
 
 void	ft_here_doc(char *limiter, char *line, int fd, int len)
 {

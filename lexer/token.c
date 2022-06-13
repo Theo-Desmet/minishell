@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 11:08:42 by bbordere          #+#    #+#             */
-/*   Updated: 2022/03/25 11:08:42 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/13 15:50:01 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "minishell.h"
 
 void	ft_skip_quotes(char *val, ssize_t *i)
 {

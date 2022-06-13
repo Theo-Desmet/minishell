@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:48:47 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/11 17:20:54 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/13 15:59:44 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "minishell.h"
 
 void	ft_exec_first(t_data *data, t_token **args)
 {

@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 14:45:38 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/11 15:09:18 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/13 15:45:12 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expansions.h"
+#include "minishell.h"
 
 void	*ft_free_tokens(t_token **tokens);
 

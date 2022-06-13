@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 12:28:22 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/06 11:09:13 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/13 15:50:17 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "minishell.h"
 
 void	ft_get_count(char *str, size_t *i, size_t *nb)
 {

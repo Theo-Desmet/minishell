@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 12:42:07 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/08 10:53:04 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/13 15:48:59 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "minishell.h"
 
 static int	ft_countword(const char *str, char c)
 {

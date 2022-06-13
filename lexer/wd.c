@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/24 12:47:04 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/06 12:18:57 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/13 15:50:48 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "minishell.h"
 
 int	ft_strstr_len(const char *s1, const char *s2)
 {

@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:31:09 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/05 11:33:17 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/13 15:47:15 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "minishell.h"
 
 char	*ft_check_path(char **paths, char *cmd)
 {

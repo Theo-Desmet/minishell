@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:55:23 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/11 15:21:00 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/13 15:47:58 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "minishell.h"
 
 void	ft_close(int *fd1, int *fd2)
 {

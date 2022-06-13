@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 11:07:19 by bbordere          #+#    #+#             */
-/*   Updated: 2022/03/25 11:07:19 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/13 15:48:34 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "minishell.h"
 
 void	ft_count_word_sep(char *str, size_t *i, int mode)
 {

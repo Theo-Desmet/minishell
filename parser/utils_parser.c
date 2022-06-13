@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 15:21:42 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/11 18:07:10 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/13 15:47:32 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "minishell.h"
 
 int	ft_isop(int type)
 {

@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/04 11:08:35 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/05 11:58:15 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/13 15:46:58 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "minishell.h"
 
 void	ft_print_error(char *file, char *msg)
 {

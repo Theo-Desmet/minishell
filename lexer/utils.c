@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 11:05:22 by bbordere          #+#    #+#             */
-/*   Updated: 2022/03/25 11:05:22 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/13 15:50:32 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "minishell.h"
 
 int	ft_isspecchar(int c)
 {

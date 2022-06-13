@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 08:34:09 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/06/11 18:00:00 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/13 07:57:34 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_free_all(t_data *data, char **args, int rtn, char *command)
 
 int	ft_exit_num_err(char **args, int i)
 {
-	if ((!args[1][i] && !args[2]) || !args[1][0])
+	if ((args[1][i] && !args[2]) || !args[1][0])
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(args[1], 2);

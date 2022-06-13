@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:18:32 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/11 18:06:46 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/13 15:59:59 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "minishell.h"
 
 char	*ft_search_in_directory(char *cmd);
 

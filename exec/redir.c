@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:39:16 by bbordere          #+#    #+#             */
-/*   Updated: 2022/04/26 19:39:16 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/13 16:00:40 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "minishell.h"
 
 void	ft_exit_exec(char **command, t_data *data, char **tab_env)
 {

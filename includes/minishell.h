@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 10:24:23 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/06/01 18:44:38 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/13 15:55:56 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@
 # include "lexer.h"
 # include "expansions.h"
 # include "parser.h"
+# include "init.h"
 # include "builtin.h"
+# include "exec.h"
 
 #endif

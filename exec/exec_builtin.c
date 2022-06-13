@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:51:59 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/11 18:06:16 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/13 15:59:02 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "minishell.h"
 
 void	ft_builtin(t_data *data, char **cmd, char *command)
 {

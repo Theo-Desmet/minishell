@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 13:41:13 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/11 17:30:50 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/13 16:00:27 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "minishell.h"
 
 pid_t	*ft_update_childs(t_data *data, size_t n)
 {

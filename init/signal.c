@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:48:23 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/09 15:10:05 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/13 08:22:25 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,6 @@ void	sig_handler(int sig)
 	}
 	else if (sig == SIGQUIT)
 		ft_putstr_fd("Quit (core dumped)\n", 1);
-	else if (sig == SIGSEGV)
-		ft_putstr_fd("Segmentation fault\n", 1);
-	else if (sig == SIGABRT)
-		ft_putstr_fd("Abort\n", 1);
 }
 
 int	ft_sig_init(void)

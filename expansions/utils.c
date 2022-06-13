@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 12:16:10 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/11 15:13:07 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/13 15:45:31 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expansions.h"
+#include "minishell.h"
 
 char	*ft_copy_quotes(char *res, t_temp *temp)
 {

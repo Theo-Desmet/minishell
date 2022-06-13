@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 21:33:46 by bbordere          #+#    #+#             */
-/*   Updated: 2022/04/19 21:33:46 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/13 15:45:49 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expansions.h"
+#include "minishell.h"
 
 size_t	ft_count_vars(char *str)
 {

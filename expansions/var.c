@@ -6,11 +6,11 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 21:36:02 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/08 10:58:39 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/13 15:46:09 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expansions.h"
+#include "minishell.h"
 
 char	*ft_get_var(t_list **env, char *str)
 {
