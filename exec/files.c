@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:18:32 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/13 15:59:59 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/13 16:31:54 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	ft_check_files(t_data *data, char **arg, int mode)
 	return (fd);
 }
 
-void	ft_rd_in(t_data *data, char **arg, int i)
+int	ft_rd_in(t_data *data, char **arg, int i)
 {
 	int	newfd;
 
@@ -70,9 +70,10 @@ void	ft_rd_in(t_data *data, char **arg, int i)
 		ft_close(&data->pipes[i - 1][0], NULL);
 		data->pipes[i - 1][0] = newfd;
 	}
+	return (newfd);
 }
 
-void	ft_rd_out(t_data *data, char **arg, int i)
+int	ft_rd_out(t_data *data, char **arg, int i)
 {
 	int	newfd;
 
@@ -87,9 +88,10 @@ void	ft_rd_out(t_data *data, char **arg, int i)
 		ft_close(&data->pipes[i][1], NULL);
 		data->pipes[i][1] = newfd;
 	}
+	return (newfd);
 }
 
-void	ft_rd_append(t_data *data, char **arg, int i)
+int	ft_rd_append(t_data *data, char **arg, int i)
 {
 	int	newfd;
 
@@ -104,4 +106,5 @@ void	ft_rd_append(t_data *data, char **arg, int i)
 		ft_close(&data->pipes[i][1], NULL);
 		data->pipes[i][1] = newfd;
 	}
+	return (newfd);
 }

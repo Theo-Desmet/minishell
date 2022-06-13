@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 10:28:52 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/11 18:08:23 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/13 17:16:48 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_get_cmd_line(t_data *data)
 	data->lexer->lexed = ft_lexer(data->lexer->input);
 	if (!data->lexer->lexed)
 		return (-1);
-	data->lexer->tokens = ft_tokenize(data->lexer->lexed); //SECU
+	data->lexer->tokens = ft_tokenize(data->lexer->lexed);
 	ft_close(&data->fd_in, &data->fd_out);
 	data->fd_in = dup(STDIN_FILENO);
 	data->fd_out = dup(STDOUT_FILENO);
