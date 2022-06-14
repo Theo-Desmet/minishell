@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 10:28:52 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/13 17:16:48 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/14 11:19:47 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,13 @@ void	ft_update_shlvl(t_list **env)
 	t_list	*temp;
 	char	*str;
 	void	*addr;
+	char	**split;
 
 	if (!*env || !ft_getenv(env, "SHLVL"))
 	{
-		ft_export(env, ft_split("export SHLVL=1", ' '));
+		split = ft_split("export SHLVL=1", ' ');
+		ft_export(env, split);
+		ft_free_tab((void **)split);
 		return ;
 	}
 	temp = *env;
