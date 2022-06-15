@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/04 11:08:35 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/13 15:46:58 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/15 08:44:45 by tdesmet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ char	*ft_search_path(t_list **env, char *cmd)
 	if (!env || !*env)
 		return (ft_print_error(cmd, "command not found\n"), NULL);
 	temp = *env;
-	while (temp && temp->next && ft_strncmp("PATH=", temp->content, 5))
+	while (temp && ft_strncmp("PATH=", temp->content, 5))
 		temp = temp->next;
-	if (!temp->next || ft_strncmp("PATH=", temp->content, 5))
+	if (!temp || ft_strncmp("PATH=", temp->content, 5))
 		return (ft_print_error(cmd, "command not found\n"), NULL);
 	paths = ft_split(temp->content + 5, ':');
 	command = ft_check_path(paths, cmd);
