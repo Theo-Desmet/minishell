@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:47:01 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/13 15:59:24 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/25 13:01:43 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,8 @@ void	ft_pipeline(t_data *data, t_token **tokens)
 	t_token	**pipeline;
 
 	pipeline = tokens;
-	ft_find_heredoc(data, tokens);
+	if (ft_find_heredoc(data, tokens) == -1)
+		return ;
 	if (ft_count_exec_blocks(tokens) == 1)
 		ft_cmd(data, tokens);
 	else

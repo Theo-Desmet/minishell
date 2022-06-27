@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 15:14:11 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/13 16:47:30 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/25 14:07:46 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ typedef struct s_data{
 	int		nb_heredoc;
 	int		act_heredoc;
 	char	*pwd;
+	char	*here_doc;
 }	t_data;
 
 typedef struct s_global

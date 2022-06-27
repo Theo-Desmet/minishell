@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:48:23 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/13 08:22:25 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/25 12:36:54 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void	sig_handler(int sig)
 	{
 		ft_putstr_fd("\n", 1);
 		g_global.rtn_val = 130;
-		kill(g_global.pid, SIGINT);
+		if (g_global.pid != -1)
+			kill(g_global.pid, SIGINT);
 	}
 	else if (sig == SIGTSTP)
 	{

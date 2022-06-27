@@ -6,7 +6,7 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 18:45:03 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/10 08:31:04 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/25 14:09:11 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ char	*ft_init_pwd(t_data *data)
 	if (!cwd)
 		return (NULL);
 	data->pwd = ft_strjoin(cwd, "\n");
+	data->here_doc = NULL;
 	return (data->pwd);
 }
 

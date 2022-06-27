@@ -6,15 +6,17 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 15:32:16 by tdesmet           #+#    #+#             */
-/*   Updated: 2022/06/13 17:19:41 by bbordere         ###   ########.fr       */
+/*   Updated: 2022/06/25 14:38:48 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXEC_H
 # define EXEC_H
 
-void	ft_get_doc(char *limiter, int nb_heredoc);
-void	ft_here_doc(char *limiter, char *line, int fd, int len);
+int		ft_get_doc(t_data *data, char *limiter, int nb_heredoc);
+void	ft_here_doc(t_data *data, char *limiter, char *line, int *fd);
+void	ft_exit_here_doc(t_data *data, int *fd, int rtn);
+void	ft_quit_here_doc(t_data *data, int *fd, char *line, char *limiter);
 
 void	ft_unlink_file(t_data *data);
 void	ft_redir_here_doc(t_data *data, char *command, int i);
@@ -52,7 +54,7 @@ size_t	ft_count_pipes(t_token **tokens, size_t *offset);
 void	ft_exec_pipeline(t_data *data, t_token **args, size_t pipes);
 
 char	*ft_join_word(t_token **args);
-void	ft_find_heredoc(t_data *data, t_token **args);
+int		ft_find_heredoc(t_data *data, t_token **args);
 void	ft_exec(t_data *data, t_list **env, char *arg);
 void	ft_redirection(t_data *data, t_token **args, int index);
 void	ft_exit_exec(char **command, t_data *data, char **tab_env);

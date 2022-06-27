@@ -48,7 +48,7 @@ void	ft_exec(t_data *data, t_list **env, char *arg)
 	ft_free_tab((void **)command);
 }
 
-void	ft_find_heredoc(t_data *data, t_token **args)
+int	ft_find_heredoc(t_data *data, t_token **args)
 {
 	size_t	i;
 	size_t	nb_heredoc;
@@ -59,12 +59,14 @@ void	ft_find_heredoc(t_data *data, t_token **args)
 	{
 		if (args[i]->type == R_HERE_DOC)
 		{
-			ft_get_doc(args[++i]->val, nb_heredoc);
+			if (ft_get_doc(data, args[++i]->val, nb_heredoc) != 0)
+				return (-1);
 			nb_heredoc++;
 		}
 		i++;
 	}
 	data->nb_heredoc = nb_heredoc;
+	return (0);
 }
 
 void	ft_redirection(t_data *data, t_token **args, int index)

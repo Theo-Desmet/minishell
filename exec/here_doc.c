@@ -6,54 +6,82 @@
 /*   By: bbordere <bbordere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 16:42:33 by bbordere          #+#    #+#             */
-/*   Updated: 2022/06/13 16:00:13 by tdesmet          ###   ########.fr       */
+/*   Updated: 2022/06/25 15:36:44 by bbordere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_here_doc(char *limiter, char *line, int fd, int len)
+void	ft_sig_heredoc(int signal)
 {
+	if (signal == SIGINT)
+		g_global.rtn_val = -1;
+}
+
+void	ft_exit_here_doc(t_data *data, int *fd, int rtn)
+{
+	ft_close(fd, NULL);
+	free(data->here_doc);
+	data->here_doc = NULL;
+	ft_close(&data->fd_in, &data->fd_out);
+	ft_free_data(data);
+	exit(rtn);
+}
+
+void	ft_here_doc(t_data *data, char *limiter, char *line, int *fd)
+{
+	size_t	len;
+
+	len = ft_strlen(limiter);
+	signal(SIGINT, ft_sig_heredoc);
 	while (1)
 	{
+		if (g_global.rtn_val == -1)
+			ft_exit_here_doc(data, fd, SIGINT);
 		write(0, "> ", 2);
 		line = get_next_line(0);
 		if (!line)
-		{
-			close(fd);
-			printf("%s (wanted `%s`)\n", ERROR_HD, limiter);
-			free(line);
-			return ;
-		}
+			ft_quit_here_doc(data, fd, line, limiter);
 		if (!ft_strncmp(line, limiter, len) && line[len] == '\n')
-		{
-			close(fd);
-			free(line);
-			return ;
-		}
-		write(fd, line, ft_strlen(line));
+			ft_quit_here_doc(data, fd, line, NULL);
+		write(*fd, line, ft_strlen(line));
 		free(line);
 	}
+	ft_quit_here_doc(data, fd, NULL, NULL);
 }
 
-void	ft_get_doc(char *limiter, int nb_heredoc)
+int	ft_here(t_data *data, char *limiter, int nb_heredoc)
 {
 	char	*line;
-	size_t	len;
 	int		fd;
-	char	*name;
 
 	line = NULL;
-	name = ft_strjoin2("/tmp/minishell", ft_itoa(nb_heredoc));
-	if (!name)
-		return ;
-	fd = open(name, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	data->here_doc = ft_strjoin2("/tmp/minishell", ft_itoa(nb_heredoc));
+	if (!data->here_doc)
+		return (-1);
+	fd = open(data->here_doc, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
-		free(name);
-		return ;
+		free(data->here_doc);
+		data->here_doc = NULL;
+		return (-1);
 	}
-	len = ft_strlen(limiter);
-	ft_here_doc(limiter, line, fd, len);
-	free(name);
+	ft_here_doc(data, limiter, line, &fd);
+	free(data->here_doc);
+	data->here_doc = NULL;
+	return (0);
+}
+
+int	ft_get_doc(t_data *data, char *limiter, int nb_heredoc)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid == -1)
+		return (-1);
+	if (!pid)
+		ft_here(data, limiter, nb_heredoc);
+	waitpid(pid, &status, 0);
+	return (ft_get_return_val(status));
 }
